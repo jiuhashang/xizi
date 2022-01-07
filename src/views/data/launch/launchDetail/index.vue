@@ -564,6 +564,7 @@ export default {
       }, // 业主信息
       companyInfoRules: {
         companyType: [{ message: '请选择公司性质', trigger: 'change, blur' }],
+
       },
 
       seProjectCompanyBuildInfo: {
@@ -615,14 +616,14 @@ export default {
   },
   created() {
     this.projectId = this.$route.query.projectId
-    this.getProjectInfo(this.projectId)
+    this.getProjectInfo( this.projectId )
     getProvinceCity().then(res => {
       this.options = res.data
     })
   },
   methods: {
-    getProjectInfo(projectId) {
-      getProjectInfo({projectId}).then(res => {
+    getProjectInfo( projectId ) {
+      getProjectInfo({ projectId }).then(res => {
         console.log(res)
         const {seProjectCompanyInfo,seProjectCompanyBuildInfo,seProjectPowerInfo,seProjectCooperate,seProjectRelevantFile,seProjectPowerTransformInfoList} = res.data
         this.seProjectCompanyInfo = {...seProjectCompanyInfo}
@@ -671,12 +672,13 @@ export default {
         this.seProjectCooperate.houseLeaseFlag = 1
       }
       projectInput({projectId: this.projectId,
-      seProjectCompanyInfo: this.seProjectCompanyInfo,
-      seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
-      seProjectPowerInfo: this.seProjectPowerInfo,
-      seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
-      seProjectCooperate: this.seProjectCooperate,
-      seProjectRelevantFile: this.seProjectRelevantFile}).then(res => {
+        seProjectCompanyInfo: this.seProjectCompanyInfo,
+        seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
+        seProjectPowerInfo: this.seProjectPowerInfo,
+        seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
+        seProjectCooperate: this.seProjectCooperate,
+        seProjectRelevantFile: this.seProjectRelevantFile
+      }).then(res => {
         console.log(res)
         this.saveLoading = false
         this.$message.success(res.msg)

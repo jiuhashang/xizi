@@ -13,7 +13,7 @@
         <div class="btnnn">
           <el-button size="small" @click="approval">审批记录</el-button>
           <el-button size="small" type="warning" @click="save">保 存</el-button>
-          <el-button size="small" type="primary">提交审核</el-button>
+          <el-button size="small" type="primary" >提交审核</el-button>
         </div>
       </div>
     </div>
@@ -147,7 +147,7 @@
       <div class="xian">
         <div>其他材料</div>
       </div>
-      <el-form style="text-align:right;" label-width="140px">
+      <el-form :model="seProjectSupplementFile" style="text-align:right;" label-width="140px">
         <el-row :gutter="20" style="margin:30px 30px 0 30px;">
           <el-col :span="8">
             <el-form-item label="近3年财务报告" class="must-form-item">
@@ -201,10 +201,16 @@ export default {
   name: 'MaterialDetail',
   data() {
     return {
-      seProjectCompanyInfo: {}, // 业主信息
+      projectId: '',
+      seProjectCompanyInfo: {
+        projectId: this.$route.query.projectId
+      }, // 业主信息
       tableData: [{},{}],
       logVisible: false, // 审批记录
       activities: [],
+      seProjectNearThreeYearSellProfixList: {
+        projectId: this.$route.query.projectId
+      },
       seProjectSupplementFile: {
         projectId: this.$route.query.projectId
       }, // 其他材料
@@ -228,10 +234,10 @@ export default {
     getProjectInfo(projectId) {
       getProjectInfo({projectId}).then(res => {
         console.log(res)
-        const {seProjectCompanyInfo, seProjectNearThreeYearSellProfixList, seProjectSupplementFile } = res.data
-        this.seProjectCompanyInfo = seProjectCompanyInfo
-        this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList
-        this.seProjectSupplementFile = {...seProjectSupplementFile}
+        const { seProjectCompanyInfo, seProjectNearThreeYearSellProfixList, seProjectSupplementFile } = res.data
+        this.seProjectCompanyInfo = { ...seProjectCompanyInfo }
+        this.seProjectNearThreeYearSellProfixList = { ...seProjectNearThreeYearSellProfixList }
+        if( seProjectSupplementFile ) this.seProjectSupplementFile = { ...seProjectSupplementFile }
       })
     },
     // 保存
@@ -247,8 +253,7 @@ export default {
     // 审批记录
     approval() {
       this.logVisible = true
-      getProjectExamineLog({projectId: this.projectId}).then(res => {
-        // console.log(res)
+      getProjectExamineLog({ projectId: this.projectId }).then( res => {
         this.activities = res.data
       })
     },
