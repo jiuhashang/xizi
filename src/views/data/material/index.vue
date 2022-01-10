@@ -34,7 +34,11 @@
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
         <el-table-column prop="projectName" label="项目名称" />
         <el-table-column prop="companyName" label="业主名称" />
-        <el-table-column prop="messageExamineTime" label="初审通过时间" />
+        <el-table-column prop="messageExamineTime" label="初审通过时间">
+          <template slot-scope="scope">
+            {{ scope.row.messageExamineTime ? 'scope.row.messageExamineTime' : '-'}}
+          </template>
+        </el-table-column>
         <el-table-column prop="province" label="建站地址">
           <template slot-scope="scope">
             {{scope.row.province}} - {{scope.row.city}}
