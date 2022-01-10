@@ -59,6 +59,15 @@ export function projectInputSubmit(params) {
   })
 }
 
+// 材料补充提交
+export function relevantInputSubmit(params) {
+  return request({
+    url: '/admin/seProjectInfo/relevantInputSubmit',
+    method: 'get',
+    params
+  })
+}
+
 
 
 

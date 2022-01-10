@@ -11,7 +11,7 @@
           <h2>&lt; {{ $route.meta.title }}</h2>
         </div>
         <div class="btnnn">
-          <el-button size="small">审批记录</el-button>
+          <el-button size="small" @click="approval">审批记录</el-button>
           <el-button size="small" type="warning">保 存</el-button>
         </div>
       </div>
@@ -60,13 +60,13 @@
           </el-row>
         </el-col>
         <el-col :span="8">
-          <el-row>
+          <el-row :gutter="20">
             <el-col :span="8" class="span13">统一社会信用代码</el-col>
             <el-col :span="16" class="span130">{{ seProjectCompanyInfo.sameCreditCode }}</el-col>
           </el-row>
         </el-col>
         <el-col :span="8">
-          <el-row>
+          <el-row :gutter="20">
             <el-col :span="8" class="span13">注册资本</el-col>
             <el-col :span="16" class="span130">{{ seProjectCompanyInfo.registerMoney }}</el-col>
           </el-row>
@@ -76,19 +76,26 @@
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">公司性质</el-col>
-            <el-col :span="16" class="span130">{{  }}</el-col>
+            <el-col :span="16" class="span130">
+              <span v-show="seProjectCompanyInfo.companyType == 0">央企</span>
+                <span v-show="seProjectCompanyInfo.companyType == 1">外资</span>
+                <span v-show="seProjectCompanyInfo.companyType == 2">国企</span>
+                <span v-show="seProjectCompanyInfo.companyType == 3">上市公司</span>
+                <span v-show="seProjectCompanyInfo.companyType == 4">股份制</span>
+                <span v-show="seProjectCompanyInfo.companyType == 5">其他</span>
+            </el-col>
           </el-row>
         </el-col>
         <el-col :span="8">
-          <el-row>
+          <el-row :gutter="20">
             <el-col :span="8" class="span13">建站地址</el-col>
-            <el-col :span="16" class="span130">{{  }}</el-col>
+            <el-col :span="16" class="span130">{{seProjectCompanyInfo.province}} {{seProjectCompanyInfo.city}}</el-col>
           </el-row>
         </el-col>
         <el-col :span="8">
-          <el-row>
+          <el-row :gutter="20">
             <el-col :span="8" class="span13">详细地址</el-col>
-            <el-col :span="16" class="span130">{{  }}</el-col>
+            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.setAddress }}</el-col>
           </el-row>
         </el-col>
       </el-row>
@@ -96,13 +103,13 @@
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">公司联系人</el-col>
-            <el-col :span="16" class="span130">{{  }}</el-col>
+            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.legalPerson }}</el-col>
           </el-row>
         </el-col>
         <el-col :span="8">
-          <el-row>
+          <el-row :gutter="20">
             <el-col :span="8" class="span13">联系人手机号</el-col>
-            <el-col :span="16" class="span130">{{  }}</el-col>
+            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.companyPhone }}</el-col>
           </el-row>
         </el-col>
       </el-row>
@@ -113,7 +120,7 @@
       <el-form ref="form" style="text-align:right;" label-width="140px">
         <el-row :gutter="20" style="margin:30px 30px 0 30px;">
           <el-col :span="8">
-            <el-form-item label="能源管理合同">
+            <el-form-item label="能源管理合同" class="must-form-item">
               <file-upload-string
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
@@ -122,7 +129,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="项目建议书">
+            <el-form-item label="项目建议书" class="must-form-item">
               <file-upload-string
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
@@ -131,7 +138,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="备案文件">
+            <el-form-item label="备案文件" class="must-form-item">
               <file-upload-string
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
@@ -142,7 +149,7 @@
         </el-row>
         <el-row :gutter="20"  style="margin: 0 30px;">
           <el-col :span="8">
-            <el-form-item label="接入文件">
+            <el-form-item label="接入文件" class="must-form-item">
               <file-upload-string
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
@@ -151,7 +158,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="营业执照">
+            <el-form-item label="营业执照" class="must-form-item">
               <file-upload-string
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
@@ -160,9 +167,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="关联项目公司">
+            <el-form-item label="关联项目公司" class="must-form-item">
               <!-- <el-select placeholder="请选择" class="width100">
-                <el-option></el-option>
+                <el-option label="杭州西子" value="杭州西子"></el-option>
               </el-select> -->
             </el-form-item>
           </el-col>
@@ -175,17 +182,35 @@
           </el-col>
         </el-row>
       </el-form>
-
+      <!-- 审批记录 -->
+      <el-dialog
+        title="审批记录"
+        :visible.sync="logVisible"
+        width="50%"
+        :close-on-click-modal="false">
+        <el-timeline :reverse="true">
+          <el-timeline-item
+            v-for="(activity, index) in activities"
+            :key="index"
+            :timestamp="activity.createTime">
+            <p>{{activity.title}}</p>
+            <p>{{activity.userName}}</p>
+          </el-timeline-item>
+        </el-timeline>
+      </el-dialog>
     </el-card>
   </div>
 </template>
 
 <script> 
-import { getProjectInfo } from '@/api/listProject'
+import { getProjectInfo, getProjectExamineLog } from '@/api/listProject'
 export default {
   name: 'AddedDetail',
   data() {
     return {
+      projectId: '',
+      logVisible: false, // 审批记录
+      activities: [],
       seProjectCompanyInfo: {}, // 业主信息
     }
   },
@@ -199,7 +224,14 @@ export default {
         console.log(res)
         this.seProjectCompanyInfo = res.data.seProjectCompanyInfo
       })
-    }
+    },
+     // 审批记录
+    approval() {
+      this.logVisible = true
+      getProjectExamineLog({ projectId: this.projectId }).then( res => {
+        this.activities = res.data
+      })
+    },
   }
 }
 </script>
@@ -244,5 +276,12 @@ export default {
   }
   .custom-upload-files {
     text-align: left;
+  }
+  .must-form-item {
+    /deep/ .el-form-item__label:before {
+      content: '*';
+      color: red;
+      margin-right: 4px;
+    }
   }
 </style>

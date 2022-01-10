@@ -13,7 +13,7 @@
         <div class="btnnn">
           <el-button size="small" @click="approval">审批记录</el-button>
           <el-button size="small" type="warning" @click="save">保 存</el-button>
-          <el-button size="small" type="primary" >提交审核</el-button>
+          <el-button size="small" type="primary" @click="sub">提交审核</el-button>
         </div>
       </div>
     </div>
@@ -174,6 +174,7 @@
           <el-input placeholder="请输入" class="width100"></el-input>
         </el-form-item>
       </el-form>
+      
       <!-- 审批记录 -->
       <el-dialog
         title="审批记录"
@@ -195,25 +196,28 @@
 </template>
 
 <script>
-import { getProjectInfo, getProjectExamineLog, projectInput } from '@/api/listProject'
+import { getProjectInfo, getProjectExamineLog, projectInput, relevantInputSubmit } from '@/api/listProject'
 
 export default {
   name: 'MaterialDetail',
   data() {
     return {
       projectId: '',
-      seProjectCompanyInfo: {
+      seProjectCompanyInfo: { // 业主信息
         projectId: this.$route.query.projectId
-      }, // 业主信息
+      }, 
       tableData: [{},{}],
       logVisible: false, // 审批记录
       activities: [],
-      seProjectNearThreeYearSellProfixList: {
+      seProjectCompanyBuildInfo: {}, // 屋面信息
+      seProjectCooperate: {}, // 合作模式
+      seProjectNearThreeYearSellProfixList: [], // 近三年
+      seProjectPowerInfo: {}, // 供电现状
+      seProjectPowerTransformInfoList: [], // 变压器列表
+      seProjectRelevantFile: {}, // 相关材料
+      seProjectSupplementFile: {  // 其他材料
         projectId: this.$route.query.projectId
-      },
-      seProjectSupplementFile: {
-        projectId: this.$route.query.projectId
-      }, // 其他材料
+      }, 
     }
   },
   created() {
@@ -234,20 +238,39 @@ export default {
     getProjectInfo(projectId) {
       getProjectInfo({projectId}).then(res => {
         console.log(res)
-        const { seProjectCompanyInfo, seProjectNearThreeYearSellProfixList, seProjectSupplementFile } = res.data
+        const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile } = res.data
         this.seProjectCompanyInfo = { ...seProjectCompanyInfo }
-        this.seProjectNearThreeYearSellProfixList = { ...seProjectNearThreeYearSellProfixList }
+        this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList 
         if( seProjectSupplementFile ) this.seProjectSupplementFile = { ...seProjectSupplementFile }
+        this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
+        this.seProjectCooperate = seProjectCooperate
+        this.seProjectPowerInfo = seProjectPowerInfo
+        this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList
+        this.seProjectRelevantFile = seProjectRelevantFile
       })
     },
     // 保存
     save() {
-      projectInput({projectId: this.projectId,
-        seProjectSupplementFile: this.seProjectSupplementFile
+      projectInput({
+        projectId: this.projectId,
+        seProjectSupplementFile: this.seProjectSupplementFile,
+        seProjectCompanyInfo: this.seProjectCompanyInfo,
+        seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
+        seProjectCooperate: this.seProjectCooperate,
+        seProjectNearThreeYearSellProfixList: this.seProjectNearThreeYearSellProfixList,
+        seProjectPowerInfo: this.seProjectPowerInfo,
+        seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
+        seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
         console.log(res)
         this.$message.success(res.msg)
         this.getProjectInfo(this.projectId)
+      })
+    },
+    // 提交
+    sub() {
+      relevantInputSubmit({ projectId: this.projectId }).then(res => {
+        console.log(res)
       })
     },
     // 审批记录
