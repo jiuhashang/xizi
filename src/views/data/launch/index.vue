@@ -73,7 +73,7 @@
     <el-dialog
       title="创建项目表单"
       :visible.sync="dialogVisible"
-      width="50%"
+      width="40%"
       :close-on-click-modal="false"
       @close="colseDialog">
       <el-alert
@@ -83,10 +83,25 @@
       </el-alert>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" style="width:80%;margin:auto;">
         <el-form-item label="项目名称" prop="projectName">
-          <el-input v-model="ruleForm.projectName"></el-input>
+          <el-input v-model="ruleForm.projectName" placeholder="请输入" />
         </el-form-item>
         <el-form-item label="公司名称" prop="companyName">
-          <el-input v-model="ruleForm.companyName"></el-input>
+          <el-select
+            v-model="ruleForm.companyName"
+            filterable
+            clearable
+            remote
+            reserve-keyword
+            placeholder="请输入"
+            :remote-method="remoteMethod"
+            :loading="loading"
+            class="width100">
+            <el-option
+              v-for="item in options"
+              :key="item.id"
+              :label="item.name"
+              :value="item.name" />
+          </el-select>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -114,7 +129,7 @@
 </template>
 
 <script>
-import { getList, addOne, getProjectExamineLog } from '@/api/listProject'
+import { getList, addOne, getCompanyInfoList, getProjectExamineLog } from '@/api/listProject'
 
 export default {
   name: 'Launch',
@@ -124,6 +139,7 @@ export default {
         companyName: '',
         projectName: '',
         firstExamine: '',
+        type: 0,
         pageIndex: 1,
         pageSize: 10
       },
@@ -156,8 +172,14 @@ export default {
       dialogVisible: false,
       ruleForm: {
         projectName: '',
-        companyName: ''
+        companyName: '',
+        pageIndex: 1,
+        pageSize: 10
       },
+      options: [],
+      list: [],
+      states: [],
+      loading: false,
       rules: {
         projectName: [
             { required: true, message: '请输入项目名称', trigger: 'blur' },
@@ -165,7 +187,7 @@ export default {
           ],
         companyName: [
           { required: true, message: '请输入公司名称', trigger: 'blur' },
-          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+          { min: 4, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
         ]
       },
 
@@ -177,14 +199,18 @@ export default {
   created() {
     this.getList()
   },
+  mounted() {
+    this.list = this.states.map(item => {
+      return { value: `value:${item}`, label: `label:${item}` };
+    })
+  },
   methods: {
     // 列表请求
     getList() {
       getList(this.tableInfo).then(res => {
         console.log(res)
-        const { current, records, total } = res.data
+        const { records, total } = res.data
         this.tableData = records
-        // this.currentPage = current
         this.total = total
       })
     },
@@ -200,6 +226,7 @@ export default {
         companyName: '',
         firstExamine: '',
         firstExamine: '',
+        type: 0,
         pageIndex: 1,
         pageSize: 10
       }
@@ -246,7 +273,29 @@ export default {
     colseDialog() {
       this.ruleForm = {
         projectName: '',
-        companyName: ''
+        companyName: '',
+        pageIndex: 1,
+        pageSize: 10
+      }
+    },
+    remoteMethod(query) {
+      console.log(query)
+      if (query !== '' && query.length >=4) {
+        this.ruleForm.companyName = query
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          getCompanyInfoList(this.ruleForm).then( res => {
+            console.log('1111', res)
+            this.options = res.data
+          })
+          this.options = this.list.filter(item => {
+            return item.label.toLowerCase()
+              .indexOf(query.toLowerCase()) > -1;
+          });
+        }, 500);
+      } else {
+        this.options = [];
       }
     },
     createProject() {

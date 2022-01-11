@@ -36,7 +36,15 @@
         <el-table-column prop="companyName" label="业主名称" />
         <el-table-column label="提交时间" />
         <el-table-column label="业务员" />
-        <el-table-column label="复核状态" />
+        <el-table-column label="复核状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.thirdExamine == 0">待提交</span>
+            <span v-else-if="scope.row.thirdExamine == 1" style="color:#F59A23;">审核中</span>
+            <span v-else-if="scope.row.thirdExamine == 3" style="color:#1890FF;">初审通过</span>
+            <span v-else-if="scope.row.thirdExamine == 2" style="color:#D9001B;">初审未通过</span>
+            <span v-else-if="scope.row.thirdExamine == 99">项目已终止</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="handleView(scope.row)">查看</el-button>
@@ -65,7 +73,7 @@
 </template>
 
 <script>
-import { getList, addOne, getProjectExamineLog } from '@/api/listProject'
+import { getExamineList, getProjectExamineLog } from '@/api/listProject'
 
 export default {
   name: 'Review',
@@ -75,6 +83,7 @@ export default {
         companyName: '',
         projectName: '',
         firstExamine: '',
+        type: 1,
         pageIndex: 1,
         pageSize: 10
       },
@@ -114,7 +123,7 @@ export default {
   methods: {
     // 列表请求
     getList() {
-      getList(this.tableInfo).then(res => {
+      getExamineList(this.tableInfo).then(res => {
         console.log(res)
         const { records, total } = res.data
         this.tableData = records

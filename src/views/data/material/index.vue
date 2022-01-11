@@ -17,12 +17,12 @@
         <el-input v-model="tableInfo.companyName" placeholder="业主名称查询" clearable style="width:250px;" />
       </el-form-item>
       <el-form-item>
-        <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部状态">
+        <el-select v-model="tableInfo.thirdExamine" clearable placeholder="全部状态">
           <el-option
             v-for="item in options"
-            :key="item.firstExamine"
+            :key="item.thirdExamine"
             :label="item.label"
-            :value="item.firstExamine">
+            :value="item.thirdExamine">
           </el-option>
         </el-select>
       </el-form-item>
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-import { getList, addOne, getProjectExamineLog } from '@/api/listProject'
+import { getList, getProjectExamineLog } from '@/api/listProject'
 
 export default {
   name: 'Material',
@@ -97,29 +97,30 @@ export default {
       tableInfo: {
         companyName: '',
         projectName: '',
-        firstExamine: '',
+        thirdExamine: '',
+        type: 1,
         pageIndex: 1,
         pageSize: 10
       },
       options: [
         {
-          firstExamine: '0',
+          thirdExamine: '0',
           label: '待提交'
         }, 
         {
-          firstExamine: '1',
+          thirdExamine: '1',
           label: '审核中'
         }, 
         {
-          firstExamine: '3',
+          thirdExamine: '3',
           label: '审核通过'
         }, 
         {
-          firstExamine: '2',
+          thirdExamine: '2',
           label: '审核未通过'
         }, 
         {
-          firstExamine: '99',
+          thirdExamine: '99',
           label: '项目已终止'
         }
       ],
@@ -154,8 +155,11 @@ export default {
     reset() {
       this.tableInfo = {
         companyName: '',
-        firstExamine: '',
-        firstExamine: '',
+        projectName: '',
+        thirdExamine: '',
+        type: 1,
+        pageIndex: 1,
+        pageSize: 10
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.getList()
@@ -164,19 +168,20 @@ export default {
     // 查看详情
     handleView(row) {
       this.$router.push({ name: 'MaterialDetail', query: { 
-        projectId: row.projectId,
-        createTime: row.createTime,
-        createUserNickName: row.createUserNickName,
-        createUserPhone: row.createUserPhone,
-        projectName: row.projectName
-       } })
+          projectId: row.projectId,
+          createTime: row.createTime,
+          createUserNickName: row.createUserNickName,
+          createUserPhone: row.createUserPhone,
+          projectName: row.projectName
+        }
+      })
     },
     
     // 审批记录
     approval(projectId) {
       this.logVisible = true
-      getProjectExamineLog({projectId}).then(res => {
-        console.log(res)
+      getProjectExamineLog({ projectId }).then(res => {
+        // console.log(res)
         this.activities = res.data
       })
     },

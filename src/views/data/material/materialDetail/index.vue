@@ -21,7 +21,7 @@
       <div class="xian">
         <div>项目信息</div>
       </div>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">创建时间</el-col>
@@ -41,7 +41,7 @@
           </el-row>
         </el-col>
       </el-row>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;margin-bottom:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">项目名称</el-col>
@@ -53,7 +53,7 @@
       <div class="xian">
         <div>业主信息</div>
       </div>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">公司名称</el-col>
@@ -73,7 +73,7 @@
           </el-row>
         </el-col>
       </el-row>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">公司性质</el-col>
@@ -102,7 +102,7 @@
           </el-row>
         </el-col>
       </el-row>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;margin-bottom:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">公司联系人</el-col>
@@ -120,57 +120,96 @@
       <div class="xian">
         <div>近3年销售与利润</div>
       </div>
-      <el-form ref="tableListRef">
+      <table style="width: 100%;text-align: center" cellpadding="0" cellspacing="0">
+        <tr>
+          <td></td>
+          <td>2019年</td>
+          <td>2020年</td>
+          <td>2021年</td>
+        </tr>
+        <tr>
+          <td>年销售额（万元）</td>
+          <td>
+            <el-input placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+          <td>
+            <el-input placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+          <td>
+            <el-input placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+        </tr>
+        <tr>
+          <td>年利润额（万元）</td>
+          <td>
+            <el-input placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+          <td>
+            <el-input placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+          <td>
+            <el-input placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+        </tr>
+      </table>
+      <!-- <el-form ref="tableListRef">
         <el-table :data="tableData" border style="width: 100%;margin:20px 0 30px 0;">
           <el-table-column type="index" :index="indexMethod" width="300px" />
           <el-table-column label="2019年">
             <template>
-              <el-input placeholder="请输入">
-              </el-input>
+              <el-input placeholder="请输入" />
             </template>
           </el-table-column>
           <el-table-column label="2020年">
             <template>
-              <el-input placeholder="请输入">
-              </el-input>
+              <el-input placeholder="请输入" />
             </template>
           </el-table-column>
           <el-table-column label="2021年">
             <template>
-              <el-input placeholder="请输入">
-              </el-input>
+              <el-input placeholder="请输入" />
             </template>
           </el-table-column>
         </el-table>
-      </el-form>
+      </el-form> -->
 
       <div class="xian">
         <div>其他材料</div>
       </div>
-      <el-form :model="seProjectSupplementFile" style="text-align:right;" label-width="140px">
-        <el-row :gutter="20" style="margin:30px 30px 0 30px;">
+      <el-form :model="seProjectSupplementFile" style="margin-left:57px;margin-top:30px;" label-width="140px">
+        <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="近3年财务报告" class="must-form-item">
               <file-upload-string
                 v-model="seProjectSupplementFile.nearThreeYearFinanceReport"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
               </file-upload-string>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="padding-left:30px;">
             <el-form-item label="材料补充额外材料">
               <file-upload-string
               v-model="seProjectSupplementFile.otherFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
               </file-upload-string>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-form-item label="补充说明" style="margin-left:40px;">
+        <el-form-item label="补充说明">
           <el-input placeholder="请输入" class="width100"></el-input>
         </el-form-item>
       </el-form>
@@ -206,7 +245,12 @@ export default {
       seProjectCompanyInfo: { // 业主信息
         projectId: this.$route.query.projectId
       }, 
-      tableData: [{},{}],
+      // tableData: [{},{}],
+      seProjectNearThreeYearSellProfixList: [
+        { yearNum: 2019, sellMoney: '', profix: '' },
+        { yearNum: 2020, sellMoney: '', profix: '' },
+        { yearNum: 2021, sellMoney: '', profix: '' },
+      ],
       logVisible: false, // 审批记录
       activities: [],
       seProjectCompanyBuildInfo: {}, // 屋面信息
@@ -231,17 +275,17 @@ export default {
   },
   methods: {
     // 表格自定义索引
-    indexMethod(index) {
-      return ['年销售额（万元）','年利润额（万元）'][index]
-    },
+    // indexMethod(index) {
+    //   return ['年销售额（万元）','年利润额（万元）'][index]
+    // },
 
-    getProjectInfo(projectId) {
-      getProjectInfo({projectId}).then(res => {
+    getProjectInfo() {
+      getProjectInfo({ projectId: this.projectId }).then(res => {
         console.log(res)
         const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile } = res.data
         this.seProjectCompanyInfo = { ...seProjectCompanyInfo }
         this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList 
-        if( seProjectSupplementFile ) this.seProjectSupplementFile = { ...seProjectSupplementFile }
+        if( seProjectSupplementFile ) { this.seProjectSupplementFile = { ...seProjectSupplementFile }}
         this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
         this.seProjectCooperate = seProjectCooperate
         this.seProjectPowerInfo = seProjectPowerInfo
@@ -331,5 +375,25 @@ export default {
       color: red;
       margin-right: 4px;
     }
+  }
+  table {
+    width: 100%;
+    height: 200px;
+    margin: 30px 0;
+    border-collapse:collapse; 
+    border: 1px solid #aaa;
+    tr {
+      border: 1px solid #aaa;
+      td {
+        border: 1px solid #aaa;
+        width: 25%;
+      }
+    }
+  }
+  .el-input {
+    width: 90%;
+  }
+  /deep/ .el-input__suffix {
+    top: 10px;
   }
 </style>

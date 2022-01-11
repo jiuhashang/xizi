@@ -18,12 +18,12 @@
           <el-input v-model="tableInfo.companyName" placeholder="业主名称查询" clearable style="width:250px;" />
         </el-form-item>
         <el-form-item>
-          <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部状态">
+          <el-select v-model="tableInfo.setProjectStatus" clearable placeholder="全部状态">
             <el-option
               v-for="item in options"
-              :key="item.firstExamine"
+              :key="item.setProjectStatus"
               :label="item.label"
-              :value="item.firstExamine">
+              :value="item.setProjectStatus">
             </el-option>
           </el-select>
         </el-form-item>
@@ -91,7 +91,7 @@
 </template>
 
 <script>
-import { getList, addOne, getProjectExamineLog } from '@/api/listProject'
+import { getList, getProjectExamineLog } from '@/api/listProject'
 
 export default {
   name: 'Added',
@@ -100,51 +100,23 @@ export default {
       tableInfo: {
         companyName: '',
         projectName: '',
-        firstExamine: '',
+        setProjectStatus: '',
+        type: 2,
         pageIndex: 1,
         pageSize: 10
       },
       options: [
         {
-          firstExamine: '0',
-          label: '待提交'
+          setProjectStatus: '0',
+          label: '待完善'
         }, 
         {
-          firstExamine: '1',
-          label: '审核中'
-        }, 
-        {
-          firstExamine: '3',
-          label: '审核通过'
-        }, 
-        {
-          firstExamine: '2',
-          label: '审核未通过'
-        }, 
-        {
-          firstExamine: '99',
-          label: '项目已终止'
+          setProjectStatus: '1',
+          label: '已完善'
         }
       ],
       tableData: [],
       total: 0,
-
-      // 创建项目表单
-      dialogVisible: false,
-      ruleForm: {
-        projectName: '',
-        companyName: ''
-      },
-      rules: {
-        projectName: [
-            { required: true, message: '请输入项目名称', trigger: 'blur' },
-            { min: 4, max: 50, message: '长度在 4 到 50 个字符', trigger: 'blur' }
-          ],
-        companyName: [
-          { required: true, message: '请输入业主名称', trigger: 'blur' },
-          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
-        ]
-      },
 
       // 审批记录
       logVisible: false,
@@ -160,7 +132,7 @@ export default {
       getList(this.tableInfo).then(res => {
         const { current, records, total } = res.data
         this.tableData = records
-        // this.currentPage = current
+        this.currentPage = current
         this.total = total
       })
     },
@@ -174,8 +146,9 @@ export default {
     reset() {
       this.tableInfo = {
         companyName: '',
-        firstExamine: '',
-        firstExamine: '',
+        projectName: '',
+        setProjectStatus: '',
+        type: 2,
         pageIndex: 1,
         pageSize: 10
       }

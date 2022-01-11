@@ -1,9 +1,18 @@
 import request from '@/utils/request'
 
-// 项目列表
+// 项目资料收集列表
 export function getList(params) {
   return request({
     url: '/admin/seProjectInfo/selectListAllByUser',
+    method: 'get',
+    params
+  })
+}
+
+// 项目审批中心列表
+export function getExamineList(params) {
+  return request({
+    url: '/admin/seProjectInfo/selectExamineList',
     method: 'get',
     params
   })
@@ -14,6 +23,15 @@ export function addOne(params) {
   return request.post('/admin/seProjectInfo/addOne', 
   params
   )
+}
+
+// 公司模糊查询
+export function getCompanyInfoList(params) {
+  return request({
+    url: '/admin/seProjectCompanyInfo/getCompanyInfoList',
+    method: 'get',
+    params
+  })
 }
 
 // 审批记录
@@ -54,6 +72,15 @@ export function projectInput(params) {
 export function projectInputSubmit(params) {
   return request({
     url: '/admin/seProjectInfo/projectInputSubmit',
+    method: 'get',
+    params
+  })
+}
+
+// 删除变压器
+export function deleteOne(params) {
+  return request({
+    url: '/admin/seProjectPowerTransformInfo/deleteOne',
     method: 'get',
     params
   })

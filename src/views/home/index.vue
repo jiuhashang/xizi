@@ -22,9 +22,9 @@
           <el-menu-item index="/first">项目初审</el-menu-item>
           <el-menu-item index="/review">图纸复核</el-menu-item>
           <el-menu-item index="/final">项目终审</el-menu-item>
-          <el-menu-item index="/share">项目分享</el-menu-item>
+          <!-- <el-menu-item index="/share">项目分享</el-menu-item> -->
           <el-menu-item index="/overview">项目总览</el-menu-item>
-          <el-menu-item index="/preview">项目预览</el-menu-item>
+          <!-- <el-menu-item index="/preview">项目预览</el-menu-item> -->
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">综合管理</template>
@@ -56,7 +56,7 @@ export default {
     },
     methods: {
       handleSelect(key, keyPath) {
-        console.log(key, keyPath);
+        // console.log(key, keyPath);
       },
       out() {
         window.sessionStorage.clear()

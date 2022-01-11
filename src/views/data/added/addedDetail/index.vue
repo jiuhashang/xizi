@@ -20,7 +20,7 @@
       <div class="xian">
         <div>项目信息</div>
       </div>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">创建时间</el-col>
@@ -40,7 +40,7 @@
           </el-row>
         </el-col>
       </el-row>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;margin-bottom:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">项目名称</el-col>
@@ -52,7 +52,7 @@
       <div class="xian">
         <div>业主信息</div>
       </div>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">公司名称</el-col>
@@ -72,7 +72,7 @@
           </el-row>
         </el-col>
       </el-row>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">公司性质</el-col>
@@ -99,7 +99,7 @@
           </el-row>
         </el-col>
       </el-row>
-      <el-row :gutter="20" style="margin:30px;">
+      <el-row :gutter="20" style="margin-top:30px;margin-bottom:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">公司联系人</el-col>
@@ -117,8 +117,8 @@
       <div class="xian">
         <div>立项补充</div>
       </div>
-      <el-form ref="form" style="text-align:right;" label-width="140px">
-        <el-row :gutter="20" style="margin:30px 30px 0 30px;">
+      <el-form ref="form" style="margin-left:60px;margin-top:30px;" label-width="140px">
+        <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="能源管理合同" class="must-form-item">
               <file-upload-string
@@ -128,7 +128,7 @@
               </file-upload-string>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="padding-left:25px;">
             <el-form-item label="项目建议书" class="must-form-item">
               <file-upload-string
                 :limit="1"
@@ -137,7 +137,7 @@
               </file-upload-string>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="padding-left:48px;">
             <el-form-item label="备案文件" class="must-form-item">
               <file-upload-string
                 :limit="1"
@@ -147,7 +147,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20"  style="margin: 0 30px;">
+        <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="接入文件" class="must-form-item">
               <file-upload-string
@@ -157,7 +157,7 @@
               </file-upload-string>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="padding-left:25px;">
             <el-form-item label="营业执照" class="must-form-item">
               <file-upload-string
                 :limit="1"
@@ -166,7 +166,7 @@
               </file-upload-string>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="padding-left:48px;">
             <el-form-item label="关联项目公司" class="must-form-item">
               <!-- <el-select placeholder="请选择" class="width100">
                 <el-option label="杭州西子" value="杭州西子"></el-option>
@@ -182,6 +182,7 @@
           </el-col>
         </el-row>
       </el-form>
+
       <!-- 审批记录 -->
       <el-dialog
         title="审批记录"

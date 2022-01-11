@@ -88,9 +88,9 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="建站地址" class="must-form-item">
+            <el-form-item label="建站地址" prop="value" class="must-form-item">
               <el-cascader
-                v-model="value"
+                v-model="seProjectCompanyInfo.value"
                 :options="options"
                 :props="{ expandTrigger: 'hover', label:'province', value: 'province', children:'cities' }"
                 @change="handleChange"
@@ -99,19 +99,19 @@
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="详细地址">
+            <el-form-item label="详细地址" prop="setAddress">
               <el-input v-model="seProjectCompanyInfo.setAddress"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" style="margin:0 30px 30px 30px;">
           <el-col :span="8">
-            <el-form-item label="公司联系人">
+            <el-form-item label="公司联系人" prop="legalPerson">
               <el-input v-model="seProjectCompanyInfo.legalPerson"></el-input>
             </el-form-item>
           </el-col>
           <el-col :span="8">
-            <el-form-item label="联系人手机号">
+            <el-form-item label="联系人手机号" prop="companyPhone">
               <el-input v-model="seProjectCompanyInfo.companyPhone"></el-input>
             </el-form-item>
           </el-col>
@@ -199,7 +199,7 @@
             </el-form-item>
           </el-col>
           <el-col :span="16">
-            <el-form-item label="其他屋面材质说明">
+            <el-form-item label="其他屋面材质说明" prop="otherMessage">
               <el-input v-model="seProjectCompanyBuildInfo.otherMessage"></el-input>
             </el-form-item>
           </el-col>
@@ -209,26 +209,26 @@
       <div class="xian">
         <div>供电现状</div>
       </div>
-      <el-form ref="powerInfoForm" :rules="powerInfoRules" :model="seProjectPowerInfo" label-width="140px">
-        <el-row :gutter="20" style="margin:30px 30px 0 30px;">
+      <el-form ref="powerInfoForm" :rules="powerInfoRules" :model="seProjectPowerInfo" label-width="150px">
+        <el-row :gutter="20" style="margin:30px 10px 0;">
           <el-col :span="8">
             <el-form-item label="供电类型" prop="prowerType" class="must-form-item">
               <el-select v-model="seProjectPowerInfo.prowerType" placeholder="请选择"  class="width100">
-                <el-option label="工业" :value="0"></el-option>
-                <el-option label="商业" :value="1"></el-option>
-                <el-option label="共用" :value="2"></el-option>
-                <el-option label="居民用电" :value="3"></el-option>
+                <el-option label="工业" value="0"></el-option>
+                <el-option label="商业" value="1"></el-option>
+                <el-option label="共用" value="2"></el-option>
+                <el-option label="居民用电" value="3"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="padding-left:0;">
             <el-form-item label="变压器容量" prop="transformerVolume" class="must-form-item">
               <el-input v-model="seProjectPowerInfo.transformerVolume">
                 <span slot="suffix">kVA</span>
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="padding-left:0;">
             <el-form-item label="变压器台数" prop="transformerNum" class="must-form-item">
               <el-input v-model="seProjectPowerInfo.transformerNum">
                 <span slot="suffix">台</span>
@@ -236,7 +236,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin:30px;">
+        <el-row :gutter="20" style="margin:30px 10px 0;">
           <el-col :span="8">
             <el-form-item label="预估装机容量" prop="mayInstallVolume" class="must-form-item">
               <el-input v-model="seProjectPowerInfo.mayInstallVolume">
@@ -244,7 +244,7 @@
               </el-input>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="padding-left:0;">
             <el-form-item label="法定节假日是否休息" prop="legalHolidayFlag" class="must-form-item">
               <el-select v-model="seProjectPowerInfo.legalHolidayFlag" placeholder="请选择"  class="width100">
                 <el-option label="是" :value="1"></el-option>
@@ -252,18 +252,18 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="8">
+          <el-col :span="8" style="padding-left:0;">
             <el-form-item label="周末生产情况" prop="weekendFlag" class="must-form-item">
               <el-select v-model="seProjectPowerInfo.weekendFlag" placeholder="请选择"  class="width100">
-                <el-option label="单班" :value="0"></el-option>
-                <el-option label="双班" :value="1"></el-option>
-                <el-option label="连续生产" :value="2"></el-option>
+                <el-option label="单班" value="0"></el-option>
+                <el-option label="双班" value="1"></el-option>
+                <el-option label="连续生产" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin:0 30px 30px 30px;">
-          <el-col :span="8">
+        <el-row :gutter="20" style="margin:30px 20px 0;">
+          <el-col :span="8" style="padding-left:0;">
             <el-form-item label="中午设备是否停机" prop="noonEquipmentFlag" class="must-form-item">
               <el-select v-model="seProjectPowerInfo.noonEquipmentFlag" placeholder="请选择"  class="width100">
                 <el-option label="是" :value="1"></el-option>
@@ -271,8 +271,8 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="16">
-            <el-form-item label="其他供电说明">
+          <el-col :span="16" style="padding-left:0;">
+            <el-form-item label="其他供电说明" prop="otherMessage">
               <el-input v-model="seProjectPowerInfo.otherMessage"></el-input>
             </el-form-item>
           </el-col>
@@ -345,16 +345,14 @@
         <div>相关材料</div>
       </div>
       <el-alert title="如文件较多，可将文件进行压缩打包上传。" type="success" :closable="false" />
-      <el-form ref="relevantFileForm" :rules="relevantFileRules" :model="seProjectRelevantFile" style="text-align:right;" label-width="150px">
+      <el-form ref="relevantFileForm" :rules="relevantFileRules" :model="seProjectRelevantFile" style="text-align:right;" label-width="160px">
         <el-row :gutter="20" style="margin:0 30px;">
           <el-col :span="8">
             <el-form-item label="不动产权证或三证" prop="realPropertyRightFile" class="must-form-item">
               <file-upload-string
                 v-model="seProjectRelevantFile.realPropertyRightFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -362,9 +360,7 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.nearYearElectricityBill"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -372,9 +368,7 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.structureFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -384,9 +378,7 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.electricityRoomInsideFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -394,9 +386,7 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.buildFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -404,9 +394,7 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.generalLayoutFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -416,9 +404,7 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.workShopInsideFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -426,9 +412,7 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.workShopFrontFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -436,9 +420,7 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.houseTopDetailFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
         </el-row>
@@ -448,9 +430,7 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.workShopInsideTopFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
           <el-col :span="8">
@@ -458,16 +438,14 @@
               <file-upload-string
                 v-model="seProjectRelevantFile.projectOtherFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
-              </file-upload-string>
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm" />
             </el-form-item>
           </el-col>
         </el-row>
         <el-row :gutter="20" style="margin:0 30px;">
           <el-col>
             <el-form-item label="项目发起额外说明">
-              <el-input placeholder="请输入" class="width100"></el-input>
+              <el-input placeholder="请输入" v-model="seProjectRelevantFile.projectOtherMessage" class="width100"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -479,11 +457,11 @@
       :visible.sync="addDialogVisible"
       width="40%"
       :close-on-click-modal="false">
-      <el-form ref="form" :model="addForm" label-width="120px">
-        <el-form-item label="变压器名称" style="margin-bottom:15px;">
+      <el-form ref="form" :model="addForm" :rules="addRules" label-width="120px">
+        <el-form-item label="变压器名称" prop="transformName" class="must-form-item">
           <el-input v-model="addForm.transformName"></el-input>
         </el-form-item>
-        <el-form-item label="容量（kVA)">
+        <el-form-item label="容量（kVA)" prop="transformVolume" class="must-form-item">
           <el-input v-model="addForm.transformVolume"></el-input>
         </el-form-item>
       </el-form>
@@ -497,8 +475,8 @@
       :visible.sync="editDialogVisible"
       width="40%"
       :close-on-click-modal="false">
-      <el-form ref="form" :model="editForm" label-width="120px">
-        <el-form-item label="变压器名称" style="margin-bottom:15px;">
+      <el-form ref="form" :model="editForm"  label-width="120px">
+        <el-form-item label="变压器名称">
           <el-input v-model="editForm.transformName"></el-input>
         </el-form-item>
         <el-form-item label="容量（kVA)">
@@ -530,16 +508,87 @@
 </template>
 
 <script>
-import { getProjectInfo, projectInput, projectInputSubmit, getProjectExamineLog, getProvinceCity } from '@/api/listProject'
+import { getProjectInfo, projectInput, projectInputSubmit, getProjectExamineLog, getProvinceCity, deleteOne } from '@/api/listProject'
 export default {
   name: 'LaunchDetail',
   data() {
+    var checkTwo = (rule, value, callback) => {
+      // if (!value) {
+      //   return callback(new Error('内容不能为空'))
+      // } else {
+      const reg = /(^[0-9]{1,9}$)|(^[0-9]{1,9}[\.]{1}[0-9]{1,2}$)/
+      // console.log(reg.test(value))
+      if (reg.test(value)) {
+        callback()
+      } else {
+        return callback(new Error('限数字，小数点后2位'))
+      }
+      // }
+    }
+    var checkZs = (rule, value, callback) => {
+      // if (!value) {
+      //   return callback(new Error('大于0的整数'))
+      // } else {
+      const reg = /^[1-9]\d*$/
+      if (reg.test(value)) {
+        callback()
+      } else {
+        return callback(new Error('限数字，整数，≥1'))
+      }
+      // }
+    }
+    var checkCe = (rule, value, callback) => {
+      // if (!value) {
+      //   return callback(new Error('内容不能为空'))
+      // } else {
+      const reg = /^(?:100|\d{1,2})(?:\.\d{1,2})?$/ 
+      if (reg.test(value)) {
+        callback()
+      } else {
+        return callback(new Error('限数字，0-100之间，小数点后2位'))
+      }
+    }
+    var checkCd = (rule, value, callback) => {
+      // if (!value) {
+      //   return callback(new Error('内容不能为空'))
+      // } else {
+      const reg = /^([1-9]\d*(\.\d{1,2})?|([0](\.([0][1-9]|[1-9]\d{0,1}))))$/
+      if (reg.test(value)) {
+        callback()
+      } else {
+        return callback(new Error('限数字、若小数最多2位，＞0'))
+      }
+    }
+    var checkPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('手机号不能为空'))
+      } else {
+        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        // console.log(reg.test(value))
+        if (reg.test(value)) {
+          callback()
+        } else {
+          return callback(new Error('请输入正确的手机号'))
+        }
+      }
+    }
     return {
       projectId: '',
+      must: false, // 控制是否必填
       addForm: { // 添加变压器
         transformName: '',
         transformVolume: '',
         key: Date.now()
+      },
+      addRules: {
+        transformName: [
+          { message: '请输入变压器名称', trigger: 'blur' },
+          { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+        ],
+        transformVolume: [
+          { message: '请输入', trigger: 'blur' },
+          { validator: checkCd, trigger: 'blur' }
+        ]
       },
       editForm: { // 编辑变压器
         transformName: '',
@@ -548,7 +597,7 @@ export default {
       },
       seProjectPowerTransformInfoList: [], // 变压器数据
       addDialogVisible: false, // 添加变压器弹框
-      editDialogVisible: false, // 编辑变压器弹框
+      editDialogVisible: false, 
       housePartType: [], // 屋面材质
       colorSteelType: [], // 彩钢瓦类型
       houseDis: true,
@@ -563,41 +612,64 @@ export default {
         projectId: this.$route.query.projectId,
       }, // 业主信息
       companyInfoRules: {
-        companyType: [{ message: '请选择公司性质', trigger: 'change, blur' }],
-
+        companyType: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
+        value: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
+        setAddress: [{ min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }],
+        legalPerson: [{ min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }],
+        companyPhone: [{ validator: checkPhone, trigger: 'blur' }]
       },
 
       seProjectCompanyBuildInfo: {
         projectId: this.$route.query.projectId,
       }, // 屋面信息
       CompanyBuildInfoRules: {
-        // houseArea: [],
-        // buildNum: [],
-        // houseSouthScreenFlag: [],
-        // useYears: [],
-        // housePartType: [],
+        houseArea: [
+          { required: this.must, message: '请输入屋顶总面积', trigger: 'blur' },
+          { validator: checkTwo, trigger: 'blur' }
+        ],
+        buildNum: [
+          { message: '请输入建筑物个数', trigger: 'blur' },
+          { validator: checkZs, trigger: 'blur' }
+        ],
+        houseSouthScreenFlag: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
+        useYears: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
+        housePartType: [{ required: this.must, message: '请选择建站地址', trigger: 'change, blur' }],
         // colorSteelType: [],
-        // colorSteelCementTopScale: []
+        colorSteelCementTopScale: [
+          { required: this.must, message: '请输入', trigger: 'blur' },
+          { validator: checkCe, trigger: 'blur' }
+        ],
+        otherMessage: [{ min: 0, max: 200, message: '长度在 0 到 200 个字符', trigger: 'blur' }]
       },
 
       seProjectPowerInfo: {
         projectId: this.$route.query.projectId,
       }, // 供电现状
       powerInfoRules: {
-        prowerType: [],
-        transformerVolume: [],
-        transformerNum: [],
-        mayInstallVolume: [],
-        legalHolidayFlag: [],
-        weekendFlag: [],
-        noonEquipmentFlag: []
+        prowerType: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
+        transformerVolume: [
+          { required: this.must, message: '请输入', trigger: 'blur' },
+          { validator: checkCd, trigger: 'blur' }
+        ],
+        transformerNum: [
+          { required: this.must, message: '请输入', trigger: 'blur' },
+          { validator: checkZs, trigger: 'blur' }
+        ],
+        mayInstallVolume: [
+          { required: this.must, message: '请输入', trigger: 'blur' },
+          { validator: checkCd, trigger: 'blur' }
+        ],
+        legalHolidayFlag: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
+        weekendFlag: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
+        noonEquipmentFlag: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
+        otherMessage: [{ min: 0, max: 200, message: '长度在 0 到 200 个字符', trigger: 'blur' }]
       },
 
       seProjectCooperate: {
         projectId: this.$route.query.projectId,
       }, // 合作模式
       cooperateRules: {
-        cooperateType: []
+        cooperateType: [{ required: this.must, message: '请选择', trigger: 'change, blur' }]
       },
 
       seProjectRelevantFile: {
@@ -632,7 +704,7 @@ export default {
         this.seProjectCooperate = {...seProjectCooperate}
         this.seProjectRelevantFile = {...seProjectRelevantFile}
         this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList
-        this.value = [this.seProjectCompanyInfo.province, this.seProjectCompanyInfo.city]
+        this.seProjectCompanyInfo.value = [this.seProjectCompanyInfo.province, this.seProjectCompanyInfo.city]
         if(this.seProjectCompanyBuildInfo.housePartType) { this.housePartType = this.seProjectCompanyBuildInfo.housePartType.split(',') }
         if(this.seProjectCompanyBuildInfo.colorSteelType) { this.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.split(',') }
         if(this.seProjectCompanyBuildInfo.housePartType.indexOf('2') !=-1) { this.houseDis = false }
@@ -690,7 +762,7 @@ export default {
       const confirmResult = await this.$confirm('是否提交审核?', '提示', {
         confirmButtonText: '确 定',
         cancelButtonText: '取 消',
-        type: 'info'
+        type: 'warning'
       }).catch((err) => err)
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消')
@@ -700,7 +772,9 @@ export default {
         console.log(res)
         this.subLoading = false
         if(res.code == 0) this.$message.success(res.msg)
-        
+      }).catch( err => {
+        // console.log(err)
+        this.subLoading = false
       })
     },
     // 添加变压器
@@ -716,11 +790,19 @@ export default {
         key: Date.now()
       }
     },
-    deleteData(row) { // 删除变压器
-      var index = this.seProjectPowerTransformInfoList.indexOf(row)
-      if (index !== -1) {
-        this.seProjectPowerTransformInfoList.splice(index, 1)
-      }
+    async deleteData(row) { // 删除变压器
+      const confirmResult = await this.$confirm('此操作将永久删除该数据，是否继续?', '提示', {
+          confirmButtonText: '确 定',
+          cancelButtonText: '取 消',
+          type: 'warning'
+        }).catch((err) => err)
+        if (confirmResult !== 'confirm') {
+          return this.$message.info('已取消')
+        }
+      deleteOne({ id: row.transformId }).then(res => {
+        console.log(res)
+        this.getProjectInfo(this.projectId)
+      })
     },
     editData(row) { // 编辑变压器弹框
       this.editForm = row

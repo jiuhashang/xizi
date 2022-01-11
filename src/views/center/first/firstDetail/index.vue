@@ -584,8 +584,12 @@ export default {
   name: 'FirstDetail',
   data() {
       return {
-        activeName: 'first'
+        activeName: 'first',
+        projectId: '',
       }
+    },
+    created() {
+      this.projectId = this.$route.query.projectId
     },
     methods: {
       handleClick(tab, event) {

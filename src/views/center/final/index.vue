@@ -65,7 +65,7 @@
 </template>
 
 <script>
-import { getList, addOne, getProjectExamineLog } from '@/api/listProject'
+import { getExamineList, getProjectExamineLog } from '@/api/listProject'
 
 export default {
   name: 'Final',
@@ -75,6 +75,7 @@ export default {
         companyName: '',
         projectName: '',
         firstExamine: '',
+        type: 2,
         pageIndex: 1,
         pageSize: 10
       },
@@ -114,7 +115,7 @@ export default {
   methods: {
     // 列表请求
     getList() {
-      getList(this.tableInfo).then(res => {
+      getExamineList(this.tableInfo).then(res => {
         console.log(res)
         const { records, total } = res.data
         this.tableData = records
