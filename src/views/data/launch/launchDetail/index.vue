@@ -180,8 +180,8 @@
                 multiple
                 clearable
                 placeholder="请选择(可多选)" 
-                class="width100"
-                :disabled="houseDis">
+                class="width100">
+                <el-option label="无" value="0"></el-option>
                 <el-option label="直立锁边" value="1"></el-option>
                 <el-option label="角齿" value="2"></el-option>
                 <el-option label="T型" value="3"></el-option>
@@ -283,7 +283,7 @@
           <span>变压器各台容量（选填）</span>
         </div>
         <div>
-          <el-button type="primary" size="small" @click="open">添加变压器</el-button>
+          <el-button type="primary" size="small" @click="handleAdd">添加变压器</el-button>
           <el-table :data="seProjectPowerTransformInfoList" style="width: 100%" :header-cell-style="{background:'#f2f2f2',color:'#555'}">
             <el-table-column prop="transformName" label="变压器名称" />
             <el-table-column prop="transformVolume" label="容量（kVA）" />
@@ -305,7 +305,7 @@
         <el-row :gutter="20" style="margin:30px 30px 0 30px;">
           <el-col :span="8">
             <el-form-item label="合作模式" prop="cooperateType" class="must-form-item">
-              <el-select v-model="seProjectCooperate.cooperateType" placeholder="请选择" class="width100">
+              <el-select v-model="seProjectCooperate.cooperateType" placeholder="请选择" class="width100" @change="selectChange">
                 <el-option label="业主投资" :value="0"></el-option>
                 <el-option label="其他投资" :value="1"></el-option>
               </el-select>
@@ -576,9 +576,9 @@ export default {
       projectId: '',
       must: false, // 控制是否必填
       addForm: { // 添加变压器
+        projectId: this.$route.query.projectId,
         transformName: '',
-        transformVolume: '',
-        key: Date.now()
+        transformVolume: ''
       },
       addRules: {
         transformName: [
@@ -593,14 +593,13 @@ export default {
       editForm: { // 编辑变压器
         transformName: '',
         transformVolume: '',
-        // key: Date.now()
+        transformId: Date.now()
       },
       seProjectPowerTransformInfoList: [], // 变压器数据
       addDialogVisible: false, // 添加变压器弹框
       editDialogVisible: false, 
       housePartType: [], // 屋面材质
       colorSteelType: [], // 彩钢瓦类型
-      houseDis: true,
       logVisible: false, // 审批记录
       activities: [], // 审批记录内容
       value: [], // 省市
@@ -753,7 +752,7 @@ export default {
       }).then(res => {
         console.log(res)
         this.saveLoading = false
-        this.$message.success(res.msg)
+        this.$message.success('保存成功')
         this.getProjectInfo(this.projectId)
       })
     },
@@ -771,23 +770,24 @@ export default {
       projectInputSubmit({projectId: this.projectId}).then(res => {
         console.log(res)
         this.subLoading = false
-        if(res.code == 0) this.$message.success(res.msg)
+        if(res.code == 0) this.$message.success('提交成功')
       }).catch( err => {
-        // console.log(err)
         this.subLoading = false
       })
     },
     // 添加变压器
-    open() { // 添加弹框
+    handleAdd() { // 添加弹框
       this.addDialogVisible = true
     },
     add() { // 添加变压器
       this.seProjectPowerTransformInfoList.push(this.addForm)
+      this.save()
       this.addDialogVisible = false
       this.addForm = { 
+        projectId: this.$route.query.projectId,
         transformName: '',
         transformVolume: '',
-        key: Date.now()
+        transformId: Date.now()
       }
     },
     async deleteData(row) { // 删除变压器
@@ -801,7 +801,9 @@ export default {
         }
       deleteOne({ id: row.transformId }).then(res => {
         console.log(res)
+        this.$message.success('删除成功')
         this.getProjectInfo(this.projectId)
+        // this.save()
       })
     },
     editData(row) { // 编辑变压器弹框
@@ -816,11 +818,19 @@ export default {
       this.editDialogVisible = false
       this.editForm = {}
     },
+
+    // 合作模式
+    selectChange(val) {
+      if(val == 0) {
+        this.seProjectCooperate.ownPutFlag = true
+        // this.seProjectCooperate.electricityDiscountFlag = false
+        // this.seProjectCooperate.electricityDiscountScale = ''
+        // this.seProjectCooperate.houseLeaseFlag = false
+        // this.seProjectCooperate.houseLeaseMoney = ''
+      }
+    },
     housePartTypeChange(value) { // 屋面材质
       this.seProjectCompanyBuildInfo.housePartType = value.join(',')
-      if(value.indexOf('2') != -1) {
-        this.houseDis = false
-      }
     },
     colorSteelTypeChange(value) { // 彩钢瓦类型转换
       this.seProjectCompanyBuildInfo.colorSteelType = value.join(',')

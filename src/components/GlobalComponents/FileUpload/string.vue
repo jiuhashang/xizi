@@ -85,8 +85,11 @@ export default {
 </script>
 
 <style lang="scss" scoped deep>
+    /deep/ .el-upload-list__item .el-icon-close-tip {
+      display: none !important;
+    }
   .custom-upload-files {
-
+    
     .fake-btn {
       position: relative;
       z-index: 2;
@@ -113,4 +116,5 @@ export default {
       }
     }
   }
+  
 </style>

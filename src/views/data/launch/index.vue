@@ -303,7 +303,7 @@ export default {
         if(valid) {
           addOne(this.ruleForm).then(res => {
             console.log(res)
-            this.$message.success(res.msg)
+            this.$message.success('创建项目表单成功')
             this.$router.push({ name: 'LaunchDetail', query: { 
               projectId: res.data.projectId,
               createTime: res.data.createTime,
