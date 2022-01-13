@@ -666,6 +666,13 @@ export default {
 
       seProjectCooperate: {
         projectId: this.$route.query.projectId,
+        cooperateType: '',
+        ownPutFlag: '',
+        ownPutMoney: '',
+        electricityDiscountFlag: '',
+        electricityDiscountScale: '',
+        houseLeaseFlag: '',
+        houseLeaseMoney: ''
       }, // 合作模式
       cooperateRules: {
         cooperateType: [{ required: this.must, message: '请选择', trigger: 'change, blur' }]
@@ -821,13 +828,20 @@ export default {
 
     // 合作模式
     selectChange(val) {
-      if(val == 0) {
-        this.seProjectCooperate.ownPutFlag = true
-        // this.seProjectCooperate.electricityDiscountFlag = false
-        // this.seProjectCooperate.electricityDiscountScale = ''
-        // this.seProjectCooperate.houseLeaseFlag = false
-        // this.seProjectCooperate.houseLeaseMoney = ''
-      }
+      // if(val == '0') {
+      //   this.seProjectCooperate.ownPutFlag = true
+      //   this.seProjectCooperate.electricityDiscountFlag = false
+      //   this.seProjectCooperate.electricityDiscountScale = ''
+      //   this.seProjectCooperate.houseLeaseFlag = false
+      //   this.seProjectCooperate.houseLeaseMoney = ''
+      // } else {
+      //   this.seProjectCooperate.ownPutFlag = false,
+      //   this.seProjectCooperate.ownPutMoney = ''
+      //   this.seProjectCooperate.electricityDiscountFlag = this.seProjectCooperate.electricityDiscountFlag
+      //   this.seProjectCooperate.electricityDiscountScale = this.seProjectCooperate.electricityDiscountScale
+      //   this.seProjectCooperate.houseLeaseFlag = this.seProjectCooperate.houseLeaseFlag
+      //   this.seProjectCooperate.houseLeaseMoney = this.seProjectCooperate.houseLeaseMoney
+      // }
     },
     housePartTypeChange(value) { // 屋面材质
       this.seProjectCompanyBuildInfo.housePartType = value.join(',')
