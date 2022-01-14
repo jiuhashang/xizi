@@ -11,13 +11,13 @@
           <h2>&lt; {{ $route.meta.title }}</h2>
         </div>
         <div class="btnnn">
-          <el-button size="small">终止项目</el-button>
-          <el-button size="small">工商数据查看</el-button>
-          <el-button size="small">审批记录</el-button>
-          <el-button size="small" type="danger">驳回审核</el-button>
-          <el-button size="small" type="primary">进入补充</el-button>
-          <el-button size="small" type="primary">直接终审</el-button>
-          <el-button size="small" type="primary">进入复核</el-button>
+          <el-button size="small" @click="handleTermination">终止项目</el-button>
+          <!-- <el-button size="small" @click="handleView">工商数据查看</el-button> -->
+          <el-button size="small" @click="handleApproval">审批记录</el-button>
+          <el-button size="small" type="danger" @click="handleReject">驳回审核</el-button>
+          <el-button size="small" type="primary" @click="handleSupplement">进入补充</el-button>
+          <el-button size="small" type="primary" @click="handleFinal">直接终审</el-button>
+          <el-button size="small" type="primary" @click="handleReview">进入复核</el-button>
         </div>
       </div>
     </div>
@@ -482,7 +482,7 @@
               </el-row>
             </el-col>
           </el-row>
-          <el-row :gutter="20" style="margin:30px;">
+          <el-row :gutter="20" style="margin:30px 30px 15px 30px;">
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋顶使用年限</el-col>
@@ -510,7 +510,7 @@
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">彩钢瓦类型</el-col>
+                <el-col :span="8" class="span13" style="margin-top:10px;">彩钢瓦类型</el-col>
                 <el-col :span="16" class="span130">
                   <el-select v-model="seProjectCompanyBuildInfo.colorSteelType" multiple placeholder="请选择(可多选)" class="width100" clearable>
                     <el-option label="直立锁边" value="1"></el-option>
@@ -522,14 +522,13 @@
               </el-row>
             </el-col>
           </el-row>
-          <el-row :gutter="20" style="margin:30px;">
+          <el-row :gutter="20" style="margin: 0 30px 30px;">
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">彩钢瓦比水泥顶</el-col>
+                <el-col :span="8" class="span13" style="margin-top:10px;">彩钢瓦比水泥顶</el-col>
                 <el-col :span="16" class="span130">
-                  <el-input v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale" class="width100" placeholder="请输入" clearable>
-                  <span slot="suffix">%</span>
-                </el-input>
+                  <el-input-number v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale" @change="handleChange"></el-input-number>
+                  %
                 </el-col>
               </el-row>
             </el-col>
@@ -582,7 +581,7 @@
 
           <div class="xian" style="display:flex;justify-content:space-between;">
             <div>参数配置</div>
-            <el-button type="primary" size="mini">测算数据</el-button>
+            <el-button type="primary" size="mini" @click="handleMeasure">测算数据</el-button>
           </div>
           <el-form ref="form" :model="seProjectProfitConfig" label-width="130px">
             <el-row :gutter="20" style="margin:30px 30px 0 30px;">
@@ -594,61 +593,52 @@
               </el-col>
               <el-col :span="8">
                 <el-form-item label="加权电价">
-                  <el-input v-model="seProjectProfitConfig.weightElectricityPrice" @input="handleBlur" clearable>
+                  <el-input-number v-model="seProjectProfitConfig.weightElectricityPrice" @change="handleChange" @input="handleBlur">
                     <span slot="suffix">元/KWH</span>
-                  </el-input>
+                  </el-input-number>
+                  元/KWH
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">折后电价</el-col>
-                  <el-col :span="16" class="span130">{{   seProjectProfitConfig.discountElectricityPrice }} 元/KWH</el-col>
+                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.discountElectricityPrice }} 元/KWH</el-col>
                 </el-row>
               </el-col>
             </el-row>
             <el-row :gutter="20" style="margin:30px;">
               <el-col :span="8">
                 <el-form-item label="每年固定运维费用">
-                  <el-input v-model="seProjectProfitConfig.yearRepairPrice" clearable>
-                    <span slot="suffix">元/瓦</span>
-                  </el-input>
+                  <el-input-number v-model="seProjectProfitConfig.yearRepairPrice" @change="handleChange" />元/瓦
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="第10年运维费用">
-                  <el-input v-model="seProjectProfitConfig.tenRepairPrice" clearable>
-                    <span slot="suffix">元/瓦</span>
-                  </el-input>
+                  <el-input-number v-model="seProjectProfitConfig.tenRepairPrice" @change="handleChange" />元/瓦
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="第15年运维费用">
-                  <el-input v-model="seProjectProfitConfig.fifteenRepairPrice" clearable>
-                    <span slot="suffix">元/瓦</span>
-                  </el-input>
+                  <el-input-number v-model="seProjectProfitConfig.fifteenRepairPrice" @change="handleChange" />元/瓦
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row :gutter="20" style="margin:0 30px 30px 30px;">
               <el-col :span="8">
                 <el-form-item label="自发自用比例">
-                  <el-input v-model="seProjectProfitConfig.selfUseScale" clearable>
-                    <span slot="suffix">%</span>
-                  </el-input>
+                  <el-input-number v-model="seProjectProfitConfig.selfUseScale" @change="handleChange" />%
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="单瓦价格">
-                  <el-input v-model="seProjectProfitConfig.unitPrice" clearable>
-                    <span slot="suffix">元/瓦</span>
-                  </el-input>
+                  <el-input-number v-model="seProjectProfitConfig.unitPrice" @change="handleChange" />元/瓦
                 </el-form-item>
               </el-col>
               <el-col :span="8">
                 <el-form-item label="并网电压类型">
-                  <el-select v-model="seProjectProfitConfig.voltageType" placeholder="请选择" class="width100">
+                  <el-select v-model="seProjectProfitConfig.voltageType" placeholder="请选择">
                     <el-option label="高压" :value="1"></el-option>
-                    <el-option label="低压" :value="2"></el-option>
+                    <el-option label="低压" :value="0"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
@@ -661,158 +651,343 @@
           <div style="margin-top:15px;display:flex;justify-content:space-around;">
             <div class="t1" style="background-color:#3C4563;">
               <h3>全投资内部收益率</h3>
-              <h1>12.00%</h1>
+              <h1>{{ projectTotalProfitModel.innerScal }}%</h1>
             </div>
             <div class="t1" style="background-color:#8892DF;">
               <h3>投资偿还期（年）</h3>
-              <h1>12.00%</h1>
+              <h1>{{ projectTotalProfitModel.investNum }}</h1>
             </div>
             <div class="t1" style="background-color:#6FACFD;">
               <h3>总投资费用（万元）</h3>
-              <h1>12.00%</h1>
+              <h1>{{ projectTotalProfitModel.totalInvestPrice }}</h1>
             </div>
             <div class="t1" style="background-color:#ED7E77;">
-              <h3>首年发电量</h3>
-              <h1>12.00%</h1>
+              <h3>首年发电量（万KWH）</h3>
+              <h1>{{ projectTotalProfitModel.firstElectric }}</h1>
             </div>
           </div>
           <div style="margin-top:15px;display:flex;justify-content:space-around;">
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>发电总效益（万元）</p>
-                <h3>1212.12</h3>
+                <h3>{{ projectTotalProfitModel.totalElectricUseIncomeScal }}</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>1212.12</h3>
+                <h3>{{ projectTotalProfitModel.averageElectricUseIncomeScal }}</h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>总净利润（万元）</p>
-                <h3>1212.12</h3>
+                <h3>{{ projectTotalProfitModel.totalCleanProfit }}</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>1212.12</h3>
+                <h3>{{ projectTotalProfitModel.averageCleanProfit }}</h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>投资方总收入（万元）</p>
-                <h3>1212.12</h3>
+                <h3>{{ projectTotalProfitModel.totalInvestorIncome }}</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>1212.12</h3>
+                <h3>{{ projectTotalProfitModel.averageInvestorIncome }}</h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>自投总收入（万元）</p>
-                <h3>1212.12</h3>
+                <h3>{{ projectTotalProfitModel.totalOwnIncome }}</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>1212.12</h3>
+                <h3>{{ projectTotalProfitModel.averageOwnIncome }}</h3>
               </div>
             </div>
           </div>
-          <el-table border style="width: 100%;margin-top:50px;" :header-cell-style="{background:'#f2f2f2',color:'#555'}">
-            <el-table-column label="年份" />
-            <el-table-column label="发电量" />
-            <el-table-column label="企业自用电量" />
-            <el-table-column label="企业用电收入万元" />
-            <el-table-column label="余电上网电量" />
-            <el-table-column label="余电上网收入万元" />
-            <el-table-column label="自投总收入万元" />
-            <el-table-column label="企业用电收益万元" />
-            <el-table-column label="投资方收入万元" />
-            <el-table-column label="企业分享节能效益" />
-            <el-table-column label="运维支出万元" />
-            <el-table-column label="净利润万元" />
+          <el-table :data="seProjectProfitCountList" border style="width: 100%;margin-top:50px;" :header-cell-style="{background:'#f2f2f2',color:'#555'}">
+            <el-table-column prop="yearNum" label="年份" />
+            <el-table-column prop="electricYear" label="发电量" />
+            <el-table-column prop="electricYearSelfUse" label="企业自用电量" />
+            <el-table-column prop="electricUseIncome" label="企业用电收入万元" />
+            <el-table-column prop="electricYearBeLeft" label="余电上网电量" />
+            <el-table-column prop="electricYearBeLeftIncome" label="余电上网收入万元" />
+            <el-table-column prop="ownInvestIncome" label="自投总收入万元" />
+            <el-table-column prop="electricUseIncomeScale" label="企业用电收益万元" />
+            <el-table-column prop="investorIncome" label="投资方收入万元" />
+            <el-table-column prop="shareEnergyEfficiency" label="企业分享节能效益" />
+            <el-table-column prop="repairOutPrice" label="运维支出万元" />
+            <el-table-column prop="cleanProfit" label="净利润万元" />
           </el-table>
         </el-tab-pane>
       </el-tabs>
     </el-card>
+
+    <el-dialog :title="title" :visible.sync="dialogVisible" width="30%" @close="handleClose">
+      <el-alert :title="alert" type="success" :closable="false" style="margin-top:0;" />
+      <el-input type="textarea" :rows="3" placeholder="最多输入200字符（选填）" v-model="message" />
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleConfirm(type)">确 定</el-button>
+      </span>
+    </el-dialog>
+    <el-dialog
+      title="审批记录"
+      :visible.sync="logVisible"
+      width="50%"
+      :close-on-click-modal="false">
+      <el-timeline :reverse="true">
+        <el-timeline-item
+          v-for="(activity, index) in activities"
+          :key="index"
+          :timestamp="activity.createTime">
+          <p>{{activity.title}}</p>
+          <p>{{activity.userName}}</p>
+        </el-timeline-item>
+      </el-timeline>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getProjectInfo } from '@/api/listProject'
-import { getProfitMessage } from '@/api/center'
+import { getProjectInfo, getProjectExamineLog } from '@/api/listProject'
+import { getProfitMessage, putProfitMessage, projectFirstExamine } from '@/api/center'
 
 export default {
   name: 'FirstDetail',
   data() {
-      return {
-        activeName: 'second',
-        projectId: '',
-        seProjectCompanyInfo: {},
-        seProjectCompanyBuildInfo: {}, 
-        seProjectPowerInfo: {}, 
-        seProjectPowerTransformInfoList: [], 
-        seProjectCooperate: {}, 
-        seProjectRelevantFile: {},
-        yearSunShine: '',
-        mayInstallVolume: '',
-        seProjectProfitConfig: {
-          projectId: this.$route.query.projectId,
-        }, // 参数配置
+    return {
+      province: '',
+      city:'',
+      activeName: 'first',
+      projectId: '',
+      seProjectCompanyInfo: {},
+      seProjectCompanyBuildInfo: {}, 
+      seProjectPowerInfo: {}, 
+      seProjectPowerTransformInfoList: [], 
+      seProjectCooperate: {}, 
+      seProjectRelevantFile: {},
+      yearSunShine: '',
+      mayInstallVolume: '',
+      seProjectProfitConfig: {
+        projectId: this.$route.query.projectId,
+        weightElectricityPrice: undefined,
+      }, // 参数配置
+      projectTotalProfitModel: {}, // 收益统计
+      seProjectProfitCountList: [], //  收益表格数据
+
+      // 审核
+      dialogVisible: false,
+      title: '',
+      message: '',
+      alert: '',
+      // 审批记录
+      logVisible: false,
+      activities: []
+    }
+  },
+  created() {
+    this.projectId = this.$route.query.projectId
+    this.getProjectInfo(this.projectId)
+  },
+  methods: {
+    handleClick(tab, event) {
+      if(this.activeName == 'second') {
+        getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算
+          // console.log('11', res)
+          const { yearSunShine, mayInstallVolume, seProjectProfitConfig } = res.data
+          this.yearSunShine = yearSunShine
+          this.mayInstallVolume = mayInstallVolume
+          this.seProjectProfitConfig = seProjectProfitConfig
+        })
       }
     },
-    created() {
-      this.projectId = this.$route.query.projectId
-      this.getProjectInfo(this.projectId)
-    },
-    methods: {
-      handleClick(tab, event) {
-        if(this.activeName == 'second') {
-          getProfitMessage({ projectId: this.projectId}).then(res => {
-            console.log('11', res)
-            const { yearSunShine, mayInstallVolume, seProjectProfitConfig } = res.data
-            this.yearSunShine = yearSunShine
-            this.mayInstallVolume = mayInstallVolume
-            this.seProjectProfitConfig = seProjectProfitConfig
-          })
+    getProjectInfo() {
+      getProjectInfo({ projectId: this.projectId }).then(res => {
+        // console.log(res)
+        const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectCooperate, seProjectRelevantFile } = res.data
+        this.seProjectCompanyInfo = seProjectCompanyInfo
+        this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
+        if(seProjectCompanyBuildInfo.housePartType) {
+          this.seProjectCompanyBuildInfo.colorSteelType = seProjectCompanyBuildInfo.colorSteelType.split(',')
         }
-      },
-      getProjectInfo() {
-        getProjectInfo({ projectId: this.projectId }).then(res => {
-          console.log(res)
-          const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectCooperate, seProjectRelevantFile } = res.data
-          this.seProjectCompanyInfo = seProjectCompanyInfo
+        this.seProjectPowerInfo = seProjectPowerInfo
+        this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList
+        this.seProjectCooperate = seProjectCooperate
+        if(seProjectCooperate.electricityDiscountFlag == 1) {
+          this.seProjectCooperate.electricityDiscountFlag = true
+        }
+        if(seProjectCooperate.houseLeaseFlag == 1) {
+          this.seProjectCooperate.houseLeaseFlag = true
+        }
+        if(seProjectCooperate.ownPutFlag == 1) {
+          this.seProjectCooperate.ownPutFlag = true
+        }
+        this.seProjectRelevantFile = seProjectRelevantFile
+      })
+    },
+    handleMeasure() { // 测算数据
+      this.seProjectCompanyBuildInfo.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.join(',')
+      if(this.seProjectCooperate.electricityDiscountFlag == true) {
+        this.seProjectCooperate.electricityDiscountFlag = 1
+      }
+      if(this.seProjectCooperate.houseLeaseFlag == true) {
+        this.seProjectCooperate.houseLeaseFlag = 1
+      }
+      if(this.seProjectCooperate.ownPutFlag == true) {
+        this.seProjectCooperate.ownPutFlag = 1
+      }
+      putProfitMessage({
+        province: this.province,
+        city: this.city,
+        mayInstallVolume: this.mayInstallVolume,
+        yearSunShine: this.yearSunShine,
+        seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
+        seProjectCooperate: this.seProjectCooperate,
+        seProjectProfitConfig: this.seProjectProfitConfig,
+        projectTotalProfitModel: this.projectTotalProfitModel,
+        seProjectProfitCountList: this.seProjectProfitCountList
+
+      }).then(res => {
+        this.$message.success('测算成功')
+        getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算
+          console.log('11成功', res)
+          const { projectTotalProfitModel, seProjectProfitCountList, seProjectCompanyBuildInfo, seProjectCooperate } = res.data
+          this.projectTotalProfitModel = projectTotalProfitModel
+          this.seProjectProfitCountList = seProjectProfitCountList
           this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
-          if(seProjectCompanyBuildInfo.housePartType) {
-            this.seProjectCompanyBuildInfo.colorSteelType = seProjectCompanyBuildInfo.colorSteelType.split(',')
+          if(seProjectCompanyBuildInfo.colorSteelType) {
+            this.seProjectCompanyBuildInfo.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.split(',')
           }
-          console.log()
-          this.seProjectPowerInfo = seProjectPowerInfo
-          this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList
           this.seProjectCooperate = seProjectCooperate
+          if(seProjectCooperate.ownPutFlag == 1) {
+            this.seProjectCooperate.ownPutFlag = true 
+          }
           if(seProjectCooperate.electricityDiscountFlag == 1) {
             this.seProjectCooperate.electricityDiscountFlag = true
           }
           if(seProjectCooperate.houseLeaseFlag == 1) {
             this.seProjectCooperate.houseLeaseFlag = true
           }
-          if(seProjectCooperate.ownPutFlag == 1) {
-            this.seProjectCooperate.ownPutFlag = true
-          }
-          this.seProjectRelevantFile = seProjectRelevantFile
         })
-      },
-      handleBlur() { // 计算折后电价
-        if(this.seProjectCooperate.electricityDiscountScale) {
-            this.seProjectProfitConfig.discountElectricityPrice =  this.seProjectProfitConfig.weightElectricityPrice * ((this.seProjectCooperate.electricityDiscountScale)/100)
-        } else {
-            this.seProjectProfitConfig.discountElectricityPrice = this.seProjectProfitConfig.weightElectricityPrice * 1
-        }
-      },
-      handleDown(url) {
-        window.open(url)
-      },
+      })
     },
+    handleBlur() { // 计算折后电价
+      if(this.seProjectCooperate.electricityDiscountScale) {
+          this.seProjectProfitConfig.discountElectricityPrice =  ( this.seProjectProfitConfig.weightElectricityPrice * (( this.seProjectCooperate.electricityDiscountScale )/ 100 )).toFixed(4) - 0
+      } else {
+          this.seProjectProfitConfig.discountElectricityPrice = ( this.seProjectProfitConfig.weightElectricityPrice * 1 ).toFixed(4) -0 
+      }
+    },
+    handleDown(url) {
+      window.open(url)
+    },
+    handleChange() {},
+
+    // 审核
+    handleTermination() { // 终止项目
+      this.dialogVisible = true
+      this.title = '终止项目详情'
+      this.alert = '终止项目，请输入终止理由'
+    },
+    handleConfirm() {
+      projectFirstExamine({
+        projectId: this.projectId,
+        type: 4,
+        message: this.message
+      }).then(res => {
+        console.log(res)
+        this.$message.success('项目已终止')
+        this.dialogVisible = false
+      })
+    },
+
+    handleView() { // 工商数据查看
+    },
+    handleReject() {  // 驳回审核
+      this.dialogVisible = true
+      this.title = '驳回审核详情'
+      this.alert = '审核驳回处理，请输入驳回理由'
+    },
+    handleConfirm() {
+      projectFirstExamine({
+        projectId: this.projectId,
+        type: 0,
+        message: this.message
+      }).then(res => {
+        console.log(res)
+        this.$message.success('项目已审核驳回')
+        this.dialogVisible = false
+      })
+    },
+
+    handleSupplement() { // 进入补充
+      this.dialogVisible = true
+      this.title = '材料补充详情'
+      this.alert = '进行审核通过处理，将项目提交至材料补充，请输入审核详情。'
+    },
+    handleConfirm() {
+      projectFirstExamine({
+        projectId: this.projectId,
+        type: 1,
+        message: this.message
+      }).then(res => {
+        console.log(res)
+        this.$message.success('项目已进入材料补充')
+        this.dialogVisible = false
+      })
+    },
+
+    handleFinal() { // 直接终审
+      this.dialogVisible = true
+      this.title = '直接终审详情'
+      this.alert = '进行审核通过处理，将项目提交至项目终审，请输入审核详情。'
+    },
+    handleConfirm() {
+      projectFirstExamine({
+        projectId: this.projectId,
+        type: 3,
+        message: this.message
+      }).then(res => {
+        console.log(res)
+        this.$message.success('项目已进入项目终审')
+        this.dialogVisible = false
+      })
+    },
+
+    handleReview() {  // 进入复核
+      this.dialogVisible = true
+      this.title = '进入复核详情'
+      this.alert = '进行审核通过处理，将项目提交至图纸复核，请输入审核详情。'
+    },
+    handleConfirm() {
+      projectFirstExamine({
+        projectId: this.projectId,
+        type: 2,
+        message: this.message
+      }).then(res => {
+        console.log(res)
+        this.$message.success('项目已进入图纸复核')
+        this.dialogVisible = false
+      })
+    },
+
+    handleClose() {
+      this.title = '',
+      this.message = '',
+      this.alert = ''
+    },
+    handleApproval() {
+      this.logVisible = true
+      getProjectExamineLog({ projectId: this.projectId }).then(res => {
+        console.log(res)
+        this.activities = res.data 
+      })
+    }
+  },
 }
 </script>
 
@@ -882,5 +1057,11 @@ export default {
     box-sizing: border-box;
     padding: 0 20px;
     background-color: #E8E8EE;
+  }
+  /deep/ .el-input-number__decrease {
+    display: none;
+  }
+  /deep/ .el-input-number__increase {
+    display: none;
   }
 </style>

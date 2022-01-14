@@ -235,7 +235,7 @@
 </template>
 
 <script>
-import { getProjectInfo, getProjectExamineLog, projectInput, relevantInputSubmit } from '@/api/listProject'
+import { getProjectInfo, getProjectExamineLog, relevantInput, relevantInputSubmit } from '@/api/listProject'
 
 export default {
   name: 'MaterialDetail',
@@ -295,7 +295,7 @@ export default {
     },
     // 保存
     save() {
-      projectInput({
+      relevantInput({
         projectId: this.projectId,
         seProjectSupplementFile: this.seProjectSupplementFile,
         seProjectCompanyInfo: this.seProjectCompanyInfo,
@@ -315,6 +315,7 @@ export default {
     sub() {
       relevantInputSubmit({ projectId: this.projectId }).then(res => {
         console.log(res)
+        this.$router.back()
       })
     },
     // 审批记录

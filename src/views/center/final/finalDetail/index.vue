@@ -603,17 +603,29 @@
 </template>
 
 <script>
+import { getProjectInfo } from '@/api/listProject'
+
 export default {
   name: 'FinalDetail',
   data() {
       return {
-        activeName: 'first'
+        activeName: 'first',
+        projectId: '',
       }
+    },
+    created() {
+      this.projectId = this.$route.query.projectId
+      this.getProjectInfo(this.projectId)
     },
     methods: {
       handleClick(tab, event) {
         // console.log(tab, event)
-      }
+      },
+      getProjectInfo() {
+        getProjectInfo({ projectId: this.projectId }).then(res => {
+          console.log(res)
+        })
+      },
     }
 }
 </script>

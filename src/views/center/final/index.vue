@@ -34,9 +34,17 @@
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
         <el-table-column prop="projectName" label="项目名称" />
         <el-table-column prop="companyName" label="业主名称" />
-        <el-table-column label="提交时间" />
-        <el-table-column label="业务员" />
-        <el-table-column label="二审状态" />
+        <el-table-column prop="messageInputSubmitTime" label="提交时间" />
+        <el-table-column prop="createUserPhone" label="业务员" />
+        <el-table-column label="二审状态">
+          <template slot-scope="scope">
+            <span v-if="scope.row.thirdExamine == 0">待提交</span>
+            <span v-else-if="scope.row.thirdExamine == 1" style="color:#F59A23;">审核中</span>
+            <span v-else-if="scope.row.thirdExamine == 3" style="color:#1890FF;">终审通过</span>
+            <span v-else-if="scope.row.thirdExamine == 2" style="color:#D9001B;">终审未通过</span>
+            <span v-else-if="scope.row.thirdExamine == 99">项目已终止</span>
+          </template>
+        </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="handleView(scope.row)">查看</el-button>

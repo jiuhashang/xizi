@@ -86,6 +86,13 @@ export function deleteOne(params) {
   })
 }
 
+// 项目发起保存
+export function relevantInput(params) {
+  return request.post('/admin/seProjectInfo/relevantInput', 
+  params
+  )
+}
+
 // 材料补充提交
 export function relevantInputSubmit(params) {
   return request({
@@ -94,9 +101,6 @@ export function relevantInputSubmit(params) {
     params
   })
 }
-
-
-
 
 
 

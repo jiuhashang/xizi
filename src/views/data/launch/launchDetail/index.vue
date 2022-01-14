@@ -193,9 +193,12 @@
         <el-row :gutter="20" style="margin:0 30px 30px 30px;">
           <el-col :span="8">
             <el-form-item label="彩钢瓦比水泥顶" prop="colorSteelCementTopScale" class="must-form-item">
-              <el-input v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale">
-                <span slot="suffix">%</span>
-              </el-input>
+              <el-input-number v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale">
+              <!-- <el-input v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale"> -->
+                <!-- <span slot="suffix">%</span> -->
+              <!-- </el-input> -->
+              </el-input-number>
+              %
             </el-form-item>
           </el-col>
           <el-col :span="16">

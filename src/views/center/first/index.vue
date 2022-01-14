@@ -49,8 +49,8 @@
           <template slot-scope="scope">
             <span v-if="scope.row.secondExamine == 0">待提交</span>
             <span v-else-if="scope.row.secondExamine == 1" style="color:#F59A23;">审核中</span>
-            <span v-else-if="scope.row.secondExamine == 3" style="color:#1890FF;">初审通过</span>
-            <span v-else-if="scope.row.secondExamine == 2" style="color:#D9001B;">初审未通过</span>
+            <span v-else-if="scope.row.secondExamine == 3" style="color:#1890FF;">图纸复核通过</span>
+            <span v-else-if="scope.row.secondExamine == 2" style="color:#D9001B;">图纸复核未通过</span>
             <span v-else-if="scope.row.secondExamine == 99">项目已终止</span>
           </template>
         </el-table-column>
