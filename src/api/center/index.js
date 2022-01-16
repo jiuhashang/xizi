@@ -33,3 +33,12 @@ export function projectSecondExamine(params) {
     params
   })
 }
+
+// 项目总览列表
+export function selectListAll(params) {
+  return request({
+    url: '/admin/seProjectInfo/selectListAll',
+    method: 'get',
+    params
+  })
+}

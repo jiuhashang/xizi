@@ -275,12 +275,6 @@
           <el-table :data="seProjectPowerTransformInfoList" style="width: 100%" :header-cell-style="{background:'#f2f2f2',color:'#555'}">
             <el-table-column prop="transformName" label="变压器名称" />
             <el-table-column prop="transformVolume" label="容量（kVA）" />
-            <!-- <el-table-column label="操作">
-              <template slot-scope="scope">
-                <el-button type="danger" size="small" @click="deleteData(scope.row)">删除</el-button>
-                <el-button type="info" size="small" @click="editData(scope.row)">编辑</el-button>
-              </template>
-            </el-table-column> -->
           </el-table>
         </div>
       </el-card>

@@ -36,10 +36,15 @@
       </el-form>
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
         <el-table-column prop="projectName" label="项目名称" />
-        <el-table-column label="公司名称" />
-        <el-table-column prop="province" label="建站地址" />
-        <el-table-column label="项目发起时间" />
+        <el-table-column prop="companyName" label="公司名称" />
+        <el-table-column label="建站地址">
+          <template slot-scope="scope">
+            {{ scope.row.province }} {{ scope.row.city }}
+          </template>
+        </el-table-column>
+        <el-table-column prop="messageInputSubmitTime" label="项目发起时间" />
         <el-table-column label="当前进度">
+          
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
@@ -71,7 +76,8 @@
 </template>
 
 <script>
-import { getList, addOne, getProjectExamineLog } from '@/api/listProject'
+import { getProjectExamineLog } from '@/api/listProject'
+import { selectListAll } from '@/api/center'
 
 export default {
   name: 'Overview',
@@ -80,6 +86,7 @@ export default {
       tableInfo: {
         companyName: '',
         projectName: '',
+        bankId: '',
         firstExamine: '',
         pageIndex: 1,
         pageSize: 10
@@ -115,12 +122,12 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.selectListAll()
   },
   methods: {
     // 列表请求
-    getList() {
-      getList(this.tableInfo).then(res => {
+    selectListAll() {
+      selectListAll(this.tableInfo).then(res => {
         console.log(res)
         const { records, total } = res.data
         this.tableData = records
