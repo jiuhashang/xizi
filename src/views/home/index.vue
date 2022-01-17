@@ -37,7 +37,7 @@
       </div>
       <div class="right">
         <img :src="image" alt="">
-        <span>{{ userName }}</span>
+        <span>{{ nickName }}</span>
         <el-button type="primary" @click="out">退出</el-button>
       </div>
     </el-header>
@@ -64,8 +64,8 @@ export default {
       }
     },
     computed: {
-      userName() {
-        return window.sessionStorage.getItem('userName')
+      nickName() {
+        return window.sessionStorage.getItem('nickName')
       },
       image() {
         return window.sessionStorage.getItem('image')

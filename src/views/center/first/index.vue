@@ -45,10 +45,18 @@
             <span v-else-if="scope.row.firstExamine == 99">项目已终止</span>
           </template>
         </el-table-column>
+        <el-table-column label="初审通过方式">
+          <template slot-scope="scope">
+            <span v-if="scope.row.firstExamineType == 1">图纸复核</span>
+            <span v-else-if="scope.row.firstExamineType == 2" style="color:#F59A23;">材料补充</span>
+            <span v-else-if="scope.row.firstExamineType == 3" style="color:#1890FF;">项目终审</span>
+            <span v-else>-</span>
+          </template>
+        </el-table-column>
         <el-table-column label="图纸复核">
           <template slot-scope="scope">
-            <span v-if="scope.row.secondExamine == 0">待提交</span>
-            <span v-else-if="scope.row.secondExamine == 1" style="color:#F59A23;">审核中</span>
+            <span v-if="scope.row.secondExamine == 0">未复核</span>
+            <span v-else-if="scope.row.secondExamine == 1" style="color:#F59A23;">正在复核</span>
             <span v-else-if="scope.row.secondExamine == 3" style="color:#1890FF;">图纸复核通过</span>
             <span v-else-if="scope.row.secondExamine == 2" style="color:#D9001B;">图纸复核未通过</span>
             <span v-else-if="scope.row.secondExamine == 99">项目已终止</span>
@@ -74,7 +82,8 @@
           v-for="(activity, index) in activities"
           :key="index"
           :timestamp="activity.timestamp">
-          {{activity.content}}
+          <p>{{activity.title}}</p>
+          <p>{{activity.userName}}</p>
         </el-timeline-item>
       </el-timeline>
     </el-dialog>
@@ -170,8 +179,9 @@ export default {
     // 审批记录
     approval(projectId) {
       this.logVisible = true
-      getProjectExamineLog(projectId).then(res => {
+      getProjectExamineLog({ projectId }).then(res => {
         console.log(res)
+        this.activities = res.data
       })
     },
 

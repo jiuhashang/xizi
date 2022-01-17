@@ -513,6 +513,7 @@
                 <el-col :span="8" class="span13" style="margin-top:10px;">彩钢瓦类型</el-col>
                 <el-col :span="16" class="span130">
                   <el-select v-model="seProjectCompanyBuildInfo.colorSteelType" multiple placeholder="请选择(可多选)" class="width100" clearable>
+                    <el-option label="无" value="0"></el-option>
                     <el-option label="直立锁边" value="1"></el-option>
                     <el-option label="角齿" value="2"></el-option>
                     <el-option label="T型" value="3"></el-option>
@@ -709,18 +710,18 @@
             </div>
           </div>
           <el-table :data="seProjectProfitCountList" border style="width: 100%;margin-top:50px;" :header-cell-style="{background:'#f2f2f2',color:'#555'}">
-            <el-table-column prop="yearNum" label="年份" />
-            <el-table-column prop="electricYear" label="发电量" />
-            <el-table-column prop="electricYearSelfUse" label="企业自用电量" />
-            <el-table-column prop="electricUseIncome" label="企业用电收入万元" />
-            <el-table-column prop="electricYearBeLeft" label="余电上网电量" />
-            <el-table-column prop="electricYearBeLeftIncome" label="余电上网收入万元" />
-            <el-table-column prop="ownInvestIncome" label="自投总收入万元" />
-            <el-table-column prop="electricUseIncomeScale" label="企业用电收益万元" />
-            <el-table-column prop="investorIncome" label="投资方收入万元" />
+            <el-table-column prop="yearNum" label="年份" width="60px;" />
+            <el-table-column prop="electricYear" label="发电量" width="100px;" />
+            <el-table-column prop="electricYearSelfUse" label="企业自用电量" width="130px;" />
+            <el-table-column prop="electricUseIncome" label="企业用电收入（万元）" />
+            <el-table-column prop="electricYearBeLeft" label="余电上网电量" width="130px;" />
+            <el-table-column prop="electricYearBeLeftIncome" label="余电上网收入（万元）" />
+            <el-table-column prop="ownInvestIncome" label="自投总收入（万元）" />
+            <el-table-column prop="electricUseIncomeScale" label="企业用电收益（万元）" />
+            <el-table-column prop="investorIncome" label="投资方收入（万元）" />
             <el-table-column prop="shareEnergyEfficiency" label="企业分享节能效益" />
-            <el-table-column prop="repairOutPrice" label="运维支出万元" />
-            <el-table-column prop="cleanProfit" label="净利润万元" />
+            <el-table-column prop="repairOutPrice" label="运维支出（万元）" />
+            <el-table-column prop="cleanProfit" label="净利润（万元）" />
           </el-table>
         </el-tab-pane>
       </el-tabs>
@@ -784,6 +785,7 @@ export default {
       title: '',
       message: '',
       alert: '',
+      type: '',
       // 审批记录
       logVisible: false,
       activities: []
@@ -798,20 +800,22 @@ export default {
       if(this.activeName == 'second') {
         getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算
           // console.log('11', res)
-          const { yearSunShine, mayInstallVolume, seProjectProfitConfig } = res.data
+          const { yearSunShine, mayInstallVolume, seProjectProfitConfig, projectTotalProfitModel, seProjectProfitCountList } = res.data
           this.yearSunShine = yearSunShine
           this.mayInstallVolume = mayInstallVolume
+          this.projectTotalProfitModel = projectTotalProfitModel
           this.seProjectProfitConfig = seProjectProfitConfig
+          this.seProjectProfitCountList = seProjectProfitCountList
         })
       }
     },
     getProjectInfo() {
       getProjectInfo({ projectId: this.projectId }).then(res => {
-        // console.log(res)
+        console.log(res)
         const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectCooperate, seProjectRelevantFile } = res.data
         this.seProjectCompanyInfo = seProjectCompanyInfo
         this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
-        if(seProjectCompanyBuildInfo.housePartType) {
+        if(seProjectCompanyBuildInfo.colorSteelType) {
           this.seProjectCompanyBuildInfo.colorSteelType = seProjectCompanyBuildInfo.colorSteelType.split(',')
         }
         this.seProjectPowerInfo = seProjectPowerInfo
@@ -854,8 +858,8 @@ export default {
       }).then(res => {
         this.$message.success('测算成功')
         getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算
-          console.log('11成功', res)
-          const { projectTotalProfitModel, seProjectProfitCountList, seProjectCompanyBuildInfo, seProjectCooperate } = res.data
+          const { projectTotalProfitModel, seProjectProfitCountList, seProjectCompanyBuildInfo, seProjectCooperate, yearSunShine } = res.data
+          this.yearSunShine = yearSunShine
           this.projectTotalProfitModel = projectTotalProfitModel
           this.seProjectProfitCountList = seProjectProfitCountList
           this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
@@ -888,99 +892,76 @@ export default {
     handleChange() {},
 
     // 审核
+    handleView() { // 工商数据查看
+    },
     handleTermination() { // 终止项目
       this.dialogVisible = true
       this.title = '终止项目详情'
       this.alert = '终止项目，请输入终止理由'
-    },
-    handleConfirm() {
-      projectFirstExamine({
-        projectId: this.projectId,
-        type: 4,
-        message: this.message
-      }).then(res => {
-        console.log(res)
-        this.$message.success('项目已终止')
-        this.dialogVisible = false
-      })
-    },
-
-    handleView() { // 工商数据查看
+      this.type = 4
     },
     handleReject() {  // 驳回审核
       this.dialogVisible = true
       this.title = '驳回审核详情'
       this.alert = '审核驳回处理，请输入驳回理由'
+      this.type = 0
     },
-    handleConfirm() {
-      projectFirstExamine({
-        projectId: this.projectId,
-        type: 0,
-        message: this.message
-      }).then(res => {
-        console.log(res)
-        this.$message.success('项目已审核驳回')
-        this.dialogVisible = false
-      })
-    },
-
     handleSupplement() { // 进入补充
       this.dialogVisible = true
       this.title = '材料补充详情'
       this.alert = '进行审核通过处理，将项目提交至材料补充，请输入审核详情。'
+      this.type = 1
     },
-    handleConfirm() {
-      projectFirstExamine({
-        projectId: this.projectId,
-        type: 1,
-        message: this.message
-      }).then(res => {
-        console.log(res)
-        this.$message.success('项目已进入材料补充')
-        this.dialogVisible = false
-      })
-    },
-
     handleFinal() { // 直接终审
       this.dialogVisible = true
       this.title = '直接终审详情'
       this.alert = '进行审核通过处理，将项目提交至项目终审，请输入审核详情。'
+      this.type = 3
     },
-    handleConfirm() {
-      projectFirstExamine({
-        projectId: this.projectId,
-        type: 3,
-        message: this.message
-      }).then(res => {
-        console.log(res)
-        this.$message.success('项目已进入项目终审')
-        this.dialogVisible = false
-      })
-    },
-
     handleReview() {  // 进入复核
       this.dialogVisible = true
       this.title = '进入复核详情'
       this.alert = '进行审核通过处理，将项目提交至图纸复核，请输入审核详情。'
+      this.type = 2
     },
     handleConfirm() {
       projectFirstExamine({
         projectId: this.projectId,
-        type: 2,
+        type: this.type,
         message: this.message
       }).then(res => {
-        console.log(res)
-        this.$message.success('项目已进入图纸复核')
-        this.dialogVisible = false
-      })
+        if( this.type == 0 ) {
+            this.$message.success('项目已审核驳回')
+            this.dialogVisible = false
+            this.$router.back()
+          } else if( this.type == 1 ) {
+            this.$message.success('项目已进入材料补充')
+            this.dialogVisible = false
+            this.$router.back()
+          } else if( this.type == 2 ) {
+            this.$message.success('项目已进入图纸复核')
+            this.dialogVisible = false
+            this.$router.back()
+          } else if( this.type == 3 ) {
+            this.$message.success('项目已进入项目终审')
+            this.dialogVisible = false
+            this.$router.back()
+          } else if( this.type == 4 ) {
+            this.$message.success('项目已终止')
+            this.dialogVisible = false
+            this.$router.back()
+          }
+      }).catch( err => {
+          this.dialogVisible = false
+        })
     },
-
     handleClose() {
       this.title = '',
       this.message = '',
-      this.alert = ''
+      this.alert = '',
+      this.type = ''
     },
-    handleApproval() {
+    handleApproval() { // 记录
       this.logVisible = true
       getProjectExamineLog({ projectId: this.projectId }).then(res => {
         console.log(res)

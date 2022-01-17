@@ -65,7 +65,8 @@
           v-for="(activity, index) in activities"
           :key="index"
           :timestamp="activity.timestamp">
-          {{activity.content}}
+          <p>{{ activity.title }}</p>
+          <p>{{ activity.userName }}</p>
         </el-timeline-item>
       </el-timeline>
     </el-dialog>
@@ -161,8 +162,9 @@ export default {
     // 审批记录
     approval(projectId) {
       this.logVisible = true
-      getProjectExamineLog(projectId).then(res => {
+      getProjectExamineLog({ projectId }).then(res => {
         console.log(res)
+        this.activities = res.data
       })
     },
 

@@ -445,6 +445,7 @@
         </el-col>
       </el-row>
     </el-card>
+    <!-- 操作 -->
     <el-dialog :title="title" :visible.sync="dialogVisible" width="30%" @close="handleClose">
       <el-alert :title="alert" type="success" :closable="false" style="margin-top:0;" />
       <el-input type="textarea" :rows="3" placeholder="最多输入200字符（选填）" v-model="message" />

@@ -12,7 +12,7 @@
         </div>
         <div class="btnnn">
           <el-button size="small" @click="approval">审批记录</el-button>
-          <el-button size="small" type="warning">保 存</el-button>
+          <el-button size="small" type="warning" @click="handleSave">保 存</el-button>
         </div>
       </div>
     </div>
@@ -117,11 +117,12 @@
       <div class="xian">
         <div>立项补充</div>
       </div>
-      <el-form ref="form" style="margin-left:60px;margin-top:30px;" label-width="140px">
+      <el-form ref="form" :model="seProjectEndSupplementFile" style="margin-left:60px;margin-top:30px;" label-width="140px">
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="能源管理合同" class="must-form-item">
               <file-upload-string
+                v-model="seProjectEndSupplementFile.energyContractFile"
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
               >
@@ -131,6 +132,7 @@
           <el-col :span="8" style="padding-left:25px;">
             <el-form-item label="项目建议书" class="must-form-item">
               <file-upload-string
+                v-model="seProjectEndSupplementFile.adviseBookFile"
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
               >
@@ -140,6 +142,7 @@
           <el-col :span="8" style="padding-left:48px;">
             <el-form-item label="备案文件" class="must-form-item">
               <file-upload-string
+                v-model="seProjectEndSupplementFile.recordFile"
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
               >
@@ -151,6 +154,7 @@
           <el-col :span="8">
             <el-form-item label="接入文件" class="must-form-item">
               <file-upload-string
+                v-model="seProjectEndSupplementFile.insertFile"
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
               >
@@ -160,6 +164,7 @@
           <el-col :span="8" style="padding-left:25px;">
             <el-form-item label="营业执照" class="must-form-item">
               <file-upload-string
+                v-model="seProjectEndSupplementFile.businessFile"
                 :limit="1"
                 accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
               >
@@ -177,7 +182,7 @@
         <el-row :gutter="20">
           <el-col>
             <el-form-item label="补充说明">
-              <el-input placeholder="请输入" class="width100"></el-input>
+              <el-input placeholder="请输入" v-model="seProjectEndSupplementFile.otherMessage" class="width100"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -204,7 +209,7 @@
 </template>
 
 <script> 
-import { getProjectInfo, getProjectExamineLog } from '@/api/listProject'
+import { getProjectInfo, getProjectExamineLog, setProjectInput } from '@/api/listProject'
 export default {
   name: 'AddedDetail',
   data() {
@@ -213,6 +218,17 @@ export default {
       logVisible: false, // 审批记录
       activities: [],
       seProjectCompanyInfo: {}, // 业主信息
+      seProjectEndSupplementFile: { // 立项补充
+        projectId: this.$route.query.projectId,
+        energyContractFile: '',
+        adviseBookFile: '',
+        recordFile: '',
+        insertFile: '',
+        businessFile: '',
+        projectCompanyId: '',
+        projectCompanyName: '',
+        otherMessage: ''
+      }, 
     }
   },
   created() {
@@ -224,6 +240,7 @@ export default {
       getProjectInfo({projectId}).then(res => {
         console.log(res)
         this.seProjectCompanyInfo = res.data.seProjectCompanyInfo
+        this.seProjectEndSupplementFile = res.data.seProjectEndSupplementFile
       })
     },
      // 审批记录
@@ -233,6 +250,14 @@ export default {
         this.activities = res.data
       })
     },
+    // 保存
+    handleSave() {
+      setProjectInput( this.seProjectEndSupplementFile ).then(res => {
+        console.log(res)
+        this.$message.success('保存成功')
+        this.getProjectInfo(this.projectId)
+      })
+    }
   }
 }
 </script>

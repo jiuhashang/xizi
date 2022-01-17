@@ -42,3 +42,12 @@ export function selectListAll(params) {
     params
   })
 }
+
+// 项目终审
+export function projectThirdExamine(params) {
+  return request({
+    url: '/admin/seProjectInfo/projectThirdExamine',
+    method: 'get',
+    params
+  })
+}

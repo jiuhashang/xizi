@@ -2,8 +2,49 @@
   <div class="dashboard">
     <div class="top">
       <img :src="image" alt="">
-      <h2>你好，{{ userName }}</h2>
+      <h2>你好，{{ nickName }}</h2>
     </div>
+    <el-card class="box-card">
+      <div slot="header">
+        <span style="font-weight:900;">我负责的项目</span>
+      </div>
+      <div class="item">
+        <div class="c">
+          <p>全部项目</p>
+          <h3>50</h3>
+        </div>
+        <div class="shu"></div>
+        <div class="c">
+          <p>项目发起</p>
+          <h3>50</h3>
+        </div>
+        <div class="shu"></div>
+        <div class="c">
+          <p>项目初审</p>
+          <h3>50</h3>
+        </div>
+        <div class="shu"></div>
+        <div class="c">
+          <p>图纸复核</p>
+          <h3>50</h3>
+        </div>
+        <div class="shu"></div>
+        <div class="c">
+          <p>材料补充</p>
+          <h3>50</h3>
+        </div>
+        <div class="shu"></div>
+        <div class="c">
+          <p>项目终审</p>
+          <h3>50</h3>
+        </div>
+        <div class="shu"></div>
+        <div class="c">
+          <p>项目补充</p>
+          <h3>50</h3>
+        </div>
+      </div>
+    </el-card>
   </div>
 </template>
 
@@ -11,8 +52,8 @@
 export default {
   name: 'Dashboard',
   computed: {
-    userName() {
-      return window.sessionStorage.getItem('userName')
+    nickName() {
+      return window.sessionStorage.getItem('nickName')
     },
     image() {
       return window.sessionStorage.getItem('image')
@@ -21,7 +62,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss" scoped>
 .top {
   width: 100%;
   height: 125px;
@@ -36,5 +77,18 @@ img {
   height: 58px;
   border-radius: 50%;
   margin-right: 15px;
+}
+.item {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 0 100px;
+  .c {
+    text-align: center;
+  }
+}
+.shu {
+  height: 30px;
+  border: 1px solid #aaa;
 }
 </style>

@@ -1,9 +1,7 @@
 <template>
   <div class="home">
     <div class="item">
-      <div class="top">
-        <p style="font-size:30px;margin-left:93px;">智慧能源管理系统</p>
-      </div>
+      <div class="top">智慧能源管理系统</div>
       <div class="bottom">
         <span style="font-size:20px;color:#313131;margin-left:145px;margin-top:33px;">欢迎登录</span>
         <el-form :model="form" class="form">
@@ -57,11 +55,11 @@ export default {
         this.loading = true
         login (this.form).then(res => {
           if(res.code == 0) {
-            // console.log(res)
+            console.log(res)
             this.loading = false
             this.$message.success('登录成功')
             window.sessionStorage.setItem('token',res.data.token)
-            window.sessionStorage.setItem('userName',res.data.userName)
+            window.sessionStorage.setItem('nickName',res.data.nickName)
             window.sessionStorage.setItem('image',res.data.image)
             this.$router.push('/home')
           }
@@ -103,10 +101,14 @@ export default {
       overflow: hidden;
       .top {
         height: 132px;
+        font-size: 30px;
         background-color: #130C5F;
         border-top-left-radius: 20px;
         border-top-right-radius: 20px;
         color: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .bottom {
         background-color: #fff;

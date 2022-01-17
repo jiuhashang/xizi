@@ -102,8 +102,12 @@ export function relevantInputSubmit(params) {
   })
 }
 
-
-
+// 项目发起保存
+export function setProjectInput(params) {
+  return request.post('/admin/seProjectInfo/setProjectInput', 
+  params
+  )
+}
 
 
 

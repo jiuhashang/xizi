@@ -14,10 +14,10 @@
           <el-input v-model="tableInfo.projectName" placeholder="项目名称查询" clearable style="width:200px;" />
         </el-form-item>
         <el-form-item>
-          <el-input placeholder="公司名称查询" clearable style="width:200px;" />
+          <el-input v-model="tableInfo.companyName" placeholder="公司名称查询" clearable style="width:200px;" />
         </el-form-item>
         <el-form-item>
-          <el-input placeholder="关联机构查询" clearable style="width:200px;" />
+          <el-input v-model="tableInfo.bankId" placeholder="关联机构查询" clearable style="width:200px;" />
         </el-form-item>
         <el-form-item>
           <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部进度">
@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { getList, addOne, getProjectExamineLog } from '@/api/listProject'
+import { getList, getProjectExamineLog } from '@/api/listProject'
 
 export default {
   name: 'Preview',
@@ -80,6 +80,7 @@ export default {
       tableInfo: {
         companyName: '',
         projectName: '',
+        bankId: '',
         firstExamine: '',
         pageIndex: 1,
         pageSize: 10
@@ -137,8 +138,11 @@ export default {
     reset() {
       this.tableInfo = {
         companyName: '',
+        projectName: '',
+        bankId: '',
         firstExamine: '',
-        firstExamine: '',
+        pageIndex: 1,
+        pageSize: 10
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.getList()

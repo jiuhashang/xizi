@@ -36,30 +36,16 @@
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
         <el-table-column prop="projectName" label="项目名称" />
         <el-table-column prop="companyName" label="业主名称" />
-        <el-table-column prop="messageExamineTime" label="初审通过时间">
-          <template slot-scope="scope">
-            {{ scope.row.messageExamineTime ? 'scope.row.messageExamineTime' : '-'}}
-          </template>
-        </el-table-column>
+        <el-table-column prop="messageExamineTime" label="初审通过时间" />
         <el-table-column prop="province" label="建站地址">
           <template slot-scope="scope">
             {{scope.row.province}} - {{scope.row.city}}
           </template>
         </el-table-column>
-        <el-table-column label="补充进度" />
-        <!-- <el-table-column label="发起进度">
+        <el-table-column label="补充进度">
           <template slot-scope="scope">
             <span v-if="scope.row.companyInfoStatus == 1 && scope.row.companyBuildStatus == 1 && scope.row.cooperateStatus == 1 && scope.row.powerStatus == 1 && scope.row.relevantStatus == 1" style="color:#70B603;">已完善</span>
             <span v-else>未完善</span>
-          </template>
-        </el-table-column> -->
-        <!-- <el-table-column label="审批状态">
-          <template slot-scope="scope">
-            <span v-if="scope.row.firstExamine == 0">待提交</span>
-            <span v-else-if="scope.row.firstExamine == 1" style="color:#F59A23;">审核中</span>
-            <span v-else-if="scope.row.firstExamine == 3" style="color:#1890FF;">初审通过</span>
-            <span v-else-if="scope.row.firstExamine == 2" style="color:#D9001B;">初审未通过</span>
-            <span v-else-if="scope.row.firstExamine == 99">项目已终止</span>
           </template>
         </el-table-column> -->
         <el-table-column label="操作">

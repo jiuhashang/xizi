@@ -14,10 +14,10 @@
           <el-input v-model="tableInfo.projectName" placeholder="项目名称查询" clearable style="width:200px;" />
         </el-form-item>
         <el-form-item>
-          <el-input placeholder="公司名称查询" clearable style="width:200px;" />
+          <el-input v-model="tableInfo.companyName" placeholder="公司名称查询" clearable style="width:200px;" />
         </el-form-item>
         <el-form-item>
-          <el-input placeholder="关联机构查询" clearable style="width:200px;" />
+          <el-input v-model="tableInfo.bankId" placeholder="关联机构查询" clearable style="width:200px;" />
         </el-form-item>
         <el-form-item>
           <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部进度">
@@ -138,17 +138,20 @@ export default {
     handleQuery() {
       this.tableInfo.pageIndex = 1
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getList()
+      this.selectListAll()
     },
     // 表dan重置
     reset() {
       this.tableInfo = {
         companyName: '',
+        projectName: '',
+        bankId: '',
         firstExamine: '',
-        firstExamine: '',
+        pageIndex: 1,
+        pageSize: 10
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getList()
+      this.selectListAll()
     },
 
     // 查看详情
@@ -174,12 +177,12 @@ export default {
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val
-      this.getList()
+      this.selectListAll()
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`)
       this.tableInfo.pageIndex = val
-      this.getList()
+      this.selectListAll()
     }
   }
 }

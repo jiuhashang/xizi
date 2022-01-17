@@ -280,7 +280,7 @@ export default {
     },
     remoteMethod(query) {
       console.log(query)
-      if (query !== '' && query.length >=4) {
+      if (query !== '' && query.length >=6) {
         this.ruleForm.companyName = query
         this.loading = true;
         setTimeout(() => {
