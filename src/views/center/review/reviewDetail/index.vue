@@ -463,9 +463,12 @@
       <el-timeline :reverse="true">
         <el-timeline-item
           v-for="(activity, index) in activities"
-          :key="index"
-          :timestamp="activity.timestamp">
-          {{activity.content}}
+          :key="index">
+          <el-card style="margin-top:0;margin-bottom:0;">
+            <p>{{activity.title}}</p>
+            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
+            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
+          </el-card>
         </el-timeline-item>
       </el-timeline>
     </el-dialog>
@@ -539,10 +542,11 @@ export default {
       })
     },
     // 审批记录
-    handleApproval(projectId) {
+    handleApproval() {
       this.logVisible = true
-      getProjectExamineLog(projectId).then(res => {
+      getProjectExamineLog({ projectId: this.projectId }).then(res => {
         console.log(res)
+        this.activities = res.data
       })
     },
 
@@ -550,13 +554,13 @@ export default {
     handleReject() {
       this.dialogVisible = true
       this.title = '驳回审核'
-      this.alert = '进行审核通过处理，将项目提交至材料补充，请输入审核详情。'
+      this.alert = '审核驳回处理，请输入驳回理由'
       this.type = 0
     },
     handlePass() {
       this.dialogVisible = true
       this.title = '审核通过'
-      this.alert = '审核驳回处理，请输入驳回理由'
+      this.alert = '进行审核通过处理，将项目提交至材料补充，请输入审核详情。'
       this.type = 1
     },
     handleConfirm() {

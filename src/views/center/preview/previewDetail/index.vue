@@ -644,7 +644,6 @@
             <el-table-column label="运维支出万元" />
             <el-table-column label="净利润万元" />
           </el-table>
-
         </el-tab-pane>
       </el-tabs>
     </el-card>

@@ -15,18 +15,18 @@
             <el-input v-model="tableInfo.projectName" placeholder="项目名称查询" clearable style="width:250px;" />
           </el-form-item>
           <el-form-item>
-          <el-input v-model="tableInfo.companyName" placeholder="业主名称查询" clearable style="width:250px;" />
-        </el-form-item>
-        <el-form-item>
-          <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部状态">
-            <el-option
-              v-for="item in options"
-              :key="item.firstExamine"
-              :label="item.label"
-              :value="item.firstExamine">
-            </el-option>
-          </el-select>
-        </el-form-item>
+            <el-input v-model="tableInfo.companyName" placeholder="业主名称查询" clearable style="width:250px;" />
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部状态">
+              <el-option
+                v-for="item in option"
+                :key="item.firstExamine"
+                :label="item.label"
+                :value="item.firstExamine">
+              </el-option>
+            </el-select>
+          </el-form-item>
           <el-form-item style="margin-left: 20px;">
             <el-button type="primary" @click="handleQuery">查询</el-button>
             <el-button @click="reset">重置</el-button>
@@ -77,19 +77,18 @@
       :close-on-click-modal="false"
       @close="colseDialog">
       <el-alert
-        title="公司名称确保与营业执照上的名称一致，创建表单后将无法修改，请认真核对。"
+        title="请在搜索结果中选择匹配的公司名称，且创建表单后将无法修改，请认真核对。"
         type="success"
         :closable="false">
       </el-alert>
       <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" style="width:80%;margin:auto;">
         <el-form-item label="项目名称" prop="projectName">
-          <el-input v-model="ruleForm.projectName" placeholder="请输入" />
+          <el-input v-model="ruleForm.projectName" placeholder="请输入" clearable />
         </el-form-item>
         <el-form-item label="公司名称" prop="companyName">
           <el-select
             v-model="ruleForm.companyName"
             filterable
-            clearable
             remote
             reserve-keyword
             placeholder="请输入"
@@ -98,9 +97,10 @@
             class="width100">
             <el-option
               v-for="item in options"
-              :key="item.id"
+              :key="item.name"
               :label="item.name"
-              :value="item.name" />
+              :value="item.name">
+            </el-option>
           </el-select>
         </el-form-item>
       </el-form>
@@ -118,10 +118,12 @@
       <el-timeline :reverse="true">
         <el-timeline-item
           v-for="(activity, index) in activities"
-          :key="index"
-          :timestamp="activity.createTime">
-          <p>{{activity.title}}</p>
-          <p>{{activity.userName}}</p>
+          :key="index">
+          <el-card style="margin-top:0;margin-bottom:0;">
+            <p>{{activity.title}}</p>
+            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
+            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
+          </el-card>
         </el-timeline-item>
       </el-timeline>
     </el-dialog>
@@ -143,7 +145,7 @@ export default {
         pageIndex: 1,
         pageSize: 10
       },
-      options: [
+      option: [
         {
           firstExamine: '0',
           label: '待提交'
@@ -170,16 +172,16 @@ export default {
 
       // 创建项目表单
       dialogVisible: false,
+      options: [],
+      value: [],
+      list: [],
+      loading: false,
       ruleForm: {
         projectName: '',
         companyName: '',
         pageIndex: 1,
         pageSize: 10
       },
-      options: [],
-      list: [],
-      states: [],
-      loading: false,
       rules: {
         projectName: [
             { required: true, message: '请输入项目名称', trigger: 'blur' },
@@ -199,16 +201,10 @@ export default {
   created() {
     this.getList()
   },
-  mounted() {
-    this.list = this.states.map(item => {
-      return { value: `value:${item}`, label: `label:${item}` };
-    })
-  },
   methods: {
     // 列表请求
     getList() {
       getList(this.tableInfo).then(res => {
-        console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -224,7 +220,7 @@ export default {
     reset() {
       this.tableInfo = {
         companyName: '',
-        firstExamine: '',
+        projectName: '',
         firstExamine: '',
         type: 0,
         pageIndex: 1,
@@ -256,17 +252,33 @@ export default {
     },
 
     handleSizeChange(val) {
-      // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val
       this.getList()
     },
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`)
       this.tableInfo.pageIndex = val
       this.getList()
     },
 
-    // 创建项目表单
+    // 创建项目表
+    remoteMethod(query) {
+      if (query !== '' && query.length > 5 ) {
+        this.loading = true;
+        setTimeout(() => {
+          this.loading = false;
+          getCompanyInfoList(this.ruleForm).then(res => {
+            console.log(res)
+            this.options = res.data
+          })
+          // this.options = this.list.filter(item => {
+          //   return item.label.toLowerCase()
+          //     .indexOf(query.toLowerCase()) > -1;
+          // });
+        }, 200);
+      } else {
+        this.options = [];
+      }
+    },
     create() {
       this.dialogVisible = true
     },
@@ -278,27 +290,7 @@ export default {
         pageSize: 10
       }
     },
-    remoteMethod(query) {
-      console.log(query)
-      if (query !== '' && query.length >=6) {
-        this.ruleForm.companyName = query
-        this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          getCompanyInfoList(this.ruleForm).then( res => {
-            console.log('1111', res)
-            this.options = res.data
-          })
-          this.options = this.list.filter(item => {
-            return item.label.toLowerCase()
-              .indexOf(query.toLowerCase()) > -1;
-          });
-        }, 500);
-      } else {
-        this.options = [];
-      }
-    },
-    createProject() {
+    createProject() { // 创建项目
       this.$refs.ruleForm.validate(valid => {
         if(valid) {
           addOne(this.ruleForm).then(res => {

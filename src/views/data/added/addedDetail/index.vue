@@ -196,12 +196,14 @@
         :close-on-click-modal="false">
         <el-timeline :reverse="true">
           <el-timeline-item
-            v-for="(activity, index) in activities"
-            :key="index"
-            :timestamp="activity.createTime">
+          v-for="(activity, index) in activities"
+          :key="index">
+          <el-card style="margin-top:0;margin-bottom:0;">
             <p>{{activity.title}}</p>
-            <p>{{activity.userName}}</p>
-          </el-timeline-item>
+            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
+            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
+          </el-card>
+        </el-timeline-item>
         </el-timeline>
       </el-dialog>
     </el-card>

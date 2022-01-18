@@ -52,11 +52,11 @@
         </el-table-column>
         <el-table-column label="审批状态">
           <template slot-scope="scope">
-            <span v-if="scope.row.firstExamine == 0">待提交</span>
-            <span v-else-if="scope.row.firstExamine == 1" style="color:#F59A23;">审核中</span>
-            <span v-else-if="scope.row.firstExamine == 3" style="color:#1890FF;">终审通过</span>
-            <span v-else-if="scope.row.firstExamine == 2" style="color:#D9001B;">终审未通过</span>
-            <span v-else-if="scope.row.firstExamine == 99">项目已终止</span>
+            <span v-if="scope.row.thirdExamine == 0">待提交</span>
+            <span v-else-if="scope.row.thirdExamine == 1" style="color:#F59A23;">待审核</span>
+            <span v-else-if="scope.row.thirdExamine == 3" style="color:#1890FF;">审核通过</span>
+            <span v-else-if="scope.row.thirdExamine == 2" style="color:#D9001B;">审核驳回</span>
+            <span v-else-if="scope.row.thirdExamine == 99">项目已终止</span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -77,10 +77,12 @@
       <el-timeline :reverse="true">
         <el-timeline-item
           v-for="(activity, index) in activities"
-          :key="index"
-          :timestamp="activity.createTime">
-          <p>{{activity.title}}</p>
-          <p>{{activity.userName}}</p>
+          :key="index">
+          <el-card style="margin-top:0;margin-bottom:0;">
+            <p>{{activity.title}}</p>
+            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
+            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
+          </el-card>
         </el-timeline-item>
       </el-timeline>
     </el-dialog>

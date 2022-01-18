@@ -35,14 +35,14 @@
         <el-table-column prop="projectName" label="项目名称" />
         <el-table-column prop="companyName" label="业主名称" />
         <el-table-column prop="messageInputSubmitTime" label="提交时间" />
-        <el-table-column prop="createUserPhone" label="业务员" />
+        <el-table-column prop="createUserNickName" label="业务员" />
         <el-table-column label="复核状态">
           <template slot-scope="scope">
-            <span v-if="scope.row.thirdExamine == 0">待提交</span>
-            <span v-else-if="scope.row.thirdExamine == 1" style="color:#F59A23;">审核中</span>
-            <span v-else-if="scope.row.thirdExamine == 3" style="color:#1890FF;">初审通过</span>
-            <span v-else-if="scope.row.thirdExamine == 2" style="color:#D9001B;">初审未通过</span>
-            <span v-else-if="scope.row.thirdExamine == 99">项目已终止</span>
+            <span v-if="scope.row.secondExamine == 0">待提交</span>
+            <span v-else-if="scope.row.secondExamine == 1" style="color:#F59A23;">待审核</span>
+            <span v-else-if="scope.row.secondExamine == 3" style="color:#1890FF;">审核通过</span>
+            <span v-else-if="scope.row.secondExamine == 2" style="color:#D9001B;">审核驳回</span>
+            <span v-else-if="scope.row.secondExamine == 99">项目已终止</span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
@@ -63,10 +63,12 @@
       <el-timeline :reverse="true">
         <el-timeline-item
           v-for="(activity, index) in activities"
-          :key="index"
-          :timestamp="activity.timestamp">
-          <p>{{ activity.title }}</p>
-          <p>{{ activity.userName }}</p>
+          :key="index">
+          <el-card style="margin-top:0;margin-bottom:0;">
+            <p>{{activity.title}}</p>
+            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
+            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
+          </el-card>
         </el-timeline-item>
       </el-timeline>
     </el-dialog>

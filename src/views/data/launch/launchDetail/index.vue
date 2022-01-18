@@ -317,7 +317,7 @@
           <el-col :span="8" v-show="seProjectCooperate.cooperateType == 0">
             <el-checkbox v-model="seProjectCooperate.ownPutFlag">
               <el-form-item label="业主自投，预算">
-                <el-input v-model="seProjectCooperate.ownPutMoney" class="width100" placeholder="请输入">
+                <el-input v-model="seProjectCooperate.ownPutMoney" class="width100" clearable placeholder="请输入" :disabled="!seProjectCooperate.ownPutFlag">
                   <span slot="suffix">万元</span>
                 </el-input>
               </el-form-item>
@@ -326,7 +326,7 @@
           <el-col :span="8" v-show="seProjectCooperate.cooperateType == 1">
             <el-checkbox v-model="seProjectCooperate.electricityDiscountFlag">
               <el-form-item label="电费折扣，比例">
-                <el-input v-model="seProjectCooperate.electricityDiscountScale" class="width100" placeholder="请输入">
+                <el-input v-model="seProjectCooperate.electricityDiscountScale" class="width100" clearable placeholder="请输入" :disabled="!seProjectCooperate.electricityDiscountFlag">
                   <span slot="suffix">%</span>
                 </el-input>
               </el-form-item>
@@ -335,7 +335,7 @@
           <el-col :span="8" v-show="seProjectCooperate.cooperateType == 1">
             <el-checkbox v-model="seProjectCooperate.houseLeaseFlag">
               <el-form-item label="出租屋面，租金">
-                <el-input v-model="seProjectCooperate.houseLeaseMoney" class="width100" placeholder="请输入">
+                <el-input v-model="seProjectCooperate.houseLeaseMoney" class="width100" clearable placeholder="请输入" :disabled="!seProjectCooperate.houseLeaseFlag">
                   <span slot="suffix">万元/年</span>
                 </el-input>
               </el-form-item>
@@ -347,7 +347,7 @@
       <div class="xian">
         <div>相关材料</div>
       </div>
-      <el-alert title="如文件较多，可将文件进行压缩打包上传。" type="success" :closable="false" />
+      <el-alert title="如文件较多，可将文件进行压缩打包上传，并等待文件完成上传。" type="success" :closable="false" />
       <el-form ref="relevantFileForm" :rules="relevantFileRules" :model="seProjectRelevantFile" style="text-align:right;" label-width="160px">
         <el-row :gutter="20" style="margin:0 30px;">
           <el-col :span="8">
@@ -500,10 +500,12 @@
       <el-timeline :reverse="true">
         <el-timeline-item
           v-for="(activity, index) in activities"
-          :key="index"
-          :timestamp="activity.createTime">
-          <p>{{activity.title}}</p>
-          <p>{{activity.userName}}</p>
+          :key="index">
+          <el-card style="margin-top:0;margin-bottom:0;">
+            <p>{{activity.title}}</p>
+            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
+            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
+          </el-card>
         </el-timeline-item>
       </el-timeline>
     </el-dialog>
@@ -623,6 +625,7 @@ export default {
 
       seProjectCompanyBuildInfo: {
         projectId: this.$route.query.projectId,
+        colorSteelCementTopScale: 1,
       }, // 屋面信息
       CompanyBuildInfoRules: {
         houseArea: [
@@ -637,10 +640,10 @@ export default {
         useYears: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
         housePartType: [{ required: this.must, message: '请选择建站地址', trigger: 'change, blur' }],
         // colorSteelType: [],
-        colorSteelCementTopScale: [
-          { required: this.must, message: '请输入', trigger: 'blur' },
-          { validator: checkCe, trigger: 'blur' }
-        ],
+        // colorSteelCementTopScale: [
+        //   { required: this.must, message: '请输入', trigger: 'blur' },
+        //   { validator: checkCe, trigger: 'blur' }
+        // ],
         otherMessage: [{ min: 0, max: 200, message: '长度在 0 到 200 个字符', trigger: 'blur' }]
       },
 
@@ -705,7 +708,7 @@ export default {
   methods: {
     getProjectInfo( projectId ) {
       getProjectInfo({ projectId }).then(res => {
-        console.log(res)
+        // console.log(res)
         const {seProjectCompanyInfo,seProjectCompanyBuildInfo,seProjectPowerInfo,seProjectCooperate,seProjectRelevantFile,seProjectPowerTransformInfoList} = res.data
         this.seProjectCompanyInfo = {...seProjectCompanyInfo}
         this.seProjectCompanyBuildInfo = {...seProjectCompanyBuildInfo}
@@ -760,7 +763,7 @@ export default {
         seProjectCooperate: this.seProjectCooperate,
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
-        console.log(res)
+        // console.log(res)
         this.saveLoading = false
         this.$message.success('保存成功')
         this.getProjectInfo(this.projectId)
@@ -781,6 +784,7 @@ export default {
         console.log(res)
         this.subLoading = false
         if(res.code == 0) this.$message.success('提交成功')
+        this.$router.back()
       }).catch( err => {
         this.subLoading = false
       })
@@ -831,20 +835,21 @@ export default {
 
     // 合作模式
     selectChange(val) {
-      // if(val == '0') {
-      //   this.seProjectCooperate.ownPutFlag = true
+      console.log(val)
+      if(val == '0') {
+        this.seProjectCooperate.ownPutFlag = true
       //   this.seProjectCooperate.electricityDiscountFlag = false
       //   this.seProjectCooperate.electricityDiscountScale = ''
       //   this.seProjectCooperate.houseLeaseFlag = false
       //   this.seProjectCooperate.houseLeaseMoney = ''
-      // } else {
-      //   this.seProjectCooperate.ownPutFlag = false,
-      //   this.seProjectCooperate.ownPutMoney = ''
-      //   this.seProjectCooperate.electricityDiscountFlag = this.seProjectCooperate.electricityDiscountFlag
-      //   this.seProjectCooperate.electricityDiscountScale = this.seProjectCooperate.electricityDiscountScale
-      //   this.seProjectCooperate.houseLeaseFlag = this.seProjectCooperate.houseLeaseFlag
-      //   this.seProjectCooperate.houseLeaseMoney = this.seProjectCooperate.houseLeaseMoney
-      // }
+      } else {
+        this.seProjectCooperate.ownPutFlag = false
+        //   this.seProjectCooperate.ownPutMoney = ''
+        //   this.seProjectCooperate.electricityDiscountFlag = this.seProjectCooperate.electricityDiscountFlag
+        //   this.seProjectCooperate.electricityDiscountScale = this.seProjectCooperate.electricityDiscountScale
+        //   this.seProjectCooperate.houseLeaseFlag = this.seProjectCooperate.houseLeaseFlag
+        //   this.seProjectCooperate.houseLeaseMoney = this.seProjectCooperate.houseLeaseMoney
+      }
     },
     housePartTypeChange(value) { // 屋面材质
       this.seProjectCompanyBuildInfo.housePartType = value.join(',')
@@ -918,5 +923,9 @@ export default {
   }
   /deep/ .el-input-number__increase {
     display: none;
+  }
+  /deep/ .el-input-number .el-input__inner {
+    padding-left: 10px;
+    text-align: left;
   }
 </style>
