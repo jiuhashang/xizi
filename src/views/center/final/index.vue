@@ -34,8 +34,8 @@
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
         <el-table-column prop="projectName" label="项目名称" />
         <el-table-column prop="companyName" label="业主名称" />
-        <el-table-column prop="messageInputSubmitTime" label="提交时间" />
-        <el-table-column prop="createUserPhone" label="业务员" />
+        <el-table-column prop="endExamineSubmintTime" label="提交时间" />
+        <el-table-column prop="createUserNickName" label="业务员" />
         <el-table-column label="二审状态">
           <template slot-scope="scope">
             <span v-if="scope.row.thirdExamine == 0">待提交</span>

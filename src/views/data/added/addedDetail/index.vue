@@ -173,9 +173,9 @@
           </el-col>
           <el-col :span="8" style="padding-left:48px;">
             <el-form-item label="关联项目公司" class="must-form-item">
-              <!-- <el-select placeholder="请选择" class="width100">
+              <el-select placeholder="请选择" class="width100">
                 <el-option label="杭州西子" value="杭州西子"></el-option>
-              </el-select> -->
+              </el-select>
             </el-form-item>
           </el-col>
         </el-row>
@@ -221,28 +221,21 @@ export default {
       activities: [],
       seProjectCompanyInfo: {}, // 业主信息
       seProjectEndSupplementFile: { // 立项补充
-        projectId: this.$route.query.projectId,
-        energyContractFile: '',
-        adviseBookFile: '',
-        recordFile: '',
-        insertFile: '',
-        businessFile: '',
-        projectCompanyId: '',
-        projectCompanyName: '',
-        otherMessage: ''
+        projectId: this.$route.query.projectId
       }, 
     }
   },
   created() {
     this.projectId = this.$route.query.projectId
-    this.getProjectInfo(this.projectId)
+    this.getProjectInfo( this.projectId )
   },
   methods: {
-    getProjectInfo(projectId) {
-      getProjectInfo({projectId}).then(res => {
+    getProjectInfo( projectId ) {
+      getProjectInfo({ projectId }).then(res => {
         console.log(res)
-        this.seProjectCompanyInfo = res.data.seProjectCompanyInfo
-        this.seProjectEndSupplementFile = res.data.seProjectEndSupplementFile
+        const { seProjectCompanyInfo, seProjectEndSupplementFile } = res.data
+        this.seProjectCompanyInfo = seProjectCompanyInfo
+        this.seProjectEndSupplementFile = { ...seProjectEndSupplementFile }
       })
     },
      // 审批记录

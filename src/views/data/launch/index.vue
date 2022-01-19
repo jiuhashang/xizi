@@ -76,34 +76,26 @@
       width="40%"
       :close-on-click-modal="false"
       @close="colseDialog">
-      <el-alert
-        title="请在搜索结果中选择匹配的公司名称，且创建表单后将无法修改，请认真核对。"
-        type="success"
-        :closable="false">
-      </el-alert>
-      <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" style="width:80%;margin:auto;">
-        <el-form-item label="项目名称" prop="projectName">
-          <el-input v-model="ruleForm.projectName" placeholder="请输入" clearable />
-        </el-form-item>
-        <el-form-item label="公司名称" prop="companyName">
-          <el-select
-            v-model="ruleForm.companyName"
-            filterable
-            remote
-            reserve-keyword
-            placeholder="请输入"
-            :remote-method="remoteMethod"
-            :loading="loading"
-            class="width100">
-            <el-option
-              v-for="item in options"
-              :key="item.name"
-              :label="item.name"
-              :value="item.name">
-            </el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
+      <div style="position: relative;">
+        <el-alert
+          title="请在搜索结果中选择匹配的公司名称，且创建表单后将无法修改，请认真核对。"
+          type="success"
+          :closable="false">
+        </el-alert>
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" style="width:80%;margin:auto;">
+          <el-form-item label="项目名称" prop="projectName">
+            <el-input v-model="ruleForm.projectName" placeholder="请输入" clearable />
+          </el-form-item>
+          <el-form-item label="公司名称" prop="companyName">
+            <el-input v-model="ruleForm.companyName" placeholder="请输入" clearable @input="handleInput" @clear="handleClear" />
+          </el-form-item>
+        </el-form>
+        <div class="divul" v-show="options.length">
+          <ul style="list-style: none;">
+            <li v-for="(item, index) in options" :key="item.id" class="divli" @click="handleSelect(item, index)">{{ item.name }}</li>
+          </ul>
+        </div>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="createProject">创 建</el-button>
@@ -172,13 +164,14 @@ export default {
 
       // 创建项目表单
       dialogVisible: false,
-      options: [],
-      value: [],
-      list: [],
-      loading: false,
+      options: [], // 搜索公司列表
+      optionss: [], // 搜索副本
       ruleForm: {
         projectName: '',
         companyName: '',
+        legalPerson: '',
+        registerMoney: '',
+        sameCreditCode: '',
         pageIndex: 1,
         pageSize: 10
       },
@@ -261,50 +254,61 @@ export default {
     },
 
     // 创建项目表
-    remoteMethod(query) {
-      if (query !== '' && query.length > 5 ) {
-        this.loading = true;
-        setTimeout(() => {
-          this.loading = false;
-          getCompanyInfoList(this.ruleForm).then(res => {
-            console.log(res)
-            this.options = res.data
-          })
-          // this.options = this.list.filter(item => {
-          //   return item.label.toLowerCase()
-          //     .indexOf(query.toLowerCase()) > -1;
-          // });
-        }, 200);
-      } else {
-        this.options = [];
-      }
-    },
     create() {
       this.dialogVisible = true
+    },
+    handleInput() {
+      if( this.ruleForm.companyName.length > 5 ) {
+        getCompanyInfoList(this.ruleForm).then(res => {
+          // console.log(res)
+          this.options = res.data
+          this.optionss = res.data
+          console.log( this.optionss )
+        })
+      } else {
+        this.options = []
+      }
+    },
+    handleSelect(item, index) {
+      this.ruleForm.companyName = item.name
+      this.options = []
     },
     colseDialog() {
       this.ruleForm = {
         projectName: '',
         companyName: '',
+        legalPerson: '',
+        registerMoney: '',
+        sameCreditCode: '',
         pageIndex: 1,
         pageSize: 10
       }
     },
+    handleClear() {
+      this.ruleForm.companyName = '',
+      this.options = []
+    },
     createProject() { // 创建项目
       this.$refs.ruleForm.validate(valid => {
         if(valid) {
-          addOne(this.ruleForm).then(res => {
-            console.log(res)
-            this.$message.success('创建项目表单成功')
-            this.$router.push({ name: 'LaunchDetail', query: { 
-              projectId: res.data.projectId,
-              createTime: res.data.createTime,
-              createUserNickName: res.data.createUserNickName,
-              createUserPhone: res.data.createUserPhone,
-              projectName: res.data.projectName,
-              companyName: res.data.companyName
-              }
-            })
+          this.optionss.forEach( item => {
+            if( this.ruleForm.companyName == item.name ) {
+              addOne(this.ruleForm).then(res => {
+                console.log(res)
+                this.$message.success('创建项目表单成功')
+                this.$router.push({ name: 'LaunchDetail', query: { 
+                  projectId: res.data.projectId,
+                  createTime: res.data.createTime,
+                  createUserNickName: res.data.createUserNickName,
+                  createUserPhone: res.data.createUserPhone,
+                  projectName: res.data.projectName,
+                  companyName: res.data.companyName
+                  }
+                })
+              })
+            } else {
+              this.$message.error('请从搜索列表中选择一项')
+            }
           })
         }
       })
@@ -327,5 +331,18 @@ export default {
   }
   .el-alert {
     margin-bottom: 25px;
+  }
+  .divul {
+    width: 300px;
+    height: 310px;
+    background-color: #fff;
+    position: absolute;
+    top: 170px;
+    left: 153px;
+    border:1px solid #DCDFE6;
+    border-radius: 5px;
+  }
+  .divli {
+    margin-bottom: 10px;
   }
 </style>

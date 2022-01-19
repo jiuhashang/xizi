@@ -53,9 +53,9 @@
         <el-table-column label="审批状态">
           <template slot-scope="scope">
             <span v-if="scope.row.thirdExamine == 0">待提交</span>
-            <span v-else-if="scope.row.thirdExamine == 1" style="color:#F59A23;">待审核</span>
+            <span v-else-if="scope.row.thirdExamine == 1" style="color:#F59A23;">审核中</span>
             <span v-else-if="scope.row.thirdExamine == 3" style="color:#1890FF;">审核通过</span>
-            <span v-else-if="scope.row.thirdExamine == 2" style="color:#D9001B;">审核驳回</span>
+            <span v-else-if="scope.row.thirdExamine == 2">待提交</span>
             <span v-else-if="scope.row.thirdExamine == 99">项目已终止</span>
           </template>
         </el-table-column>

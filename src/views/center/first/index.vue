@@ -110,10 +110,6 @@ export default {
       },
       options: [
         {
-          firstExamine: '0',
-          label: '待提交'
-        }, 
-        {
           firstExamine: '1',
           label: '审核中'
         }, 

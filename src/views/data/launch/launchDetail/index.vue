@@ -193,17 +193,14 @@
         <el-row :gutter="20" style="margin:0 30px 30px 30px;">
           <el-col :span="8">
             <el-form-item label="彩钢瓦比水泥顶" prop="colorSteelCementTopScale" class="must-form-item">
-              <el-input-number v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale" style="width: 95%;">
-              <!-- <el-input v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale"> -->
-                <!-- <span slot="suffix">%</span> -->
-              <!-- </el-input> -->
-              </el-input-number>
-              %
+              <el-input v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale" type="number" clearable>
+                <span slot="suffix">%</span>
+              </el-input>
             </el-form-item>
           </el-col>
           <el-col :span="16">
             <el-form-item label="其他屋面材质说明" prop="otherMessage">
-              <el-input v-model="seProjectCompanyBuildInfo.otherMessage"></el-input>
+              <el-input v-model="seProjectCompanyBuildInfo.otherMessage" clearable></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -625,7 +622,6 @@ export default {
 
       seProjectCompanyBuildInfo: {
         projectId: this.$route.query.projectId,
-        colorSteelCementTopScale: 1,
       }, // 屋面信息
       CompanyBuildInfoRules: {
         houseArea: [
@@ -640,10 +636,10 @@ export default {
         useYears: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
         housePartType: [{ required: this.must, message: '请选择建站地址', trigger: 'change, blur' }],
         // colorSteelType: [],
-        // colorSteelCementTopScale: [
-        //   { required: this.must, message: '请输入', trigger: 'blur' },
-        //   { validator: checkCe, trigger: 'blur' }
-        // ],
+        colorSteelCementTopScale: [
+          { required: this.must, message: '请输入', trigger: 'blur' },
+          { validator: checkCe, trigger: 'blur' }
+        ],
         otherMessage: [{ min: 0, max: 200, message: '长度在 0 到 200 个字符', trigger: 'blur' }]
       },
 
@@ -755,6 +751,9 @@ export default {
       } else if (this.seProjectCooperate.houseLeaseFlag == true) {
         this.seProjectCooperate.houseLeaseFlag = 1
       }
+      // if(this.seProjectCompanyBuildInfo.colorSteelCementTopScale) {
+      //   this.seProjectCompanyBuildInfo.colorSteelCementTopScale = this.seProjectCompanyBuildInfo.colorSteelCementTopScale - 0
+      // }
       projectInput({projectId: this.projectId,
         seProjectCompanyInfo: this.seProjectCompanyInfo,
         seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
@@ -838,13 +837,13 @@ export default {
       console.log(val)
       if(val == '0') {
         this.seProjectCooperate.ownPutFlag = true
-      //   this.seProjectCooperate.electricityDiscountFlag = false
-      //   this.seProjectCooperate.electricityDiscountScale = ''
-      //   this.seProjectCooperate.houseLeaseFlag = false
-      //   this.seProjectCooperate.houseLeaseMoney = ''
+        this.seProjectCooperate.electricityDiscountFlag = 0
+        this.seProjectCooperate.electricityDiscountScale = ''
+        this.seProjectCooperate.houseLeaseFlag = 0
+        this.seProjectCooperate.houseLeaseMoney = ''
       } else {
         this.seProjectCooperate.ownPutFlag = false
-        //   this.seProjectCooperate.ownPutMoney = ''
+        this.seProjectCooperate.ownPutMoney = ''
         //   this.seProjectCooperate.electricityDiscountFlag = this.seProjectCooperate.electricityDiscountFlag
         //   this.seProjectCooperate.electricityDiscountScale = this.seProjectCooperate.electricityDiscountScale
         //   this.seProjectCooperate.houseLeaseFlag = this.seProjectCooperate.houseLeaseFlag

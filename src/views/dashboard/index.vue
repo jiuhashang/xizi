@@ -6,7 +6,7 @@
     </div>
     <el-card class="box-card">
       <div slot="header">
-        <span style="font-weight:900;">我负责的项目</span>
+        <span style="font-weight:900;">项目概况</span>
       </div>
       <div class="item">
         <div class="c">

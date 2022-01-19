@@ -68,7 +68,7 @@ export default {
       type: Object,
       default() {
         return {
-          'priFix': 'adminFile'
+          // 'priFix': 'adminFile'
         }
       }
     },
