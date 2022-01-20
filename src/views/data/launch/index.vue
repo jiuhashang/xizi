@@ -18,7 +18,13 @@
             <el-input v-model="tableInfo.companyName" placeholder="业主名称查询" clearable style="width:250px;" />
           </el-form-item>
           <el-form-item>
-            <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部状态">
+            <el-select v-model="tableInfo.setProjectStatus" clearable placeholder="全部状态">
+              <el-option label="未完善" :value="0"></el-option>
+              <el-option label="已完善" :value="1"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部进度">
               <el-option
                 v-for="item in option"
                 :key="item.firstExamine"
@@ -134,6 +140,7 @@ export default {
         projectName: '',
         firstExamine: '',
         type: 0,
+        setProjectStatus: '',
         pageIndex: 1,
         pageSize: 10
       },
@@ -165,15 +172,13 @@ export default {
       // 创建项目表单
       dialogVisible: false,
       options: [], // 搜索公司列表
-      optionss: [], // 搜索副本
+      optionss: [], //
       ruleForm: {
         projectName: '',
         companyName: '',
         legalPerson: '',
         registerMoney: '',
-        sameCreditCode: '',
-        pageIndex: 1,
-        pageSize: 10
+        sameCreditCode: ''
       },
       rules: {
         projectName: [
@@ -215,6 +220,7 @@ export default {
         companyName: '',
         projectName: '',
         firstExamine: '',
+        setProjectStatus: '',
         type: 0,
         pageIndex: 1,
         pageSize: 10
@@ -260,10 +266,9 @@ export default {
     handleInput() {
       if( this.ruleForm.companyName.length > 5 ) {
         getCompanyInfoList(this.ruleForm).then(res => {
-          // console.log(res)
+          console.log(res)
           this.options = res.data
           this.optionss = res.data
-          console.log( this.optionss )
         })
       } else {
         this.options = []
@@ -271,7 +276,11 @@ export default {
     },
     handleSelect(item, index) {
       this.ruleForm.companyName = item.name
+      this.ruleForm.legalPerson = item.legalPersonName
+      this.ruleForm.registerMoney = item.regCapital
+      this.ruleForm.sameCreditCode = item.creditCode
       this.options = []
+      this.optionss = []
     },
     colseDialog() {
       this.ruleForm = {
@@ -279,36 +288,28 @@ export default {
         companyName: '',
         legalPerson: '',
         registerMoney: '',
-        sameCreditCode: '',
-        pageIndex: 1,
-        pageSize: 10
+        sameCreditCode: ''
       }
     },
     handleClear() {
-      this.ruleForm.companyName = '',
+      this.ruleForm.companyName = ''
       this.options = []
     },
     createProject() { // 创建项目
       this.$refs.ruleForm.validate(valid => {
         if(valid) {
-          this.optionss.forEach( item => {
-            if( this.ruleForm.companyName == item.name ) {
-              addOne(this.ruleForm).then(res => {
-                console.log(res)
-                this.$message.success('创建项目表单成功')
-                this.$router.push({ name: 'LaunchDetail', query: { 
-                  projectId: res.data.projectId,
-                  createTime: res.data.createTime,
-                  createUserNickName: res.data.createUserNickName,
-                  createUserPhone: res.data.createUserPhone,
-                  projectName: res.data.projectName,
-                  companyName: res.data.companyName
-                  }
-                })
-              })
-            } else {
-              this.$message.error('请从搜索列表中选择一项')
-            }
+          addOne(this.ruleForm).then(res => {
+            console.log(res)
+            this.$message.success('创建项目表单成功')
+            this.$router.push({ name: 'LaunchDetail', query: { 
+              projectId: res.data.projectId,
+              createTime: res.data.createTime,
+              createUserNickName: res.data.createUserNickName,
+              createUserPhone: res.data.createUserPhone,
+              projectName: res.data.projectName,
+              companyName: res.data.companyName
+              }
+            })
           })
         }
       })

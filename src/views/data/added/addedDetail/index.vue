@@ -173,9 +173,7 @@
           </el-col>
           <el-col :span="8" style="padding-left:48px;">
             <el-form-item label="关联项目公司" class="must-form-item">
-              <el-select placeholder="请选择" class="width100">
-                <el-option label="杭州西子" value="杭州西子"></el-option>
-              </el-select>
+              <el-input v-model="seProjectEndSupplementFile.projectCompanyName" placeholder="请选择" clearable @input="handleInput" @clear="handleClear" ></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -187,6 +185,11 @@
           </el-col>
         </el-row>
       </el-form>
+      <div class="divul" v-show="options.length">
+          <ul style="list-style: none;">
+            <li v-for="(item, index) in options" :key="item.id" class="divli" @click="handleSelect(item, index)">{{ item.name }}</li>
+          </ul>
+        </div>
 
       <!-- 审批记录 -->
       <el-dialog
@@ -211,7 +214,7 @@
 </template>
 
 <script> 
-import { getProjectInfo, getProjectExamineLog, setProjectInput } from '@/api/listProject'
+import { getProjectInfo, getProjectExamineLog, setProjectInput, getByCompanyName } from '@/api/listProject'
 export default {
   name: 'AddedDetail',
   data() {
@@ -223,6 +226,7 @@ export default {
       seProjectEndSupplementFile: { // 立项补充
         projectId: this.$route.query.projectId
       }, 
+      options: [],
     }
   },
   created() {
@@ -238,6 +242,16 @@ export default {
         this.seProjectEndSupplementFile = { ...seProjectEndSupplementFile }
       })
     },
+    handleInput() {
+      getByCompanyName({ companyName: this.seProjectEndSupplementFile.projectCompanyName }).then(res => {
+        console.log(res)
+        this.options = res.data.orders
+      })
+    },
+    handleSelect(item, index) {
+
+    },
+    handleClear() {},
      // 审批记录
     approval() {
       this.logVisible = true
@@ -247,8 +261,9 @@ export default {
     },
     // 保存
     handleSave() {
+      this.seProjectEndSupplementFile.projectId = this.$route.query.projectId
+      console.log(this.seProjectEndSupplementFile)
       setProjectInput( this.seProjectEndSupplementFile ).then(res => {
-        console.log(res)
         this.$message.success('保存成功')
         this.getProjectInfo(this.projectId)
       })
@@ -304,5 +319,18 @@ export default {
       color: red;
       margin-right: 4px;
     }
+  }
+  .divul {
+    width: 300px;
+    height: 310px;
+    background-color: #fff;
+    position: absolute;
+    top: 170px;
+    left: 153px;
+    border:1px solid #DCDFE6;
+    border-radius: 5px;
+  }
+  .divli {
+    margin-bottom: 10px;
   }
 </style>

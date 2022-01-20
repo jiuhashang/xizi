@@ -17,6 +17,12 @@
         <el-input v-model="tableInfo.companyName" placeholder="业主名称查询" clearable style="width:250px;" />
       </el-form-item>
       <el-form-item>
+            <el-select v-model="tableInfo.setProjectStatus" clearable placeholder="全部进度">
+              <el-option label="未完善" :value="0"></el-option>
+              <el-option label="已完善" :value="1"></el-option>
+            </el-select>
+          </el-form-item>
+      <el-form-item>
         <el-select v-model="tableInfo.thirdExamine" clearable placeholder="全部状态">
           <el-option
             v-for="item in options"
@@ -100,6 +106,7 @@ export default {
         companyName: '',
         projectName: '',
         thirdExamine: '',
+        setProjectStatus: '',
         type: 1,
         pageIndex: 1,
         pageSize: 10
@@ -159,6 +166,7 @@ export default {
         companyName: '',
         projectName: '',
         thirdExamine: '',
+        setProjectStatus: '',
         type: 1,
         pageIndex: 1,
         pageSize: 10

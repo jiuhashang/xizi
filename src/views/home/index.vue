@@ -29,7 +29,7 @@
         <el-submenu index="4">
           <template slot="title">综合管理</template>
           <el-menu-item index="/account">账户管理</el-menu-item>
-          <el-menu-item index="/organization">机构管理</el-menu-item>
+          <!-- <el-menu-item index="/organization">机构管理</el-menu-item> -->
           <el-menu-item index="/role">角色管理</el-menu-item>
           <el-menu-item index="/download">下载管理</el-menu-item>
         </el-submenu>

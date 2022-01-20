@@ -18,7 +18,7 @@
           <el-input v-model="tableInfo.companyName" placeholder="业主名称查询" clearable style="width:250px;" />
         </el-form-item>
         <el-form-item>
-          <el-select v-model="tableInfo.setProjectStatus" clearable placeholder="全部状态">
+          <el-select v-model="tableInfo.setProjectStatus" clearable placeholder="全部进度">
             <el-option
               v-for="item in options"
               :key="item.setProjectStatus"

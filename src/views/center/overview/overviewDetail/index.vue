@@ -327,6 +327,42 @@
               </el-row>
             </el-col>
           </el-row>
+          
+          <div class="xian">
+            <div>近3年销售与利润</div>
+          </div>
+          <table style="width: 100%;text-align:center;margin:20px 0;" class="ht" cellpadding="0" cellspacing="0">
+            <tr>
+              <td></td>
+              <td>2019年</td>
+              <td>2020年</td>
+              <td>2021年</td>
+            </tr>
+            <tr>
+              <td>年销售额（万元）</td>
+              <td>
+                {{ first.sellMoney }}
+              </td>
+              <td>
+                {{ second.sellMoney }}
+              </td>
+              <td>
+                {{ three.sellMoney }}
+              </td>
+            </tr>
+            <tr>
+              <td>年利润额（万元）</td>
+              <td>
+                {{ first.profix }}
+              </td>
+              <td>
+                {{ second.profix }}
+              </td>
+              <td>
+                {{ three.profix }}
+              </td>
+            </tr>
+          </table>
 
           <div class="xian">
             <div>相关材料</div>
@@ -694,7 +730,7 @@
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">每年固定运维费用</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.yearRepairPrice }} 万元</el-col>
+                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.yearRepairPrice }} 元/瓦</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
@@ -737,61 +773,61 @@
           </div>
           <div style="margin-top:15px;display:flex;justify-content:space-around;">
             <div class="t1" style="background-color:#3C4563;">
-              <h3>全投资内部收益率</h3>
-              <h1>{{ projectTotalProfitModel.innerScal }}%</h1>
+              <p style="font-size: 14px;margin-left:30px;">全投资内部收益率</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;">{{ projectTotalProfitModel.innerScal }}%</p>
             </div>
             <div class="t1" style="background-color:#8892DF;">
-              <h3>投资偿还期（年）</h3>
-              <h1>{{ projectTotalProfitModel.investNum }}</h1>
+              <p style="font-size: 14px;margin-left:30px;">投资偿还期（年）</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;">{{ projectTotalProfitModel.investNum }}</p>
             </div>
             <div class="t1" style="background-color:#6FACFD;">
-              <h3>总投资费用（万元）</h3>
-              <h1>{{ projectTotalProfitModel.totalInvestPrice }}</h1>
+              <p style="font-size: 14px;margin-left:30px;">总投资费用（万元）</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;">{{ projectTotalProfitModel.totalInvestPrice }}</p>
             </div>
             <div class="t1" style="background-color:#ED7E77;">
-              <h3>首年发电量</h3>
-              <h1>{{ projectTotalProfitModel.firstElectric }}</h1>
+              <p style="font-size: 14px;margin-left:30px;">首年发电量</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;">{{ projectTotalProfitModel.firstElectric }}</p>
             </div>
           </div>
           <div style="margin-top:15px;display:flex;justify-content:space-around;">
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>发电总效益（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalElectricUseIncomeScal }}</h3>
+                <h3>{{ projectTotalProfitModel.totalElectricUseIncomeScal.toFixed(2) }}</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageElectricUseIncomeScal }}</h3>
+                <h3>{{ projectTotalProfitModel.averageElectricUseIncomeScal.toFixed(2) }}</h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>总净利润（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalCleanProfit }}</h3>
+                <h3>{{ projectTotalProfitModel.totalCleanProfit.toFixed(2) }}</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageCleanProfit }}</h3>
+                <h3>{{ projectTotalProfitModel.averageCleanProfit.toFixed(2) }}</h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>投资方总收入（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalInvestorIncome }}</h3>
+                <h3>{{ projectTotalProfitModel.totalInvestorIncome.toFixed(2) }}</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageInvestorIncome }}</h3>
+                <h3>{{ projectTotalProfitModel.averageInvestorIncome.toFixed(2) }}</h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>自投总收入（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalOwnIncome }}</h3>
+                <h3>{{ projectTotalProfitModel.totalOwnIncome.toFixed(2) }}</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageOwnIncome }}</h3>
+                <h3>{{ projectTotalProfitModel.averageOwnIncome.toFixed(2) }}</h3>
               </div>
             </div>
           </div>
@@ -861,20 +897,42 @@ export default {
         seProjectSupplementFile: {},
         seProjectProfitCountList: [],
         // 审批记录
-      logVisible: false,
-      activities: [],
-      // 审核
-      dialogVisible: false,
-      title: '',
-      message: '',
-      alert: '',
-      type: '',
+        logVisible: false,
+        activities: [],
+        // 审核
+        dialogVisible: false,
+        title: '',
+        message: '',
+        alert: '',
+        type: '',
+
+        first: {
+          sellMoney: '-',
+          profix: '-'
+        },
+        second: {
+          sellMoney: '-',
+          profix: '-'
+        },
+        three: {
+          sellMoney: '-',
+          profix: '-'
+        },
       }
     },
     created() {
       this.projectId = this.$route.query.projectId
       this.getProjectInfo(this.projectId)
       this.getProfitMessage(this.projectId)
+    },
+    watch: {
+      seProjectNearThreeYearSellProfixList(newVal, oldVal) {
+        if(newVal) {
+          this.first = newVal[0]
+          this.second = newVal[1]
+          this.three = newVal[2]
+        }
+      }
     },
     methods: {
       handleClick(tab, event) {
@@ -896,7 +954,7 @@ export default {
           if(seProjectCooperate.ownPutFlag == 1) {
             this.seProjectCooperate.ownPutFlag = true
           }
-          this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList
+          if( seProjectNearThreeYearSellProfixList.length > 0 ) {this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList }
           this.seProjectPowerInfo = seProjectPowerInfo
           this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList
           this.seProjectRelevantFile = seProjectRelevantFile
@@ -976,22 +1034,27 @@ export default {
     text-align: left;
   }
   .t1 {
-    width: 312px;
+    width: 25%;
     height: 116px;
+    margin: 0 10px;
     color: #fff;
     background-color: #f2f2f2;
-    h3 {
-      margin-left: 15px;
-    }
-    h1 {
-      text-align: center;
-    }
   }
   .b1 {
-    width: 312px;
+    width: 25%;
     height: 116px;
     box-sizing: border-box;
-    padding: 0 20px;
+    margin: 0 10px;
+    padding: 0 30px;
     background-color: #f2f2f2;
+  }
+  .ht {
+    border-collapse:collapse;
+    border: 1px solid #DCDFE6;
+    td {
+      width: 25%;
+      height: 50px;
+      border: 1px solid #DCDFE6;
+    }
   }
 </style>

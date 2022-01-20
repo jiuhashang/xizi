@@ -120,7 +120,7 @@
       <div class="xian">
         <div>近3年销售与利润</div>
       </div>
-      <table style="width: 100%;text-align:center;border:1px solid #aaa;" cellpadding="0" cellspacing="0">
+      <table style="width: 100%;text-align:center;" class="ht" cellpadding="0" cellspacing="0">
         <tr>
           <td></td>
           <td>2019年</td>
@@ -130,17 +130,17 @@
         <tr>
           <td>年销售额（万元）</td>
           <td>
-            <el-input placeholder="请输入">
+            <el-input v-model="first.sellMoney" type="number" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input placeholder="请输入">
+            <el-input v-model="second.sellMoney" type="number" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input placeholder="请输入">
+            <el-input v-model="three.sellMoney" type="number" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
@@ -148,17 +148,17 @@
         <tr>
           <td>年利润额（万元）</td>
           <td>
-            <el-input placeholder="请输入">
+            <el-input v-model="first.profix" type="number" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input placeholder="请输入">
+            <el-input v-model="second.profix" type="number" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input placeholder="请输入">
+            <el-input v-model="three.profix" type="number" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
@@ -248,11 +248,25 @@ export default {
         projectId: this.$route.query.projectId
       }, 
       // tableData: [{},{}],
-      seProjectNearThreeYearSellProfixList: [
-        { yearNum: 2019, sellMoney: '', profix: '' },
-        { yearNum: 2020, sellMoney: '', profix: '' },
-        { yearNum: 2021, sellMoney: '', profix: '' },
-      ],
+      first: {
+        projectId: this.$route.query.projectId,
+        yearNum: 2019,
+        sellMoney: '',
+        profix: ''
+      },
+      second: {
+        projectId: this.$route.query.projectId,
+        yearNum: 2020,
+        sellMoney: '',
+        profix: ''
+      },
+      three: {
+        projectId: this.$route.query.projectId,
+        yearNum: 2021,
+        sellMoney: '',
+        profix: ''
+      },
+      seProjectNearThreeYearSellProfixList: [],
       logVisible: false, // 审批记录
       activities: [],
       seProjectCompanyBuildInfo: {}, // 屋面信息
@@ -273,6 +287,12 @@ export default {
   watch: {
     tableData(oldVal, newVal) {
       console.log(oldVal, newVal)
+    },
+    seProjectNearThreeYearSellProfixList(newVal, oldVal) {
+      console.log(newVal, oldVal)
+      this.first = newVal[0]
+        this.second = newVal[1]
+        this.three = newVal[2]
     }
   },
   methods: {
@@ -297,6 +317,8 @@ export default {
     },
     // 保存
     save() {
+      this.seProjectNearThreeYearSellProfixList.push (this.first, this.second, this.three )
+      // console.log(this.seProjectNearThreeYearSellProfixList)
       relevantInput({
         projectId: this.projectId,
         seProjectSupplementFile: this.seProjectSupplementFile,
@@ -310,6 +332,9 @@ export default {
       }).then(res => {
         console.log(res)
         this.$message.success(res.msg)
+        // this.first = res.data.seProjectNearThreeYearSellProfixList[0]
+        // this.second = res.data.seProjectNearThreeYearSellProfixList[1]
+        // this.three = res.data.seProjectNearThreeYearSellProfixList[2]
         this.getProjectInfo(this.projectId)
       })
     },
@@ -398,5 +423,11 @@ export default {
   }
   /deep/ .el-input__suffix {
     top: 10px;
+  }
+  .ht {
+    border: 1px solid red;
+    td {
+      border: 1px solid #DCDFE6;
+    }
   }
 </style>

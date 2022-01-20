@@ -109,6 +109,15 @@ export function setProjectInput(params) {
   )
 }
 
+// 关联公司
+export function getByCompanyName(params) {
+  return request({
+    url: '/admin/seProjectEndCompanyInfo/getByCompanyName',
+    method: 'get',
+    params
+  })
+}
+
 
 
 
