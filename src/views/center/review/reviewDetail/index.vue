@@ -12,8 +12,8 @@
         </div>
         <div class="btnnn">
           <el-button size="small" @click="handleApproval">审批记录</el-button>
-          <el-button size="small" type="danger" @click="handleReject">驳回审核</el-button>
-          <el-button size="small" type="primary" @click="handlePass">审核通过</el-button>
+          <el-button size="small" type="danger" @click="handleReject" v-show="secondExamine == 1">驳回审核</el-button>
+          <el-button size="small" type="primary" @click="handlePass" v-show="secondExamine == 1">审核通过</el-button>
         </div>
       </div>
     </div>
@@ -482,6 +482,7 @@ export default {
   name: 'ReviewDetail',
   data() {
     return {
+      secondExamine: '',
       province: '',
       city:'',
       activeName: 'first',
@@ -513,6 +514,7 @@ export default {
     }
   },
   created() {
+    this.secondExamine = this.$route.query.secondExamine
     this.projectId = this.$route.query.projectId
     this.getProjectInfo(this.projectId)
   },

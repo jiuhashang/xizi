@@ -52,7 +52,7 @@
         </el-table-column>
         <el-table-column label="补充进度">
           <template slot-scope="scope">
-            <span v-if="scope.row.companyInfoStatus == 1 && scope.row.companyBuildStatus == 1 && scope.row.cooperateStatus == 1 && scope.row.powerStatus == 1 && scope.row.relevantStatus == 1" style="color:#70B603;">已完善</span>
+            <span v-if="scope.row.supplementStatus == 1 && scope.row.profixStatus == 1" style="color:#70B603;">已完善</span>
             <span v-else>未完善</span>
           </template>
         </el-table-column>
@@ -182,7 +182,8 @@ export default {
           createTime: row.createTime,
           createUserNickName: row.createUserNickName,
           createUserPhone: row.createUserPhone,
-          projectName: row.projectName
+          projectName: row.projectName,
+          thirdExamine: row.thirdExamine
         }
       })
     },

@@ -12,8 +12,8 @@
         </div>
         <div class="btnnn">
           <el-button size="small" @click="approval">审批记录</el-button>
-          <el-button size="small" type="warning" @click="save">保 存</el-button>
-          <el-button size="small" type="primary" @click="sub">提交审核</el-button>
+          <el-button size="small" type="warning" v-show="thirdExamine == 0 || thirdExamine == 2" @click="save">保 存</el-button>
+          <el-button size="small" type="primary" v-show="thirdExamine == 0 || thirdExamine == 2" @click="sub">提交审核</el-button>
         </div>
       </div>
     </div>
@@ -130,17 +130,17 @@
         <tr>
           <td>年销售额（万元）</td>
           <td>
-            <el-input v-model="first.sellMoney" type="number" placeholder="请输入">
+            <el-input v-model="first.sellMoney" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.sellMoney" type="number" placeholder="请输入">
+            <el-input v-model="second.sellMoney" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="three.sellMoney" type="number" placeholder="请输入">
+            <el-input v-model="three.sellMoney" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
@@ -148,47 +148,27 @@
         <tr>
           <td>年利润额（万元）</td>
           <td>
-            <el-input v-model="first.profix" type="number" placeholder="请输入">
+            <el-input v-model="first.profix" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.profix" type="number" placeholder="请输入">
+            <el-input v-model="second.profix" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="three.profix" type="number" placeholder="请输入">
+            <el-input v-model="three.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
         </tr>
       </table>
-      <!-- <el-form ref="tableListRef">
-        <el-table :data="tableData" border style="width: 100%;margin:20px 0 30px 0;">
-          <el-table-column type="index" :index="indexMethod" width="300px" />
-          <el-table-column label="2019年">
-            <template>
-              <el-input placeholder="请输入" />
-            </template>
-          </el-table-column>
-          <el-table-column label="2020年">
-            <template>
-              <el-input placeholder="请输入" />
-            </template>
-          </el-table-column>
-          <el-table-column label="2021年">
-            <template>
-              <el-input placeholder="请输入" />
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-form> -->
 
       <div class="xian">
         <div>其他材料</div>
       </div>
-      <el-form :model="seProjectSupplementFile" style="margin-left:57px;margin-top:30px;" label-width="140px">
+      <el-form :model="seProjectSupplementFile" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" style="margin-left:57px;margin-top:30px;" label-width="140px">
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="近3年财务报告" class="must-form-item">
@@ -243,28 +223,29 @@ export default {
   name: 'MaterialDetail',
   data() {
     return {
+      thirdExamine: '',
       projectId: '',
-      seProjectCompanyInfo: { // 业主信息
-        projectId: this.$route.query.projectId
-      }, 
-      // tableData: [{},{}],
+      seProjectCompanyInfo: { }, // 业主信息
       first: {
+        id: undefined,
         projectId: this.$route.query.projectId,
         yearNum: 2019,
-        sellMoney: '',
-        profix: ''
+        sellMoney: undefined,
+        profix: undefined
       },
       second: {
+        id: undefined,
         projectId: this.$route.query.projectId,
         yearNum: 2020,
-        sellMoney: '',
-        profix: ''
+        sellMoney: undefined,
+        profix: undefined
       },
       three: {
+        id: undefined,
         projectId: this.$route.query.projectId,
         yearNum: 2021,
-        sellMoney: '',
-        profix: ''
+        sellMoney: undefined,
+        profix: undefined
       },
       seProjectNearThreeYearSellProfixList: [],
       logVisible: false, // 审批记录
@@ -281,18 +262,18 @@ export default {
     }
   },
   created() {
+    this.thirdExamine = this.$route.query.thirdExamine
     this.projectId = this.$route.query.projectId
     this.getProjectInfo(this.projectId)
   },
   watch: {
-    tableData(oldVal, newVal) {
-      console.log(oldVal, newVal)
-    },
     seProjectNearThreeYearSellProfixList(newVal, oldVal) {
-      console.log(newVal, oldVal)
-      this.first = newVal[0]
+      // console.log(newVal, oldVal)
+      if(newVal.length > 0) {
+        this.first = newVal[0]
         this.second = newVal[1]
         this.three = newVal[2]
+      }
     }
   },
   methods: {
@@ -306,7 +287,7 @@ export default {
         console.log(res)
         const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile } = res.data
         this.seProjectCompanyInfo = { ...seProjectCompanyInfo }
-        this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList 
+        this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList
         if( seProjectSupplementFile ) { this.seProjectSupplementFile = { ...seProjectSupplementFile }}
         this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
         this.seProjectCooperate = seProjectCooperate

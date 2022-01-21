@@ -14,41 +14,79 @@
         <div class="btnnn">
           <el-button size="small">取 消</el-button>
           <el-button v-if="id" size="small" type="primary">保 存</el-button>
-          <el-button v-else size="small" type="primary">创 建</el-button>
+          <el-button v-else size="small" type="primary" @click="handleAddRole">创 建</el-button>
         </div>
       </div>
     </div>
      <el-card>
         <h3>角色信息</h3>
-        <el-row :gutter="20" style="margin: 0 50px;">
-          <el-col :span="10">
-            <el-form ref="infoRef" :model="infoForm" label-width="80px">
-              <el-form-item label="角色名称">
-                <el-input v-model="infoForm.roleName" placeholder="请输入角色名称"></el-input>
-              </el-form-item>
-              <el-form-item label="备注">
-                <el-input v-model="infoForm.remark" placeholder="请输入备注"></el-input>
-              </el-form-item>
-            </el-form>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-row :gutter="20">
+              <el-col :span="8" style="text-align:right;margin-top:5px;"><span style="color:red;">*</span> 角色名称</el-col>
+              <el-col :span="16">
+                <el-input v-model="addRoleInfo.roleName" placeholder="请输入"></el-input>
+              </el-col>
+            </el-row>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20" style="margin-top:10px;">
+          <el-col :span="8">
+            <el-row :gutter="20">
+              <el-col :span="8" style="text-align:right;margin-top:5px;">备注</el-col>
+              <el-col :span="16">
+                <el-input v-model="addRoleInfo.remark" placeholder="请输入"></el-input>
+              </el-col>
+            </el-row>
           </el-col>
         </el-row>
         <h3>权限配置</h3>
+        <div style="margin-left:110px;">
+          <el-checkbox :indeterminate="isIndeterminate1" v-model="checkAll1" @change="handleCheckAllChange1">资料收集</el-checkbox>
+          <div style="margin: 15px 0;"></div>
+          <el-checkbox-group v-model="checkedCities1" @change="handleCheckedCitiesChange1" style="margin-left:30px;">
+            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+          </el-checkbox-group>
+        </div>
+        <!-- <div style="margin: 15px 0 0 110px;">
+          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">审批中心</el-checkbox>
+          <div style="margin: 15px 0;"></div>
+          <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange" style="margin-left:30px;">
+            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+          </el-checkbox-group>
+        </div> -->
+        <!-- <div style="margin:15px 0 0 110px;">
+          <el-checkbox :indeterminate="isIndeterminate" v-model="checkAll" @change="handleCheckAllChange">综合管理</el-checkbox>
+          <div style="margin: 15px 0;"></div>
+          <el-checkbox-group v-model="checkedCities" @change="handleCheckedCitiesChange" style="margin-left:30px;">
+            <el-checkbox v-for="city in cities" :label="city" :key="city">{{city}}</el-checkbox>
+          </el-checkbox-group>
+        </div> -->
       </el-card>
   </div>
 </template>
 
 <script>
-import { getRoleList } from '@/api/integrated'
-
+import { getRoleList, addRole } from '@/api/integrated'
+const dataCollection = ['项目发起', '材料补充', '立项补充']
+const approvalCenter = ['项目初审', '图纸复核', '项目终审', '项目预览']
+const integrate = ['账户管理', '角色管理', '下载管理']
 export default {
   name: 'RoleDetail',
   data() {
     return {
-      id: '',
-      infoForm: {
+      addRoleInfo: {
+        id: '',
         roleName: '',
-        remark: ''
-      }
+        roleType: '',
+        remark: '',
+        menuId: ''
+      },
+      
+      checkAll1: false,
+      checkedCities1: [],
+      cities: dataCollection,
+      isIndeterminate1: true
     }
   },
   created() {
@@ -62,10 +100,26 @@ export default {
       getRoleList({ id: this.id }).then(res => {
         console.log(res)
         const { roleName, remark } = res.data
-        this.infoForm.roleName = roleName
-        this.infoForm.remark = remark
+        this.addRoleInfo.roleName = roleName
+        this.addRoleInfo.remark = remark
       })
     },
+    handleCheckAllChange1(val) {
+      this.checkedCities = val ? dataCollection : [];
+      this.isIndeterminate = false;
+    },
+    handleCheckedCitiesChange1(value) {
+      let checkedCount = value.length;
+      this.checkAll = checkedCount === this.cities.length;
+      this.isIndeterminate = checkedCount > 0 && checkedCount < this.cities.length;
+    },
+    handleAddRole() { // 创建角色
+      addRole(this.addRoleInfo).then(res => {
+        // console.log(res)
+        this.$message.success(res.msg)
+        this.$router.back()
+      })
+    }
   }
 }
 </script>

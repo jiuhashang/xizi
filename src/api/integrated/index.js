@@ -43,3 +43,10 @@ export function getRoleList(params) {
     params
   })
 }
+
+// 新增角色
+export function addRole(params) {
+  return request.post('/admin/seAdminRoleInfo/addOne', 
+  params
+  )
+}

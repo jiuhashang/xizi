@@ -12,8 +12,8 @@
         </div>
         <div class="btnnn">
           <el-button size="small" @click="approval">审批记录</el-button>
-          <el-button size="small" type="warning" :loading="saveLoading" @click="save">保 存</el-button>
-          <el-button size="small" type="primary" :loading="subLoading" @click="sub">提交审核</el-button>
+          <el-button size="small" v-show="firstExamine == 0 || firstExamine	 == 2" type="warning" :loading="saveLoading" @click="save">保 存</el-button>
+          <el-button size="small" v-show="firstExamine == 0 || firstExamine	 == 2" type="primary" :loading="subLoading" @click="sub">提交审核</el-button>
         </div>
       </div>
     </div>
@@ -53,7 +53,7 @@
       <div class="xian">
         <div>业主信息</div>
       </div>
-      <el-form ref="companyInfoForm" :rules="companyInfoRules" :model="seProjectCompanyInfo" label-width="130px">
+      <el-form ref="companyInfoForm" :rules="companyInfoRules" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" :model="seProjectCompanyInfo" label-width="130px">
         <el-row :gutter="20" style="margin-top:30px;">
           <el-col :span="8">
             <el-row :gutter="20">
@@ -121,7 +121,7 @@
       <div class="xian">
         <div>屋面信息</div>
       </div>
-      <el-form ref="companyBuildInfoForm" :rules="CompanyBuildInfoRules" :model="seProjectCompanyBuildInfo" label-width="130px">
+      <el-form ref="companyBuildInfoForm" :rules="CompanyBuildInfoRules" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" :model="seProjectCompanyBuildInfo" label-width="130px">
         <el-row :gutter="20" style="margin:30px 30px 0 30px;">
           <el-col :span="8">
             <el-form-item label="屋顶总面积" prop="houseArea" class="must-form-item">
@@ -209,7 +209,7 @@
       <div class="xian">
         <div>供电现状</div>
       </div>
-      <el-form ref="powerInfoForm" :rules="powerInfoRules" :model="seProjectPowerInfo" label-width="150px">
+      <el-form ref="powerInfoForm" :rules="powerInfoRules" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" :model="seProjectPowerInfo" label-width="150px">
         <el-row :gutter="20" style="margin:30px 10px 0;">
           <el-col :span="8">
             <el-form-item label="供电类型" prop="prowerType" class="must-form-item">
@@ -283,7 +283,7 @@
           <span>变压器各台容量（选填）</span>
         </div>
         <div>
-          <el-button type="primary" size="small" @click="handleAdd">添加变压器</el-button>
+          <el-button type="primary" size="small" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" @click="handleAdd">添加变压器</el-button>
           <el-table :data="seProjectPowerTransformInfoList" style="width: 100%" :header-cell-style="{background:'#f2f2f2',color:'#555'}">
             <el-table-column prop="transformName" label="变压器名称" />
             <el-table-column prop="transformVolume" label="容量（kVA）" />
@@ -301,7 +301,7 @@
         <div>合作模式</div>
       </div>
       <el-alert title="请选择投资模式，在其他投资情况下，折扣与租金可以多选。" type="success" :closable="false" />
-      <el-form ref="cooperateForm" :rules="cooperateRules" :model="seProjectCooperate" label-width="130px">
+      <el-form ref="cooperateForm" :rules="cooperateRules" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" :model="seProjectCooperate" label-width="130px">
         <el-row :gutter="20" style="margin:30px 30px 0 30px;">
           <el-col :span="8">
             <el-form-item label="合作模式" prop="cooperateType" class="must-form-item">
@@ -348,7 +348,7 @@
         <div>相关材料</div>
       </div>
       <el-alert title="如文件较多，可将文件进行压缩打包上传，并等待文件完成上传。" type="success" :closable="false" />
-      <el-form ref="relevantFileForm" :rules="relevantFileRules" :model="seProjectRelevantFile" style="text-align:right;" label-width="160px">
+      <el-form ref="relevantFileForm" :rules="relevantFileRules" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" :model="seProjectRelevantFile" style="text-align:right;" label-width="160px">
         <el-row :gutter="20" style="margin:0 30px;">
           <el-col :span="8">
             <el-form-item label="不动产权证或三证" prop="realPropertyRightFile" class="must-form-item">
@@ -578,6 +578,7 @@ export default {
       }
     }
     return {
+      firstExamine: '',
       projectId: '',
       must: false, // 控制是否必填
       addForm: { // 添加变压器
@@ -671,6 +672,13 @@ export default {
 
       seProjectCooperate: {
         projectId: this.$route.query.projectId,
+        cooperateType: '',
+        ownPutFlag: false,
+        ownPutMoney: '',
+        electricityDiscountFlag: false,
+        electricityDiscountScale: '',
+        houseLeaseFlag: false,
+        houseLeaseMoney: ''
       }, // 合作模式
       cooperateRules: {
         cooperateType: [{ required: this.must, message: '请选择', trigger: 'change, blur' }]
@@ -691,28 +699,12 @@ export default {
     }
   },
   created() {
+    this.firstExamine = this.$route.query.firstExamine
     this.projectId = this.$route.query.projectId
     this.getProjectInfo( this.projectId )
     getProvinceCity().then(res => {
       this.options = res.data
     })
-  },
-  watch: {
-    'seProjectCooperate.ownPutFlag': function(newVal, oldVal) {
-      if(newVal == 1) {
-        this.seProjectCooperate.ownPutFlag = true
-      }
-    },
-    'seProjectCooperate.electricityDiscountFlag': function(newVal, oldVal) {
-      if(newVal == 1) {
-        this.seProjectCooperate.electricityDiscountFlag = true
-      }
-    },
-    'seProjectCooperate.houseLeaseFlag': function(newVal, oldVal) {
-      if(newVal == 1) {
-        this.seProjectCooperate.houseLeaseFlag = true
-      }
-    }
   },
   methods: {
     getProjectInfo( projectId ) {
@@ -841,13 +833,13 @@ export default {
     selectChange(val) {
       if(val == 0) {
         this.seProjectCooperate.ownPutFlag = true
-        this.seProjectCooperate.electricityDiscountFlag = false
-        this.seProjectCooperate.electricityDiscountScale = ''
-        this.seProjectCooperate.houseLeaseFlag = false
-        this.seProjectCooperate.houseLeaseMoney = ''
-      } else if(val == 1) {
-        this.seProjectCooperate.ownPutFlag = false
-        this.seProjectCooperate.ownPutMoney = ''
+      //   this.seProjectCooperate.electricityDiscountFlag = false
+      //   this.seProjectCooperate.electricityDiscountScale = ''
+      //   this.seProjectCooperate.houseLeaseFlag = false
+      //   this.seProjectCooperate.houseLeaseMoney = ''
+      // } else if(val == 1) {
+      //   this.seProjectCooperate.ownPutFlag = false
+      //   this.seProjectCooperate.ownPutMoney = ''
       } 
     },
     housePartTypeChange(value) { // 屋面材质

@@ -157,7 +157,8 @@ export default {
         createTime: row.createTime,
         createUserNickName: row.createUserNickName,
         createUserPhone: row.createUserPhone,
-        projectName: row.projectName
+        projectName: row.projectName,
+        secondExamine: row.secondExamine
        } })
     },
     

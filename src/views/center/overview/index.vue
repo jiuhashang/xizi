@@ -42,15 +42,25 @@
             {{ scope.row.province }} {{ scope.row.city }}
           </template>
         </el-table-column>
-        <el-table-column prop="messageInputSubmitTime" label="项目发起时间" />
+        <el-table-column prop="createTime" label="项目发起时间" />
         <el-table-column label="当前进度">
-          
+          <template slot-scope="scope">
+            <span v-if="scope.row.status == 0">待录入</span>
+            <span v-else-if="scope.row.status == 1">初审待审核</span>
+            <span v-else-if="scope.row.status == 2">初审审核驳回</span>
+            <span v-else-if="scope.row.status == 3">初审审核通过</span>
+            <span v-else-if="scope.row.status == 4">复核驳回</span>
+            <span v-else-if="scope.row.status == 5">复核通过</span>
+            <span v-else-if="scope.row.status == 6">终审待审核</span>
+            <span v-else-if="scope.row.status == 7">终审待审核</span>
+            <span v-else>项目终止</span>
+          </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="handleView(scope.row)">查看</el-button>
             <el-button type="text">文件打包</el-button>
-            <el-button type="text">生成PDF</el-button>
+            <el-button type="text" @click="handlePdf(scope.row.projectId)">生成PDF</el-button>
           </template>
         </el-table-column> 
       </el-table>
@@ -79,7 +89,7 @@
 
 <script>
 import { getProjectExamineLog } from '@/api/listProject'
-import { selectListAll } from '@/api/center'
+import { selectListAll, getProjectPdf } from '@/api/center'
 
 export default {
   name: 'Overview',
@@ -141,6 +151,12 @@ export default {
       this.tableInfo.pageIndex = 1
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.selectListAll()
+    },
+    handlePdf(projectId) {
+      // getProjectPdf({projectId}).then(res => {
+      //   console.log(res)
+      //   this.$message.success('')
+      // })
     },
     // 表dan重置
     reset() {

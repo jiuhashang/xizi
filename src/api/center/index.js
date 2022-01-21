@@ -51,3 +51,12 @@ export function projectThirdExamine(params) {
     params
   })
 }
+
+// 生产PDF
+export function getProjectPdf(params) {
+  return request({
+    url: '/admin/seProjectInfo/getProjectPdf',
+    method: 'get',
+    params
+  })
+}

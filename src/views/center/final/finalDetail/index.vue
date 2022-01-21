@@ -11,11 +11,11 @@
           <h2>&lt; {{ $route.meta.title }}</h2>
         </div>
         <div class="btnnn">
-          <el-button size="small" @click="handleOver">终止项目</el-button>
+          <el-button size="small" @click="handleOver" v-show="thirdExamine == 1">终止项目</el-button>
           <!-- <el-button size="small">工商数据查看</el-button> -->
           <el-button size="small" @click="handleApproval">审批记录</el-button>
-          <el-button size="small" type="danger" @click="handleReject">驳回审核</el-button>
-          <el-button size="small" type="primary" @click="handlePass">审核通过</el-button>
+          <el-button size="small" type="danger" @click="handleReject" v-show="thirdExamine == 1">驳回审核</el-button>
+          <el-button size="small" type="primary" @click="handlePass" v-show="thirdExamine == 1">审核通过</el-button>
         </div>
       </div>
     </div>
@@ -819,6 +819,7 @@ export default {
   name: 'FinalDetail',
   data() {
       return {
+        thirdExamine: '',
         city: '',
         province: '',
         yearSunShine: '',
@@ -863,6 +864,7 @@ export default {
       }
     },
     created() {
+      this.thirdExamine = this.$route.query.thirdExamine
       this.projectId = this.$route.query.projectId
       this.getProjectInfo(this.projectId)
       this.getProfitMessage(this.projectId)

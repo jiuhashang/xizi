@@ -11,13 +11,13 @@
           <h2>&lt; {{ $route.meta.title }}</h2>
         </div>
         <div class="btnnn">
-          <el-button size="small" @click="handleTermination">终止项目</el-button>
+          <el-button size="small" @click="handleTermination" v-show="firstExamine == 1">终止项目</el-button>
           <!-- <el-button size="small" @click="handleView">工商数据查看</el-button> -->
           <el-button size="small" @click="handleApproval">审批记录</el-button>
-          <el-button size="small" type="danger" @click="handleReject">驳回审核</el-button>
-          <el-button size="small" type="primary" @click="handleSupplement">进入补充</el-button>
-          <el-button size="small" type="primary" @click="handleFinal">直接终审</el-button>
-          <el-button size="small" type="primary" @click="handleReview">进入复核</el-button>
+          <el-button size="small" type="danger" @click="handleReject" v-show="firstExamine == 1">驳回审核</el-button>
+          <el-button size="small" type="primary" @click="handleSupplement" v-show="firstExamine == 1">进入补充</el-button>
+          <el-button size="small" type="primary" @click="handleFinal" v-show="firstExamine == 1">直接终审</el-button>
+          <el-button size="small" type="primary" @click="handleReview" v-show="firstExamine == 1">进入复核</el-button>
         </div>
       </div>
     </div>
@@ -281,12 +281,6 @@
               <el-table :data="seProjectPowerTransformInfoList" style="width: 100%" :header-cell-style="{background:'#f2f2f2',color:'#555'}">
                 <el-table-column prop="transformName" label="变压器名称" />
                 <el-table-column prop="transformVolume" label="容量（kVA）" />
-                <!-- <el-table-column label="操作">
-                  <template slot-scope="scope">
-                    <el-button type="danger" size="small" @click="deleteData(scope.row)">删除</el-button>
-                    <el-button type="info" size="small" @click="editData(scope.row)">编辑</el-button>
-                  </template>
-                </el-table-column> -->
               </el-table>
             </div>
           </el-card>
@@ -482,7 +476,7 @@
               </el-row>
             </el-col>
           </el-row>
-          <el-row :gutter="20" style="margin:30px 30px 15px 30px;">
+          <el-row :gutter="20" style="margin:30px 30px 0 30px;">
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋顶使用年限</el-col>
@@ -512,7 +506,7 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13" style="margin-top:10px;">彩钢瓦类型</el-col>
                 <el-col :span="16" class="span130">
-                  <el-select v-model="seProjectCompanyBuildInfo.colorSteelType" multiple placeholder="请选择(可多选)" class="width100" clearable>
+                  <el-select v-model="seProjectCompanyBuildInfo.colorSteelType" multiple placeholder="请选择(可多选)" class="width100" :disabled="firstExamine == 2 || firstExamine == 3 || firstExamine == 99" clearable>
                     <el-option label="无" value="0"></el-option>
                     <el-option label="直立锁边" value="1"></el-option>
                     <el-option label="角齿" value="2"></el-option>
@@ -528,8 +522,9 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13" style="margin-top:10px;">彩钢瓦比水泥顶</el-col>
                 <el-col :span="16" class="span130">
-                  <el-input-number v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale" @change="handleChange"></el-input-number>
-                  %
+                  <el-input v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale" type="number" class="spanmt" placeholder="请输入" :disabled="firstExamine == 2 || firstExamine == 3 || firstExamine == 99" clearable>
+                    <span slot="suffix">%</span>
+                  </el-input>
                 </el-col>
               </el-row>
             </el-col>
@@ -582,62 +577,72 @@
 
           <div class="xian" style="display:flex;justify-content:space-between;">
             <div>参数配置</div>
-            <el-button type="primary" size="mini" @click="handleMeasure">测算数据</el-button>
+            <el-button type="primary" size="mini" @click="handleMeasure" :disabled="firstExamine == 2 || firstExamine == 3 || firstExamine == 99">测算数据</el-button>
           </div>
-          <el-form ref="form" :model="seProjectProfitConfig" label-width="130px">
+          <el-form ref="form" :model="seProjectProfitConfig" :disabled="firstExamine == 2 || firstExamine == 3 || firstExamine == 99" label-width="130px">
             <el-row :gutter="20" style="margin:30px 30px 0 30px;">
-              <el-col :span="8">
+              <el-col :span="8" style="margin-top:10px;">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">脱硫煤电价</el-col>
                   <el-col :span="16" class="span130">{{ seProjectProfitConfig.desulfurizeElectricityPrice }} 元/KWH</el-col>
                 </el-row>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="8" style="padding-left:70px;">
                 <el-form-item label="加权电价">
-                  <el-input-number v-model="seProjectProfitConfig.weightElectricityPrice" @change="handleChange" @input="handleBlur">
+                  <el-input v-model="seProjectProfitConfig.weightElectricityPrice" type="number" placeholder="请输入" clearable>
                     <span slot="suffix">元/KWH</span>
-                  </el-input-number>
-                  元/KWH
+                  </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="8" style="margin-top:10px;">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">折后电价</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.discountElectricityPrice }} 元/KWH</el-col>
+                  <el-col :span="16" class="span130" v-if="seProjectProfitConfig.discountElectricityPrice">{{ seProjectProfitConfig.discountElectricityPrice }} 元/KWH</el-col>
+                  <el-col :span="16" class="span130" v-else> - </el-col>
                 </el-row>
               </el-col>
             </el-row>
-            <el-row :gutter="20" style="margin:30px;">
-              <el-col :span="8">
+            <el-row :gutter="20" style="margin: 10px 30px 10px;">
+              <el-col :span="8" style="padding-left:70px;">
                 <el-form-item label="每年固定运维费用">
-                  <el-input-number v-model="seProjectProfitConfig.yearRepairPrice" @change="handleChange" />元/瓦
+                  <el-input v-model="seProjectProfitConfig.yearRepairPrice" type="number" placeholder="请输入" clearable>
+                    <span slot="suffix">元/瓦</span>
+                  </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="8" style="padding-left:70px;">
                 <el-form-item label="第10年运维费用">
-                  <el-input-number v-model="seProjectProfitConfig.tenRepairPrice" @change="handleChange" />元/瓦
+                  <el-input v-model="seProjectProfitConfig.tenRepairPrice" type="number" placeholder="请输入" clearable>
+                    <span slot="suffix">元/瓦</span>
+                  </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="8" style="padding-left:70px;">
                 <el-form-item label="第15年运维费用">
-                  <el-input-number v-model="seProjectProfitConfig.fifteenRepairPrice" @change="handleChange" />元/瓦
+                  <el-input v-model="seProjectProfitConfig.fifteenRepairPrice" type="number" placeholder="请输入" clearable>
+                    <span slot="suffix">元/瓦</span>
+                  </el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row :gutter="20" style="margin:0 30px 30px 30px;">
-              <el-col :span="8">
+            <el-row :gutter="20" style="margin:0 30px 30px;">
+              <el-col :span="8" style="padding-left:70px;">
                 <el-form-item label="自发自用比例">
-                  <el-input-number v-model="seProjectProfitConfig.selfUseScale" @change="handleChange" />%
+                  <el-input v-model="seProjectProfitConfig.selfUseScale" type="number" placeholder="请输入" clearable>
+                    <span slot="suffix">%</span>
+                  </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="8" style="padding-left:70px;">
                 <el-form-item label="单瓦价格">
-                  <el-input-number v-model="seProjectProfitConfig.unitPrice" @change="handleChange" />元/瓦
+                  <el-input v-model="seProjectProfitConfig.unitPrice" type="number" placeholder="请输入" clearable>
+                    <span slot="suffix">元/瓦</span>
+                  </el-input>
                 </el-form-item>
               </el-col>
-              <el-col :span="8">
+              <el-col :span="8" style="padding-left:70px;">
                 <el-form-item label="并网电压类型">
-                  <el-select v-model="seProjectProfitConfig.voltageType" placeholder="请选择">
+                  <el-select v-model="seProjectProfitConfig.voltageType" placeholder="请选择" class="width100">
                     <el-option label="高压" :value="1"></el-option>
                     <el-option label="低压" :value="0"></el-option>
                   </el-select>
@@ -651,61 +656,73 @@
           </div>
           <div style="margin-top:15px;display:flex;justify-content:space-around;">
             <div class="t1" style="background-color:#3C4563;">
-              <h3>全投资内部收益率</h3>
-              <h1>{{ projectTotalProfitModel.innerScal }}%</h1>
+              <p style="font-size: 14px;margin-left:30px;">全投资内部收益率</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.innerScal">{{ projectTotalProfitModel.innerScal }}%</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-else> - </p>
             </div>
             <div class="t1" style="background-color:#8892DF;">
-              <h3>投资偿还期（年）</h3>
-              <h1>{{ projectTotalProfitModel.investNum }}</h1>
+              <p style="font-size: 14px;margin-left:30px;">投资偿还期（年）</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.investNum">{{ projectTotalProfitModel.investNum }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-else> - </p>
             </div>
             <div class="t1" style="background-color:#6FACFD;">
-              <h3>总投资费用（万元）</h3>
-              <h1>{{ projectTotalProfitModel.totalInvestPrice }}</h1>
+              <p style="font-size: 14px;margin-left:30px;">总投资费用（万元）</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.totalInvestPrice">{{ projectTotalProfitModel.totalInvestPrice }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-else> - </p>
             </div>
             <div class="t1" style="background-color:#ED7E77;">
-              <h3>首年发电量（万KWH）</h3>
-              <h1>{{ projectTotalProfitModel.firstElectric }}</h1>
+              <p style="font-size: 14px;margin-left:30px;">首年发电量</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.firstElectric">{{ projectTotalProfitModel.firstElectric }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-else> - </p>
             </div>
           </div>
           <div style="margin-top:15px;display:flex;justify-content:space-around;">
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>发电总效益（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalElectricUseIncomeScal }}</h3>
+                <h3 v-if="projectTotalProfitModel.totalElectricUseIncomeScal">{{ projectTotalProfitModel.totalElectricUseIncomeScal }}</h3>
+                <h3 v-else> - </h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageElectricUseIncomeScal }}</h3>
+                <h3 v-if="projectTotalProfitModel.averageElectricUseIncomeScal">{{ projectTotalProfitModel.averageElectricUseIncomeScal }}</h3>
+                <h3 v-else> - </h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>总净利润（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalCleanProfit }}</h3>
+                <h3 v-if="projectTotalProfitModel.totalCleanProfit">{{ projectTotalProfitModel.totalCleanProfit }}</h3>
+                <h3 v-else> - </h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageCleanProfit }}</h3>
+                <h3 v-if="projectTotalProfitModel.averageCleanProfit">{{ projectTotalProfitModel.averageCleanProfit }}</h3>
+                <h3 v-else> - </h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>投资方总收入（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalInvestorIncome }}</h3>
+                <h3 v-if="projectTotalProfitModel.totalInvestorIncome">{{ projectTotalProfitModel.totalInvestorIncome }}</h3>
+                <h3 v-else> - </h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageInvestorIncome }}</h3>
+                <h3 v-if="projectTotalProfitModel.averageInvestorIncome">{{ projectTotalProfitModel.averageInvestorIncome }}</h3>
+                <h3 v-else> - </h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>自投总收入（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalOwnIncome }}</h3>
+                <h3 v-if="projectTotalProfitModel.totalOwnIncome">{{ projectTotalProfitModel.totalOwnIncome }}</h3>
+                <h3 v-else> - </h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageOwnIncome }}</h3>
+                <h3 v-if="projectTotalProfitModel.averageOwnIncome">{{ projectTotalProfitModel.averageOwnIncome }}</h3>
+                <h3 v-else> - </h3>
               </div>
             </div>
           </div>
@@ -763,6 +780,7 @@ export default {
   name: 'FirstDetail',
   data() {
     return {
+      firstExamine: '',
       province: '',
       city:'',
       activeName: 'first',
@@ -795,12 +813,13 @@ export default {
     }
   },
   created() {
+    this.firstExamine = this.$route.query.firstExamine
     this.projectId = this.$route.query.projectId
     this.getProjectInfo(this.projectId)
   },
   methods: {
     handleClick(tab, event) {
-      if(this.activeName == 'second') {
+      if(this.activeName == 'first') {
         getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算
           console.log('11', res)
           const { yearSunShine, mayInstallVolume, seProjectProfitConfig, projectTotalProfitModel, seProjectProfitCountList } = res.data
@@ -1025,28 +1044,29 @@ export default {
     text-align: left;
   }
   .t1 {
-    width: 312px;
+    width: 25%;
     height: 116px;
+    margin: 0 10px;
     color: #fff;
     background-color: #f2f2f2;
-    h3 {
-      margin-left: 15px;
-    }
-    h1 {
-      text-align: center;
-    }
   }
   .b1 {
-    width: 312px;
+    width: 25%;
     height: 116px;
     box-sizing: border-box;
-    padding: 0 20px;
-    background-color: #E8E8EE;
+    margin: 0 10px;
+    padding: 0 30px;
+    background-color: #f2f2f2;
   }
   /deep/ .el-input-number__decrease {
     display: none;
   }
   /deep/ .el-input-number__increase {
     display: none;
+  }
+  .spanmt {
+    /deep/ .el-input__suffix {
+      margin-top: 10px;
+    }
   }
 </style>
