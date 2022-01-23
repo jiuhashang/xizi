@@ -589,7 +589,7 @@
               </el-col>
               <el-col :span="8" style="padding-left:70px;">
                 <el-form-item label="加权电价">
-                  <el-input v-model="seProjectProfitConfig.weightElectricityPrice" type="number" placeholder="请输入" clearable>
+                  <el-input v-model="seProjectProfitConfig.weightElectricityPrice" type="number" @input="handleBlur" placeholder="请输入" clearable>
                     <span slot="suffix">元/KWH</span>
                   </el-input>
                 </el-form-item>

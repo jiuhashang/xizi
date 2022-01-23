@@ -104,10 +104,10 @@ export default {
         pageSize: 10
       },
       options: [
-        {
-          firstExamine: '0',
-          label: '待提交'
-        }, 
+        // {
+        //   firstExamine: '0',
+        //   label: '待提交'
+        // }, 
         {
           firstExamine: '1',
           label: '审核中'

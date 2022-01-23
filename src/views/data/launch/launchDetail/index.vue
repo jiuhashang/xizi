@@ -323,7 +323,7 @@
           </el-col>
           <el-col :span="8" v-show="seProjectCooperate.cooperateType == 1">
             <div style="display:flex;">
-              <el-checkbox v-model="seProjectCooperate.electricityDiscountFlag" style="margin-top:10px;" />
+              <el-checkbox v-model="seProjectCooperate.electricityDiscountFlag" style="margin-top:10px;" @click="handleEle" />
               <el-form-item label="电费折扣，比例">
                 <el-input v-model="seProjectCooperate.electricityDiscountScale" class="width100" type="number" clearable placeholder="请输入" :disabled="!seProjectCooperate.electricityDiscountFlag">
                   <span slot="suffix">%</span>
@@ -333,7 +333,7 @@
           </el-col>
           <el-col :span="8" v-show="seProjectCooperate.cooperateType == 1">
             <div style="display:flex;">
-              <el-checkbox v-model="seProjectCooperate.houseLeaseFlag" style="margin-top:10px;" />
+              <el-checkbox v-model="seProjectCooperate.houseLeaseFlag" style="margin-top:10px;" @change="handleHou" />
               <el-form-item label="出租屋面，租金">
                 <el-input v-model="seProjectCooperate.houseLeaseMoney" class="width100" clearable type="number" placeholder="请输入" :disabled="!seProjectCooperate.houseLeaseFlag">
                   <span slot="suffix">万元/年</span>
@@ -504,7 +504,7 @@
           <el-card style="margin-top:0;margin-bottom:0;">
             <p>{{activity.title}}</p>
             <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
-            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
+            <p v-show="activity.remark">审批备注: {{activity.remark}}</p>
           </el-card>
         </el-timeline-item>
       </el-timeline>
@@ -706,25 +706,41 @@ export default {
       this.options = res.data
     })
   },
+  // watch: {
+  //   'seProjectCooperate.cooperateType':function(newVal, oldVal) {
+  //     console.log(newVal, oldVal)
+  //     if(newVal === 0) {
+  //       this.seProjectCooperate.ownPutFlag = true
+  //       this.seProjectCooperate.electricityDiscountFlag = false
+  //       this.seProjectCooperate.electricityDiscountScale = ''
+  //       this.seProjectCooperate.houseLeaseFlag = false
+  //       this.seProjectCooperate.houseLeaseMoney = ''
+  //     } else if(newVal === 1) {
+  //       this.seProjectCooperate.ownPutFlag = false
+  //       this.seProjectCooperate.ownPutMoney = ''
+  //     } 
+  //   }
+  // },
   methods: {
     getProjectInfo( projectId ) {
       getProjectInfo({ projectId }).then(res => {
-        console.log(res)
         const {seProjectCompanyInfo,seProjectCompanyBuildInfo,seProjectPowerInfo,seProjectCooperate,seProjectRelevantFile,seProjectPowerTransformInfoList} = res.data
         this.seProjectCompanyInfo = {...seProjectCompanyInfo}
         this.seProjectCompanyBuildInfo = {...seProjectCompanyBuildInfo}
         this.seProjectPowerInfo = {...seProjectPowerInfo}
         this.seProjectCooperate = {...seProjectCooperate}
+        if(this.seProjectCooperate.ownPutFlag &&  this.seProjectCooperate.ownPutFlag == 1) { this.seProjectCooperate.ownPutFlag = true }
+        if(this.seProjectCooperate.electricityDiscountFlag &&  this.seProjectCooperate.electricityDiscountFlag == 1) { this.seProjectCooperate.electricityDiscountFlag = true }
+        if(this.seProjectCooperate.houseLeaseFlag &&  this.seProjectCooperate.houseLeaseFlag == 1) { this.seProjectCooperate.houseLeaseFlag = true }
         this.seProjectRelevantFile = {...seProjectRelevantFile}
         this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList
         this.seProjectCompanyInfo.value = [this.seProjectCompanyInfo.province, this.seProjectCompanyInfo.city]
         if(this.seProjectCompanyBuildInfo.housePartType) { this.housePartType = this.seProjectCompanyBuildInfo.housePartType.split(',') }
         if(this.seProjectCompanyBuildInfo.colorSteelType) { this.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.split(',') }
-        if(this.seProjectCompanyBuildInfo.housePartType.indexOf('2') !=-1) { this.houseDis = false }
+        if(this.seProjectCompanyBuildInfo.housePartType.indexOf('2') !== -1) { this.houseDis = false }
       })
     },
-    // 保存
-    save() {
+    front(msg) {
       this.saveLoading = true
       if(this.seProjectCooperate.ownPutFlag == false ) {
         this.seProjectCooperate.ownPutFlag = 0
@@ -759,11 +775,18 @@ export default {
         seProjectCooperate: this.seProjectCooperate,
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
-        // console.log(res)
         this.saveLoading = false
-        this.$message.success('保存成功')
+        if(res.code == 0 && !msg) { 
+          this.$message.success('保存成功')
+        }
         this.getProjectInfo(this.projectId)
+      }).catch(err => {
+        this.saveLoading = false
       })
+    },
+    // 保存
+    save() {
+      this.front()
     },
     // 提交审核
     async sub() {
@@ -775,6 +798,7 @@ export default {
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消')
       }
+      this.front(1)
       this.subLoading = true
       projectInputSubmit({projectId: this.projectId}).then(res => {
         console.log(res)
@@ -829,17 +853,25 @@ export default {
       this.editForm = {}
     },
 
+    handleEle() {
+      if(this.seProjectCooperate.cooperateType === 1 && this.seProjectCooperate.electricityDiscountFlag == false ) {
+        this.$set(this.seProjectCooperate,'electricityDiscountFlag', 'true')
+      } else {
+        this.$set(this.seProjectCooperate,'electricityDiscountFlag', 'false')
+      }
+    },
+    handleHou() {},
     // 合作模式
     selectChange(val) {
-      if(val == 0) {
+      if(val === 0) {
         this.seProjectCooperate.ownPutFlag = true
-      //   this.seProjectCooperate.electricityDiscountFlag = false
-      //   this.seProjectCooperate.electricityDiscountScale = ''
-      //   this.seProjectCooperate.houseLeaseFlag = false
-      //   this.seProjectCooperate.houseLeaseMoney = ''
-      // } else if(val == 1) {
-      //   this.seProjectCooperate.ownPutFlag = false
-      //   this.seProjectCooperate.ownPutMoney = ''
+        this.seProjectCooperate.electricityDiscountFlag = false
+        this.seProjectCooperate.electricityDiscountScale = ''
+        this.seProjectCooperate.houseLeaseFlag = false
+        this.seProjectCooperate.houseLeaseMoney = ''
+      } else if(val === 1) {
+        this.seProjectCooperate.ownPutFlag = false
+        this.seProjectCooperate.ownPutMoney = ''
       } 
     },
     housePartTypeChange(value) { // 屋面材质

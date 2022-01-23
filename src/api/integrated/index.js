@@ -50,3 +50,10 @@ export function addRole(params) {
   params
   )
 }
+
+// 编辑角色
+export function updateOne(params) {
+  return request.post('/admin/seAdminRoleInfo/updateOne', 
+  params
+  )
+}

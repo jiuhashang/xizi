@@ -726,41 +726,49 @@
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>发电总效益（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalElectricUseIncomeScal.toFixed(2) }}</h3>
+                <h3 v-if="projectTotalProfitModel.totalElectricUseIncomeScal">{{ projectTotalProfitModel.totalElectricUseIncomeScal}}</h3>
+                <h3 v-else>-</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageElectricUseIncomeScal.toFixed(2) }}</h3>
+                <h3 v-if="projectTotalProfitModel.averageElectricUseIncomeScal">{{ projectTotalProfitModel.averageElectricUseIncomeScal }}</h3>
+                <h3 v-else>-</h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>总净利润（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalCleanProfit.toFixed(2) }}</h3>
+                <h3 v-if="projectTotalProfitModel.totalCleanProfit">{{ projectTotalProfitModel.totalCleanProfit }}</h3>
+                <h3 v-else>-</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageCleanProfit.toFixed(2) }}</h3>
+                <h3 v-if="projectTotalProfitModel.averageCleanProfit">{{ projectTotalProfitModel.averageCleanProfit }}</h3>
+                <h3 v-else>-</h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>投资方总收入（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalInvestorIncome.toFixed(2) }}</h3>
+                <h3 v-if="projectTotalProfitModel.totalInvestorIncome">{{ projectTotalProfitModel.totalInvestorIncome }}</h3>
+                <h3 v-else>-</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageInvestorIncome.toFixed(2) }}</h3>
+                <h3 v-if="projectTotalProfitModel.averageInvestorIncome">{{ projectTotalProfitModel.averageInvestorIncome }}</h3>
+                <h3 v-else>-</h3>
               </div>
             </div>
             <div class="b1">
               <div style="display:flex;justify-content:space-between;">
                 <p>自投总收入（万元）</p>
-                <h3>{{ projectTotalProfitModel.totalOwnIncome.toFixed(2) }}</h3>
+                <h3 v-if="projectTotalProfitModel.totalOwnIncome">{{ projectTotalProfitModel.totalOwnIncome }}</h3>
+                <h3 v-else>-</h3>
               </div>
               <div style="display:flex;justify-content:space-between;">
                 <p>每年均值（万元）</p>
-                <h3>{{ projectTotalProfitModel.averageOwnIncome.toFixed(2) }}</h3>
+                <h3 v-if="projectTotalProfitModel.averageOwnIncome">{{ projectTotalProfitModel.averageOwnIncome }}</h3>
+                <h3 v-else>-</h3>
               </div>
             </div>
           </div>
@@ -832,7 +840,10 @@ export default {
         projectId: '',
         seProjectCompanyBuildInfo: {},
         seProjectCompanyInfo: {}, 
-        seProjectCooperate: {}, 
+        seProjectCooperate: {
+          electricityDiscountFlag: '',
+          houseArea: ''
+        }, 
         seProjectNearThreeYearSellProfixList: [], 
         seProjectPowerInfo: {}, 
         seProjectPowerTransformInfoList: [], 

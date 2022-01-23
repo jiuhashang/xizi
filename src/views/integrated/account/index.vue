@@ -48,6 +48,7 @@
         <el-table-column label="操作">
           <template>
             <el-button type="text">编辑</el-button>
+            <el-button type="text">启用</el-button>
             <el-button type="text">停用</el-button>
           </template>
         </el-table-column> 
@@ -230,12 +231,10 @@ export default {
     },
 
     handleSizeChange(val) {
-      // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val
       this.selectList()
     },
     handleCurrentChange(val) {
-      // console.log(`当前页: ${val}`)
       this.tableInfo.pageIndex = val
       this.selectList()
     },

@@ -60,7 +60,8 @@ const routes = [
         path: '/launch',
         name: 'Launch',
         component: Launch,
-        meta: { title: '项目发起' }
+        // meta: { title: '项目发起', menuId: 'BD13B61D1E41' }
+        meta: { title: '项目发起', menuId: '项目发起' }
       },
       {
         path: '/launchDetail',
@@ -73,7 +74,8 @@ const routes = [
         path: '/material',
         name: 'Material',
         component: Material,
-        meta: { title: '材料补充' }
+        // meta: { title: '材料补充', menuId: '3DDB623DC1B4' }
+        meta: { title: '材料补充', menuId: '材料补充' }
       },
       {
         path: '/materialDetail',
@@ -86,7 +88,8 @@ const routes = [
         path: '/added',
         name: 'Added',
         component: Added,
-        meta: { title: '立项补充' }
+        // meta: { title: '立项补充', menuId: '64DA247EF00D' }
+        meta: { title: '立项补充', menuId: '立项补充' }
       },
       {
         path: '/addedDetail',
@@ -100,7 +103,8 @@ const routes = [
         path: '/first',
         name: 'First',
         component: First,
-        meta: { title: '项目初审' }
+        // meta: { title: '项目初审', menuId: '05F8CE861908' }
+        meta: { title: '项目初审', menuId: '项目初审' }
       },
       {
         path: '/firstDetail',
@@ -113,7 +117,8 @@ const routes = [
         path: '/review',
         name: 'Review',
         component: Review,
-        meta: { title: '图纸复核' }
+        // meta: { title: '图纸复核', menuId: '44E8DADDB02E' }
+        meta: { title: '图纸复核', menuId: '图纸复核' }
       },
       {
         path: '/reviewDetail',
@@ -126,7 +131,8 @@ const routes = [
         path: '/final',
         name: 'Final',
         component: Final,
-        meta: { title: '项目终审' }
+        // meta: { title: '项目终审', menuId: 'CC97CDA2CB34' }
+        meta: { title: '项目终审', menuId: '项目终审' }
       },
       {
         path: '/finalDetail',
@@ -139,7 +145,8 @@ const routes = [
         path: '/share',
         name: 'Share',
         component: Share,
-        meta: { title: '项目分享' }
+        // meta: { title: '项目分享', menuId: '0CD5A8A7B987' }
+        meta: { title: '项目分享', menuId: '项目分享' }
       },
       {
         path: '/shareDetail',
@@ -152,7 +159,8 @@ const routes = [
         path: '/overview',
         name: 'Overview',
         component: Overview,
-        meta: { title: '项目总览' }
+        // meta: { title: '项目总览', menuId: 'F34B88ABB41C' }
+        meta: { title: '项目总览', menuId: '项目总览' }
       },
       {
         path: '/overviewDetail',
@@ -165,7 +173,8 @@ const routes = [
         path: '/preview',
         name: 'Preview',
         component: Preview,
-        meta: { title: '项目预览' }
+        // meta: { title: '项目预览', menuId: 'C311C6D0305D' }
+        meta: { title: '项目预览', menuId: '项目预览' }
       },
       {
         path: '/previewDetail',
@@ -179,21 +188,24 @@ const routes = [
         path: '/account',
         name: 'Account',
         component: Account,
-        meta: { title: '账号管理' }
+        // meta: { title: '账号管理', menuId: '350C4B90BFDA' }
+        meta: { title: '账号管理', menuId: '账号管理' }
       },
 
       {
         path: '/organization',
         name: 'Organization',
         component: Organization,
-        meta: { title: '机构管理' }
+        // meta: { title: '机构管理', menuId: '0AF68C01847C' }
+        meta: { title: '机构管理', menuId: '机构管理' }
       },
 
       {
         path: '/role',
         name: 'Role',
         component: Role,
-        meta: { title: '角色管理' }
+        // meta: { title: '角色管理', menuId: '5063084DE6E0' }
+        meta: { title: '角色管理', menuId: '角色管理' }
       },
       {
         path: '/roleDetail',
@@ -206,7 +218,8 @@ const routes = [
         path: '/download',
         name: 'Download',
         component: Download,
-        meta: { title: '下载管理' }
+        // meta: { title: '下载管理', menuId: 'B68D4461AC14' }
+        meta: { title: '下载管理', menuId: '下载管理' }
       },
     ]
   },

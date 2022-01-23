@@ -130,17 +130,17 @@
         <tr>
           <td>年销售额（万元）</td>
           <td>
-            <el-input v-model="first.sellMoney" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="first.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.sellMoney" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="second.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="three.sellMoney" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="three.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
@@ -148,12 +148,12 @@
         <tr>
           <td>年利润额（万元）</td>
           <td>
-            <el-input v-model="first.profix" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="first.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.profix" type="number":disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="second.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
@@ -268,7 +268,6 @@ export default {
   },
   watch: {
     seProjectNearThreeYearSellProfixList(newVal, oldVal) {
-      // console.log(newVal, oldVal)
       if(newVal.length > 0) {
         this.first = newVal[0]
         this.second = newVal[1]
@@ -277,11 +276,6 @@ export default {
     }
   },
   methods: {
-    // 表格自定义索引
-    // indexMethod(index) {
-    //   return ['年销售额（万元）','年利润额（万元）'][index]
-    // },
-
     getProjectInfo() {
       getProjectInfo({ projectId: this.projectId }).then(res => {
         console.log(res)
@@ -296,10 +290,8 @@ export default {
         this.seProjectRelevantFile = seProjectRelevantFile
       })
     },
-    // 保存
-    save() {
-      this.seProjectNearThreeYearSellProfixList.push (this.first, this.second, this.three )
-      // console.log(this.seProjectNearThreeYearSellProfixList)
+    front(msg) {
+      this.seProjectNearThreeYearSellProfixList.push(this.first, this.second, this.three)
       relevantInput({
         projectId: this.projectId,
         seProjectSupplementFile: this.seProjectSupplementFile,
@@ -311,16 +303,20 @@ export default {
         seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
-        console.log(res)
-        this.$message.success(res.msg)
-        // this.first = res.data.seProjectNearThreeYearSellProfixList[0]
-        // this.second = res.data.seProjectNearThreeYearSellProfixList[1]
-        // this.three = res.data.seProjectNearThreeYearSellProfixList[2]
+        // console.log(res)
+        if(res.code && !msg) { 
+          this.$message.success('保存成功')
+        }
         this.getProjectInfo(this.projectId)
       })
     },
+    // 保存
+    save() {
+      this.front()
+    },
     // 提交
     sub() {
+      this.save(1)
       relevantInputSubmit({ projectId: this.projectId }).then(res => {
         console.log(res)
         this.$router.back()

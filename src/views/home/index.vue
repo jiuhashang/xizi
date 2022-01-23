@@ -8,8 +8,7 @@
         class="el-menu-demo"
         mode="horizontal"
         @select="handleSelect"
-        router
-      >
+        router>
         <el-menu-item index="/dashboard">首页</el-menu-item>
         <el-submenu index="2">
           <template slot="title">资料收集</template>
