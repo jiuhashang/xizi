@@ -37,8 +37,8 @@ export default {
   data () {
     return {
       form: {
-        userName: 'admin',
-        password: '12345678',
+        userName: '',
+        password: '',
         code: '',
         key: ''
       },
@@ -61,6 +61,8 @@ export default {
             window.sessionStorage.setItem('token',res.data.token)
             window.sessionStorage.setItem('nickName',res.data.nickName)
             window.sessionStorage.setItem('image',res.data.image)
+            window.sessionStorage.setItem('menuId',res.data.seAdminRoleInfo.menuId)
+            console.log(res.data.seAdminRoleInfo.meunId)
             this.$router.push('/home')
           }
         }).catch( err => {
@@ -69,7 +71,7 @@ export default {
           this.getImgSrc()
         })
       } else {
-        this.$message.error('验证码不能为空！')
+        this.$message.error('验证码不能为空!')
       }
     },
     getImgSrc() {

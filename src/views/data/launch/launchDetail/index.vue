@@ -74,7 +74,7 @@
             </el-row>
           </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin:30px;">
+        <el-row :gutter="20" style="margin:30px 30px 10px 30px;">
           <el-col :span="8">
             <el-form-item label="公司性质" prop="companyType" class="must-form-item">
               <el-select v-model="seProjectCompanyInfo.companyType" clearable placeholder="请选择" class="width100">
@@ -144,7 +144,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin:30px;">
+        <el-row :gutter="20" style="margin:10px 30px 0 30px;">
           <el-col :span="8">
             <el-form-item label="屋顶使用年限" prop="useYears" class="must-form-item">
               <el-select v-model="seProjectCompanyBuildInfo.useYears" placeholder="请选择" class="width100">
@@ -190,7 +190,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin:0 30px 30px 30px;">
+        <el-row :gutter="20" style="margin:10px 30px 30px 30px;">
           <el-col :span="8">
             <el-form-item label="彩钢瓦比水泥顶" prop="colorSteelCementTopScale" class="must-form-item">
               <el-input v-model="seProjectCompanyBuildInfo.colorSteelCementTopScale" type="number" clearable>
@@ -236,7 +236,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin:30px 10px 0;">
+        <el-row :gutter="20" style="margin:10px 10px 0;">
           <el-col :span="8">
             <el-form-item label="预估装机容量" prop="mayInstallVolume" class="must-form-item">
               <el-input v-model="seProjectPowerInfo.mayInstallVolume">
@@ -262,7 +262,7 @@
             </el-form-item>
           </el-col>
         </el-row>
-        <el-row :gutter="20" style="margin:30px 20px 0;">
+        <el-row :gutter="20" style="margin:10px 20px 0;">
           <el-col :span="8" style="padding-left:0;">
             <el-form-item label="中午设备是否停机" prop="noonEquipmentFlag" class="must-form-item">
               <el-select v-model="seProjectPowerInfo.noonEquipmentFlag" placeholder="请选择"  class="width100">

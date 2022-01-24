@@ -12,25 +12,25 @@
         <el-menu-item index="/dashboard">首页</el-menu-item>
         <el-submenu index="2">
           <template slot="title">资料收集</template>
-          <el-menu-item index="/launch">项目发起</el-menu-item>
-          <el-menu-item index="/material">材料补充</el-menu-item>
-          <el-menu-item index="/added">立项补充</el-menu-item>
+          <el-menu-item index="/launch" v-show="menuId.indexOf('项目发起') !== -1">项目发起</el-menu-item>
+          <el-menu-item index="/material" v-show="menuId.indexOf('材料补充') !== -1">材料补充</el-menu-item>
+          <el-menu-item index="/added" v-show="menuId.indexOf('立项补充') !== -1">立项补充</el-menu-item>
         </el-submenu>
         <el-submenu index="3">
           <template slot="title">审批中心</template>
-          <el-menu-item index="/first">项目初审</el-menu-item>
-          <el-menu-item index="/review">图纸复核</el-menu-item>
-          <el-menu-item index="/final">项目终审</el-menu-item>
+          <el-menu-item index="/first" v-show="menuId.indexOf('项目初审') !== -1">项目初审</el-menu-item>
+          <el-menu-item index="/review" v-show="menuId.indexOf('图纸复核') !== -1">图纸复核</el-menu-item>
+          <el-menu-item index="/final" v-show="menuId.indexOf('项目终审') !== -1">项目终审</el-menu-item>
           <!-- <el-menu-item index="/share">项目分享</el-menu-item> -->
-          <el-menu-item index="/overview">项目总览</el-menu-item>
+          <el-menu-item index="/overview" v-show="menuId.indexOf('项目总览') !== -1">项目总览</el-menu-item>
           <!-- <el-menu-item index="/preview">项目预览</el-menu-item> -->
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">综合管理</template>
-          <el-menu-item index="/account">账户管理</el-menu-item>
+          <el-menu-item index="/account" v-show="menuId.indexOf('账户管理') !== -1">账户管理</el-menu-item>
           <!-- <el-menu-item index="/organization">机构管理</el-menu-item> -->
-          <el-menu-item index="/role">角色管理</el-menu-item>
-          <el-menu-item index="/download">下载管理</el-menu-item>
+          <el-menu-item index="/role" v-show="menuId.indexOf('角色管理') !== -1">角色管理</el-menu-item>
+          <el-menu-item index="/download" v-show="menuId.indexOf('下载管理') !== -1">下载管理</el-menu-item>
         </el-submenu>
       </el-menu>
       </div>
@@ -51,7 +51,8 @@ export default {
   data() {
       return {
         activeIndex: '1'
-      };
+        // meunId: window.sessionStorage.getItem('menuId')
+      }
     },
     methods: {
       handleSelect(key, keyPath) {
@@ -63,6 +64,9 @@ export default {
       }
     },
     computed: {
+      menuId() {
+        return window.sessionStorage.getItem('menuId')
+      },
       nickName() {
         return window.sessionStorage.getItem('nickName')
       },

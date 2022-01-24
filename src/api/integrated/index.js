@@ -9,9 +9,16 @@ export function selectList(params) {
   })
 }
 
-// 添加用户
+// 添加账号
 export function addOne(params) {
   return request.post('/admin/seAdminUser/addOne', 
+  params
+  )
+}
+
+// 编辑账号
+export function updateAccont(params) {
+  return request.post('/admin/seAdminUser/updateOne', 
   params
   )
 }

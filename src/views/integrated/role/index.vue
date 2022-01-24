@@ -72,7 +72,7 @@ export default {
     // 列表请求
     roleList() {
       roleList(this.tableInfo).then(res => {
-        // console.log(res)
+        console.log(res)
         const { current, records, total } = res.data
         this.tableData = records
         // this.currentPage = current

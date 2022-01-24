@@ -46,10 +46,10 @@
         </el-table-column>
         <el-table-column prop="companyName" label="所属公司" />
         <el-table-column label="操作">
-          <template>
-            <el-button type="text">编辑</el-button>
-            <el-button type="text">启用</el-button>
-            <el-button type="text">停用</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" @click="edit(scope.row)">编辑</el-button>
+            <el-button v-show="scope.row.status === 2" type="text" @click="handleEn(scope.row)">启用</el-button>
+            <el-button v-show="scope.row.status === 1" type="text" style="color:red;" @click="handleDis(scope.row)">停用</el-button>
           </template>
         </el-table-column> 
       </el-table>
@@ -62,29 +62,26 @@
       :close-on-click-modal="false"
       width="40%">
       <el-alert title="账号创建后无法删除，手机号码唯一，一人可持有多个账号" type="success" :closable="false" />
-      <el-form ref="addRef" :rules="addRules" :model="addForm" label-width="100px">
+      <el-form ref="addRef" :rules="addRules" :model="addForm" label-width="100px" style="padding:0 50px;">
         <el-form-item prop="userName" label="手机号码">
-          <el-input v-model="addForm.userName" placeholder="请输入"></el-input>
+          <el-input v-model="addForm.userName" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="nickName" label="持有人姓名">
-          <el-input v-model="addForm.nickName" placeholder="请输入"></el-input>
+          <el-input v-model="addForm.nickName" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="idCard" label="身份证号码">
-          <el-input v-model="addForm.idCard" placeholder="请输入"></el-input>
+          <el-input v-model="addForm.idCard" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="password" label="登录密码">
-          <el-input v-model="addForm.password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，不区分大小写"></el-input>
+          <el-input v-model="addForm.password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="roleName">
-          <el-select v-model="addForm.roleName" placeholder="请选择角色" class="width100">
-            <el-option label="管理人员" value="管理人员"></el-option>
-            <el-option label="运营人员" value="运营人员"></el-option>
-            <el-option label="业务人员" value="业务人员"></el-option>
-            <el-option label="审核人员" value="审核人员"></el-option>
+          <el-select v-model="addForm.roleName" placeholder="请选择角色" class="width100" clearable @change="handleRole">
+            <el-option v-for="(item, index) in options" :label="item.roleName" :value="item.roleId" :key="index"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="所属公司">
-          <el-input v-model="addForm.name" placeholder="请输入"></el-input>
+        <el-form-item prop="companyName" label="所属公司">
+          <el-input v-model="addForm.companyName" placeholder="请输入" clearable></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -92,11 +89,45 @@
         <el-button type="primary" @click="handleAdd">确 定</el-button>
       </span>
     </el-dialog>
+     <!-- 编辑账号 -->
+    <el-dialog
+      title="编辑账号"
+      :visible.sync="editDialogVisible"
+      :close-on-click-modal="false"
+      width="40%">
+      <el-alert title="账号创建后无法删除，手机号码唯一，一人可持有多个账号" type="success" :closable="false" />
+      <el-form ref="editRef" :rules="editRules" :model="editForm" label-width="100px" style="padding:0 50px;">
+        <el-form-item prop="userName" label="手机号码">
+          <el-input v-model="editForm.userName" placeholder="请输入" clearable></el-input>
+        </el-form-item>
+        <el-form-item prop="nickName" label="持有人姓名">
+          <el-input v-model="editForm.nickName" placeholder="请输入" clearable></el-input>
+        </el-form-item>
+        <el-form-item prop="idCard" label="身份证号码">
+          <el-input v-model="editForm.idCard" placeholder="请输入" clearable></el-input>
+        </el-form-item>
+        <el-form-item prop="password" label="登录密码">
+          <el-input v-model="editForm.password" type="password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
+        </el-form-item>
+        <el-form-item label="角色" prop="roleName">
+          <el-select v-model="editForm.roleName" placeholder="请选择角色" class="width100" clearable>
+            <el-option v-for="(item, index) in options" :label="item" :value="item" :key="index"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item prop="companyName" label="所属公司">
+          <el-input v-model="editForm.companyName" placeholder="请输入" clearable></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="editDialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="handleEdit">确 定</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { selectList, addOne } from '@/api/integrated'
+import { selectList, addOne, updateAccont, roleList } from '@/api/integrated'
 
 export default {
   name: 'Account',
@@ -163,10 +194,16 @@ export default {
       },
       tableData: [],
       total: 0,
-      // 创建账号
-      addForm: {
 
+      roleList: {
+        pageIndex: 1,
+        pageSize: 10,
+        roleName: '',
+        id:' '
       },
+      options: [],
+      // 创建账号
+      addForm: {},
       addRules: {
         userName: [{ required: true, message: '请输入手机号码', trigger: 'blur' },
           { validator: checkPhone, trigger: 'blur' }],
@@ -177,9 +214,31 @@ export default {
         password: [{ required: true, message: '请输入登录密码', trigger: 'blur' },
           { validator: checkPwd, trigger: 'blur' }],
         roleName: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        companyName: [
+            { required: true, message: '请输入所属公司', trigger: 'blur' },
+            { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+          ],
       },
       createDialogVisible: false,
-    }
+      // 编辑账号
+      editForm: {},
+      editRules: {
+        userName: [{ required: true, message: '请输入手机号码', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }],
+        nickName: [{ required: true, message: '请输入姓名', trigger: 'blur' },
+          { validator: checkName, trigger: 'blur' }],
+          idCard: [{ required: true, message: '请输入身份证号码', trigger: 'blur' },
+          { validator: checkId, trigger: 'blur' }],
+        password: [{ message: '请输入登录密码', trigger: 'blur' },
+          { validator: checkPwd, trigger: 'blur' }],
+        roleName: [{ required: true, message: '请选择角色', trigger: 'change' }],
+        companyName: [
+            { required: true, message: '请输入所属公司', trigger: 'blur' },
+            { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+          ],
+        },
+        editDialogVisible: false,
+      }
   },
   created() {
     this.selectList()
@@ -189,9 +248,8 @@ export default {
     selectList() {
       selectList(this.tableInfo).then(res => {
         console.log(res)
-        const { current, records, total } = res.data
+        const { records, total } = res.data
         this.tableData = records
-        // this.currentPage = current
         this.total = total
       })
     },
@@ -199,18 +257,99 @@ export default {
     // 创建账号
     create() {
       this.createDialogVisible = true
+      roleList(this.roleList).then(res => { // 获取角色
+        res.data.records.map(item => {
+          var a = {
+            roleName: item.roleName,
+            roleId: item.id
+          }
+          this.options.push(a)
+        })
+        console.log(this.options)
+      })
+    },
+    handleRole(val) {
+      console.log(val)
+      this.addForm.roleId = val
+      console.log(this.options)
+      let handleRole = {}
+     handleRole = this.options.find((item)=>{
+        return item.roleId === val;
+        })
+      console.log(handleRole)
+       this.addForm.roleName = handleRole.roleName
     },
     handleAdd() {
-      this.$refs.addRef.validator( valis => {
-        addOne(this.addForm).then(res => {
-          console.log(res)
-          this.$message.success('添加成功')
-          this.createDialogVisible = false
-          this.selectList()
-        })
+      console.log(this.addForm)
+      this.$refs.addRef.validate( valid => {
+        if(valid) {
+          addOne(this.addForm).then(res => {
+            console.log(res)
+            this.$message.success('添加成功')
+            this.createDialogVisible = false
+            this.selectList()
+          })
+        }
       })
     },
 
+    // 编辑账号
+    edit(row) {
+      this.editForm = row
+      this.editDialogVisible = true
+      roleList(this.roleList).then(res => { // 获取角色
+        res.data.records.map(item => {
+          this.options.push(item.roleName)
+        })
+      })
+    },
+    handleEdit() {
+      this.$refs.editRef.validate( valid => {
+        if(valid) {
+          updateAccont(this.editForm).then(res => {
+            console.log(res)
+            this.$message.success('编辑成功')
+            this.editDialogVisible = false
+            this.selectList()
+          })
+        }
+      })
+    },
+
+    async handleEn(row) { // 启用
+      const confirmResult = await this.$confirm('是否启用该账号, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消操作')
+      }
+      this.editForm = row
+      this.editForm.status = 1
+      updateAccont(this.editForm).then(res => {
+        console.log(res)
+        this.$message.success('状态修改成功')
+        this.selectList()
+      })
+    },
+    async handleDis(row) { // 禁用
+      const confirmResult = await this.$confirm('禁用账号后，该账号无法登录, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch(err => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消操作')
+      }
+      this.editForm = row
+      this.editForm.status = 2
+      updateAccont(this.editForm).then(res => {
+        console.log(res)
+        this.$message.success('状态修改成功')
+        this.selectList()
+      }) 
+    },
     // 表dan查询
     handleQuery() {
       this.tableInfo.pageIndex = 1
