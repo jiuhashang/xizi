@@ -44,78 +44,60 @@
 </template>
 
 <script>
-import { getList } from '@/api/listProject'
+import { selectDownFileList } from '@/api/integrated'
 
 export default {
   name: 'Download',
   data() {
     return {
       tableInfo: {
-        companyName: '',
         projectName: '',
-        firstExamine: '',
         pageIndex: 1,
         pageSize: 10
       },
       tableData: [],
       total: 0,
-      rules: {
-        projectName: [
-            { required: true, message: '请输入项目名称', trigger: 'blur' },
-            { min: 4, max: 50, message: '长度在 4 到 50 个字符', trigger: 'blur' }
-          ],
-        companyName: [
-          { required: true, message: '请输入业主名称', trigger: 'blur' },
-          { min: 3, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
-        ]
-      },
     }
   },
   created() {
-    // this.getList()
+    this.selectDownFileList()
   },
   methods: {
     // 列表请求
-    getList() {
-      getList(this.tableInfo).then(res => {
+    selectDownFileList() {
+      selectDownFileList(this.tableInfo).then(res => {
         console.log(res)
-        const { current, records, total } = res.data
+        const { records, total } = res.data
         this.tableData = records
-        // this.currentPage = current
         this.total = total
       })
-    },
-    create() {
-      this.$router.push({name: 'RoleDetail'})
     },
     // 表dan查询
     handleQuery() {
       this.tableInfo.pageIndex = 1
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getList()
+      this.selectDownFileList()
     },
     // 表dan重置
     reset() {
       this.tableInfo = {
-        companyName: '',
-        firstExamine: '',
-        firstExamine: '',
+        projectName: '',
         pageIndex: 1,
         pageSize: 10
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getList()
+      this.selectDownFileList()
     },
     
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val
-      this.getList()
+      this.selectDownFileList()
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`)
       this.tableInfo.pageIndex = val
-      this.getList()
+      this.selectDownFileList()
     },
   }
 }

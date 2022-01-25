@@ -39,7 +39,7 @@
         <el-table-column label="初审状态">
           <template slot-scope="scope">
             <span v-if="scope.row.firstExamine == 0">待提交</span>
-            <span v-else-if="scope.row.firstExamine == 1" style="color:#F59A23;">审核中</span>
+            <span v-else-if="scope.row.firstExamine == 1" style="color:#F59A23;">待审核</span>
             <span v-else-if="scope.row.firstExamine == 3" style="color:#1890FF;">初审通过</span>
             <span v-else-if="scope.row.firstExamine == 2" style="color:#D9001B;">初审未通过</span>
             <span v-else-if="scope.row.firstExamine == 99">项目已终止</span>

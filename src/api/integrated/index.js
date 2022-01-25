@@ -64,3 +64,10 @@ export function updateOne(params) {
   params
   )
 }
+
+// 下载列表
+export function selectDownFileList(params) {
+  return request.post('/admin/seProjectDownFile/selectDownFileList', 
+  params
+  )
+}

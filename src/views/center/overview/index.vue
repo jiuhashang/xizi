@@ -20,12 +20,12 @@
           <el-input v-model="tableInfo.bankId" placeholder="关联机构查询" clearable style="width:200px;" />
         </el-form-item>
         <el-form-item>
-          <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部进度">
+          <el-select v-model="tableInfo.type" clearable placeholder="全部进度">
             <el-option
               v-for="item in options"
-              :key="item.firstExamine"
+              :key="item.type"
               :label="item.label"
-              :value="item.firstExamine">
+              :value="item.type">
             </el-option>
           </el-select>
         </el-form-item>
@@ -45,21 +45,19 @@
         <el-table-column prop="createTime" label="项目发起时间" />
         <el-table-column label="当前进度">
           <template slot-scope="scope">
-            <span v-if="scope.row.status == 0">待录入</span>
-            <span v-else-if="scope.row.status == 1">初审待审核</span>
-            <span v-else-if="scope.row.status == 2">初审审核驳回</span>
-            <span v-else-if="scope.row.status == 3">初审审核通过</span>
-            <span v-else-if="scope.row.status == 4">复核驳回</span>
-            <span v-else-if="scope.row.status == 5">复核通过</span>
-            <span v-else-if="scope.row.status == 6">终审待审核</span>
-            <span v-else-if="scope.row.status == 7">终审待审核</span>
-            <span v-else>项目终止</span>
+            <span v-if="scope.row.status == 0 || scope.row.status == 2">待录入</span>
+            <span v-else-if="scope.row.status == 1">初审审核</span>
+            <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 1 || scope.row.firstExamineType == 4 )">图纸复核</span>
+            <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 2 || scope.row.firstExamineType == 5 )">材料补充</span>
+            <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 3 || scope.row.firstExamineType == 6 )">终审审核</span>
+            <span v-else-if="scope.row.status == 7">立项补充</span>
+            <span v-else-if="scope.row.status == 99">项目终止</span>
           </template>
         </el-table-column>
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="handleView(scope.row)">查看</el-button>
-            <el-button type="text">文件打包</el-button>
+            <!-- <el-button type="text">文件打包</el-button> -->
             <el-button type="text" @click="handlePdf(scope.row.projectId)">生成PDF</el-button>
           </template>
         </el-table-column> 
@@ -99,31 +97,39 @@ export default {
         companyName: '',
         projectName: '',
         bankId: '',
-        firstExamine: '',
+        type: '',
         pageIndex: 1,
         pageSize: 10
       },
       options: [
-        // {
-        //   firstExamine: '0',
-        //   label: '待提交'
-        // }, 
         {
-          firstExamine: '1',
-          label: '审核中'
+          type: '0',
+          label: '项目录入'
         }, 
         {
-          firstExamine: '3',
-          label: '审核通过'
+          type: '1',
+          label: '项目审核'
         }, 
         {
-          firstExamine: '2',
-          label: '审核未通过'
+          type: '2',
+          label: '图纸复核'
         }, 
         {
-          firstExamine: '99',
-          label: '项目已终止'
-        }
+          type: '3',
+          label: '材料补充'
+        },
+        {
+          type: '4',
+          label: '终审审核'
+        },
+        {
+          type: '5',
+          label: '立项补充'
+        },
+        {
+          type: '6',
+          label: '项目终止'
+        },
       ],
       tableData: [],
       total: 0,
@@ -153,10 +159,11 @@ export default {
       this.selectListAll()
     },
     handlePdf(projectId) {
-      // getProjectPdf({projectId}).then(res => {
-      //   console.log(res)
-      //   this.$message.success('')
-      // })
+      getProjectPdf({ projectId }).then(res => {
+        console.log(res)
+        window.open(res.data.url)
+        this.$message.success('生产成功')
+      })
     },
     // 表dan重置
     reset() {
@@ -164,7 +171,7 @@ export default {
         companyName: '',
         projectName: '',
         bankId: '',
-        firstExamine: '',
+        type: '',
         pageIndex: 1,
         pageSize: 10
       }

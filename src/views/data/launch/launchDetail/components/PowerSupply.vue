@@ -11,7 +11,7 @@
             <el-select v-model="seProjectPowerInfo.prowerType" placeholder="请选择"  class="width100">
               <el-option label="工业" :value="0"></el-option>
               <el-option label="商业" :value="1"></el-option>
-              <el-option label="共用" :value="2"></el-option>
+              <el-option label="农用" :value="2"></el-option>
               <el-option label="居民用电" :value="3"></el-option>
             </el-select>
           </el-form-item>

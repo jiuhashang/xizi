@@ -1,5 +1,14 @@
 import request from '@/utils/request'
 
+// 项目统计
+export function getProjectCount(params) {
+  return request({
+    url: '/admin/seProjectInfo/getProjectCount',
+    method: 'get',
+    params
+  })
+}
+
 // 项目资料收集列表
 export function getList(params) {
   return request({

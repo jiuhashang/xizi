@@ -32,7 +32,7 @@
                 :value="item.firstExamine">
               </el-option>
             </el-select>
-          </el-form-item>
+           </el-form-item>
           <el-form-item style="margin-left: 20px;">
             <el-button type="primary" @click="handleQuery">查询</el-button>
             <el-button @click="reset">重置</el-button>
@@ -46,7 +46,7 @@
         <el-table-column prop="projectName" label="项目名称" />
         <el-table-column prop="companyName" label="业主名称" />
         <el-table-column prop="createTime" label="创建时间" />
-        <el-table-column prop="province" label="建站地址">
+        <el-table-column label="建站地址">
           <template slot-scope="scope">
             {{scope.row.province}} - {{scope.row.city}}
           </template>
@@ -187,7 +187,7 @@ export default {
           ],
         companyName: [
           { required: true, message: '请输入公司名称', trigger: 'blur' },
-          { min: 4, max: 50, message: '长度在 3 到 50 个字符', trigger: 'blur' }
+          { min: 6, max: 50, message: '长度在 6 到 50 个字符', trigger: 'blur' }
         ]
       },
 
@@ -301,7 +301,7 @@ export default {
       this.$refs.ruleForm.validate(valid => {
         if(valid) {
           addOne(this.ruleForm).then(res => {
-            console.log(res)
+            console.log('创建项目表单', res)
             this.$message.success('创建项目表单成功')
             this.$router.push({ name: 'LaunchDetail', query: { 
               projectId: res.data.projectId,
@@ -347,5 +347,6 @@ export default {
   }
   .divli {
     margin-bottom: 10px;
+    cursor: pointer;
   }
 </style>

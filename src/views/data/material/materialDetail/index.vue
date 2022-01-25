@@ -190,7 +190,7 @@
           </el-col>
         </el-row>
         <el-form-item label="补充说明">
-          <el-input placeholder="请输入" class="width100"></el-input>
+          <el-input placeholder="请输入" v-model="seProjectSupplementFile.otherMessage" class="width100"></el-input>
         </el-form-item>
       </el-form>
       
@@ -312,15 +312,43 @@ export default {
     },
     // 保存
     save() {
-      this.front()
+      this.seProjectNearThreeYearSellProfixList.push(this.first, this.second, this.three)
+      relevantInput({
+        projectId: this.projectId,
+        seProjectSupplementFile: this.seProjectSupplementFile,
+        seProjectCompanyInfo: this.seProjectCompanyInfo,
+        seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
+        seProjectCooperate: this.seProjectCooperate,
+        seProjectNearThreeYearSellProfixList: this.seProjectNearThreeYearSellProfixList,
+        seProjectPowerInfo: this.seProjectPowerInfo,
+        seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
+        seProjectRelevantFile: this.seProjectRelevantFile
+      }).then(res => {
+        // console.log(res)
+        // if(res.code && !msg) { 
+          this.$message.success('保存成功')
+        // }
+        this.getProjectInfo(this.projectId)
+      })
     },
     // 提交
-    sub() {
-      this.save(1)
+    async sub() {
+      this.front(1)
+       const confirmResult = await this.$confirm('是否提交审核?', '提示', {
+        confirmButtonText: '确 定',
+        cancelButtonText: '取 消',
+        type: 'warning'
+      }).catch((err) => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消')
+      }
       relevantInputSubmit({ projectId: this.projectId }).then(res => {
         console.log(res)
-        this.$router.back()
-      })
+        if(res.code == 0) {
+          this.$message.success('提交成功')
+          this.$router.back()
+        }
+      }).catch(err => err)
     },
     // 审批记录
     approval() {

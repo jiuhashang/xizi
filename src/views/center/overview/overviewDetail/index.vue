@@ -126,7 +126,7 @@
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋面总面积</el-col>
-                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.houseArea }}</el-col>
+                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.houseArea }} m²</el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
@@ -188,13 +188,13 @@
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">彩钢瓦比水泥顶</el-col>
-                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.colorSteelCementTopScale }}</el-col>
+                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.colorSteelCementTopScale }} %</el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">其他屋面材质说明</el-col>
-                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.otherMessage }}</el-col>
+                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.otherMessage ? seProjectCompanyBuildInfo.otherMessage : '-' }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -209,7 +209,7 @@
                 <el-col :span="16" class="span130">
                   <span v-if="seProjectPowerInfo.prowerType == 0">工业</span>
                   <span v-else-if="seProjectPowerInfo.prowerType == 1">商业</span>
-                  <span v-else-if="seProjectPowerInfo.prowerType == 2">共用</span>
+                  <span v-else-if="seProjectPowerInfo.prowerType == 2">农用</span>
                   <span v-else>居民用电</span>
                 </el-col>
               </el-row>
@@ -322,7 +322,7 @@
                   <el-checkbox v-model="seProjectCooperate.houseLeaseFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney }}</span>
+                  <span>出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney ? seProjectCooperate.houseLeaseMoney : '-' }} 万元/年</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -370,7 +370,7 @@
           <el-row :gutter="20" style="margin:30px;">
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">不动产权证或三证</el-col>
+                <el-col :span="8" class="span13 mt5">不动产权证或三证</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.realPropertyRightFile)"
                   :disabled="seProjectRelevantFile.realPropertyRightFile == '' || seProjectRelevantFile.realPropertyRightFile == null ">下 载</el-button>
@@ -379,7 +379,7 @@
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">近12个月电费复核单</el-col>
+                <el-col :span="8" class="span13 mt5">近12个月电费复核单</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.nearYearElectricityBill)"
                   :disabled="seProjectRelevantFile.nearYearElectricityBill == '' || seProjectRelevantFile.nearYearElectricityBill == null ">下 载</el-button>
@@ -388,7 +388,7 @@
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">结构图</el-col>
+                <el-col :span="8" class="span13 mt5">结构图</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.structureFile)"
                   :disabled="seProjectRelevantFile.structureFile == '' || seProjectRelevantFile.structureFile == null ">下 载</el-button>
@@ -399,7 +399,7 @@
           <el-row :gutter="20" style="margin:30px;">
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">配电图内部照片</el-col>
+                <el-col :span="8" class="span13 mt5">配电图内部照片</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.electricityRoomInsideFile)"
                   :disabled="seProjectRelevantFile.electricityRoomInsideFile == '' || seProjectRelevantFile.electricityRoomInsideFile == null ">下 载</el-button>
@@ -408,7 +408,7 @@
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">建筑图</el-col>
+                <el-col :span="8" class="span13 mt5">建筑图</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.buildFile)"
                   :disabled="seProjectRelevantFile.buildFile == '' || seProjectRelevantFile.buildFile == null ">下 载</el-button>
@@ -417,7 +417,7 @@
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">总平图</el-col>
+                <el-col :span="8" class="span13 mt5">总平图</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.generalLayoutFile)"
                   :disabled="seProjectRelevantFile.generalLayoutFile == '' || seProjectRelevantFile.generalLayoutFile == null ">下 载</el-button>
@@ -428,7 +428,7 @@
           <el-row :gutter="20" style="margin:30px;">
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">厂房内部照片</el-col>
+                <el-col :span="8" class="span13 mt5">厂房内部照片</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.workShopInsideFile)"
                   :disabled="seProjectRelevantFile.workShopInsideFile == '' || seProjectRelevantFile.workShopInsideFile == null ">下 载</el-button>
@@ -437,7 +437,7 @@
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">厂名正面照片</el-col>
+                <el-col :span="8" class="span13 mt5">厂名正面照片</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.workShopFrontFile)"
                   :disabled="seProjectRelevantFile.workShopFrontFile == '' || seProjectRelevantFile.workShopFrontFile == null ">下 载</el-button>
@@ -446,7 +446,7 @@
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">屋顶细节照片</el-col>
+                <el-col :span="8" class="span13 mt5">屋顶细节照片</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.houseTopDetailFile)"
                   :disabled="seProjectRelevantFile.houseTopDetailFile == '' || seProjectRelevantFile.houseTopDetailFile == null ">下 载</el-button>
@@ -457,7 +457,7 @@
           <el-row :gutter="20" style="margin:30px;">
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">厂房内屋顶照片</el-col>
+                <el-col :span="8" class="span13 mt5">厂房内屋顶照片</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.workShopInsideTopFile)"
                   :disabled="seProjectRelevantFile.workShopInsideTopFile == '' || seProjectRelevantFile.projectOtherFile == null ">下 载</el-button>
@@ -466,7 +466,7 @@
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">项目发起额外材料</el-col>
+                <el-col :span="8" class="span13 mt5">项目发起额外材料</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.projectOtherFile)"
                   :disabled="seProjectRelevantFile.projectOtherFile == '' || seProjectRelevantFile.projectOtherFile == null ">下 载</el-button>
@@ -491,19 +491,19 @@
           <el-row :gutter="20" style="margin:30px;">
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">近3年财务报告</el-col>
+                <el-col :span="8" class="span13 mt5">近3年财务报告</el-col>
                 <el-col :span="16" class="span130">
-                  <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.nearThreeYearFinanceReport)"
-                    :disabled="seProjectRelevantFile.nearThreeYearFinanceReport == '' || seProjectRelevantFile.nearThreeYearFinanceReport == null ">下 载</el-button>
+                  <el-button size="small" type="primary" @click="handleDown(seProjectSupplementFile.nearThreeYearFinanceReport)"
+                    :disabled="seProjectSupplementFile.nearThreeYearFinanceReport == '' || seProjectSupplementFile.nearThreeYearFinanceReport == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">材料补充额外材料</el-col>
+                <el-col :span="8" class="span13 mt5">材料补充额外材料</el-col>
                 <el-col :span="16" class="span130">
-                  <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.otherFile)"
-                    :disabled="seProjectRelevantFile.otherFile == '' || seProjectRelevantFile.otherFile == null ">下 载</el-button>
+                  <el-button size="small" type="primary" @click="handleDown(seProjectSupplementFile.otherFile)"
+                    :disabled="seProjectSupplementFile.otherFile == '' || seProjectSupplementFile.otherFile == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>
@@ -512,7 +512,7 @@
             <el-col :span="8" class="span13">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">额外说明</el-col>
-                <el-col :span="16">{{ seProjectRelevantFile.projectOtherMessage }}</el-col>
+                <el-col :span="16">{{ seProjectSupplementFile.projectOtherMessage }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -523,28 +523,28 @@
           <el-row :gutter="20" style="margin:30px;">
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">能源管理合同</el-col>
+                <el-col :span="8" class="span13 mt5">能源管理合同</el-col>
                 <el-col :span="16" class="span130">
-                  <!-- <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.nearThreeYearFinanceReport)"
-                    :disabled="seProjectRelevantFile.nearThreeYearFinanceReport == '' || seProjectRelevantFile.nearThreeYearFinanceReport == null ">下 载</el-button> -->
+                  <el-button size="small" type="primary" @click="handleDown(seProjectEndSupplementFile.energyContractFile)"
+                    :disabled="seProjectEndSupplementFile.energyContractFile == '' || seProjectEndSupplementFile.energyContractFile == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">项目建议书</el-col>
+                <el-col :span="8" class="span13 mt5">项目建议书</el-col>
                 <el-col :span="16" class="span130">
-                  <!-- <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.otherFile)"
-                    :disabled="seProjectRelevantFile.otherFile == '' || seProjectRelevantFile.otherFile == null ">下 载</el-button> -->
+                  <el-button size="small" type="primary" @click="handleDown(seProjectEndSupplementFile.adviseBookFile)"
+                    :disabled="seProjectEndSupplementFile.adviseBookFile == '' || seProjectEndSupplementFile.adviseBookFile == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">备案文件</el-col>
+                <el-col :span="8" class="span13 mt5">备案文件</el-col>
                 <el-col :span="16" class="span130">
-                  <!-- <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.otherFile)"
-                    :disabled="seProjectRelevantFile.otherFile == '' || seProjectRelevantFile.otherFile == null ">下 载</el-button> -->
+                  <el-button size="small" type="primary" @click="handleDown(seProjectEndSupplementFile.recordFile)"
+                    :disabled="seProjectEndSupplementFile.recordFile == '' || seProjectEndSupplementFile.recordFile == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>
@@ -552,26 +552,26 @@
           <el-row :gutter="20" style="margin:30px;">
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">接入文件</el-col>
+                <el-col :span="8" class="span13 mt5">接入文件</el-col>
                 <el-col :span="16" class="span130">
-                  <!-- <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.nearThreeYearFinanceReport)"
-                    :disabled="seProjectRelevantFile.nearThreeYearFinanceReport == '' || seProjectRelevantFile.nearThreeYearFinanceReport == null ">下 载</el-button> -->
+                  <el-button size="small" type="primary" @click="handleDown(seProjectEndSupplementFile.insertFile)"
+                    :disabled="seProjectEndSupplementFile.insertFile == '' || seProjectEndSupplementFile.insertFile == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">营业执照</el-col>
+                <el-col :span="8" class="span13 mt5">营业执照</el-col>
                 <el-col :span="16" class="span130">
-                  <!-- <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.otherFile)"
-                    :disabled="seProjectRelevantFile.otherFile == '' || seProjectRelevantFile.otherFile == null ">下 载</el-button> -->
+                  <el-button size="small" type="primary" @click="handleDown(seProjectEndSupplementFile.businessFile)"
+                    :disabled="seProjectEndSupplementFile.businessFile == '' || seProjectEndSupplementFile.businessFile == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">关联项目公司</el-col>
-                <el-col :span="16" class="span130">{{  }}</el-col>
+                <el-col :span="16" class="span130">{{ seProjectEndSupplementFile.projectCompanyName }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -579,7 +579,7 @@
             <el-col :span="8" class="span13">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">额外说明</el-col>
-                <el-col :span="16">{{  }}</el-col>
+                <el-col :span="16">{{ seProjectEndSupplementFile.otherMessage }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -628,10 +628,10 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋面材质</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">&nbsp;瓦铄屋面</span>&nbsp;
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">&nbsp;混泥土屋面</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">&nbsp;彩钢瓦屋面</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">&nbsp;其他</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">瓦铄屋面 &nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">混泥土屋面 &nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">彩钢瓦屋面 &nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">其他</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -639,11 +639,11 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">彩钢瓦类型</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(0) !== -1">&nbsp;无</span>&nbsp;
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(1) !== -1">&nbsp;直立锁边</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">&nbsp;角齿</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(3) !== -1">&nbsp;T型</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(4) !== -1">&nbsp;其他</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(0) !== -1">无 &nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(1) !== -1">直立锁边 &nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角齿 &nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(3) !== -1">T型 &nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(4) !== -1">其他</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -908,6 +908,7 @@ export default {
         seProjectRelevantFile: {}, 
         seProjectSupplementFile: {},
         seProjectProfitCountList: [],
+        seProjectEndSupplementFile: {},
         // 审批记录
         logVisible: false,
         activities: [],
@@ -953,7 +954,7 @@ export default {
       getProjectInfo() {
         getProjectInfo({ projectId: this.projectId }).then(res => {
           console.log(res)
-          const { seProjectCompanyBuildInfo, seProjectCompanyInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile } = res.data
+          const { seProjectCompanyBuildInfo, seProjectCompanyInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile, seProjectEndSupplementFile } = res.data
           this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
           this.seProjectCompanyInfo = seProjectCompanyInfo
           this.seProjectCooperate = seProjectCooperate
@@ -971,11 +972,11 @@ export default {
           this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList
           this.seProjectRelevantFile = seProjectRelevantFile
           this.seProjectSupplementFile = seProjectSupplementFile
+          this.seProjectEndSupplementFile = seProjectEndSupplementFile
         })
       },
       getProfitMessage() {
         getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算
-          console.log('11', res)
           const { province, city, yearSunShine, mayInstallVolume, seProjectProfitConfig, projectTotalProfitModel, seProjectProfitCountList } = res.data
           this.province = province
           this.city = city
@@ -992,6 +993,9 @@ export default {
           console.log(res)
           this.activities = res.data
         })
+      },
+      handleDown(url) {
+        window.open(url)
       }
     }
   }
@@ -1026,6 +1030,9 @@ export default {
       border-left: 4px solid #1890FF;
       padding-left: 15px;
     }
+  }
+  .mt5 {
+    margin-top: 5px;
   }
   .span13 {
     font-size: 13px;

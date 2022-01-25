@@ -12,8 +12,8 @@
         </div>
         <div class="btnnn">
           <el-button size="small" @click="approval">审批记录</el-button>
-          <el-button size="small" v-show="firstExamine == 0 || firstExamine	 == 2" type="warning" :loading="saveLoading" @click="save">保 存</el-button>
-          <el-button size="small" v-show="firstExamine == 0 || firstExamine	 == 2" type="primary" :loading="subLoading" @click="sub">提交审核</el-button>
+          <el-button size="small" v-show="firstExamine == null || firstExamine == 0 || firstExamine	 == 2" type="warning" :loading="saveLoading" @click="save">保 存</el-button>
+          <el-button size="small" v-show="firstExamine == null || firstExamine == 0 || firstExamine	 == 2" type="primary" :loading="subLoading" @click="sub">提交审核</el-button>
         </div>
       </div>
     </div>
@@ -216,7 +216,7 @@
               <el-select v-model="seProjectPowerInfo.prowerType" placeholder="请选择"  class="width100">
                 <el-option label="工业" value="工业"></el-option>
                 <el-option label="商业" value="商业"></el-option>
-                <el-option label="共用" value="共用"></el-option>
+                <el-option label="农用" value="农用"></el-option>
                 <el-option label="居民用电" value="居民用电"></el-option>
               </el-select>
             </el-form-item>
@@ -313,7 +313,7 @@
           </el-col>
           <el-col :span="8" v-show="seProjectCooperate.cooperateType == 0">
             <div style="display:flex;">
-              <el-checkbox v-model="seProjectCooperate.ownPutFlag" style="margin-top:10px;" />
+              <el-checkbox v-model="seProjectCooperate.ownPutFlag" style="margin-top:10px;" @change="handleOwn" />
               <el-form-item label="业主自投，预算">
                 <el-input v-model="seProjectCooperate.ownPutMoney" class="width100" clearable type="number" placeholder="请输入" :disabled="!seProjectCooperate.ownPutFlag">
                   <span slot="suffix">万元</span>
@@ -323,7 +323,7 @@
           </el-col>
           <el-col :span="8" v-show="seProjectCooperate.cooperateType == 1">
             <div style="display:flex;">
-              <el-checkbox v-model="seProjectCooperate.electricityDiscountFlag" style="margin-top:10px;" @click="handleEle" />
+              <el-checkbox v-model="seProjectCooperate.electricityDiscountFlag" style="margin-top:10px;" @change="handleEle" />
               <el-form-item label="电费折扣，比例">
                 <el-input v-model="seProjectCooperate.electricityDiscountScale" class="width100" type="number" clearable placeholder="请输入" :disabled="!seProjectCooperate.electricityDiscountFlag">
                   <span slot="suffix">%</span>
@@ -672,13 +672,13 @@ export default {
 
       seProjectCooperate: {
         projectId: this.$route.query.projectId,
-        cooperateType: '',
-        ownPutFlag: false,
-        ownPutMoney: '',
-        electricityDiscountFlag: false,
-        electricityDiscountScale: '',
-        houseLeaseFlag: false,
-        houseLeaseMoney: ''
+        cooperateType: undefined,
+        ownPutFlag: null,
+        ownPutMoney: undefined,
+        electricityDiscountFlag: null,
+        electricityDiscountScale: undefined,
+        houseLeaseFlag: null,
+        houseLeaseMoney: undefined
       }, // 合作模式
       cooperateRules: {
         cooperateType: [{ required: this.must, message: '请选择', trigger: 'change, blur' }]
@@ -742,30 +742,25 @@ export default {
     },
     front(msg) {
       this.saveLoading = true
-      if(this.seProjectCooperate.ownPutFlag == false ) {
-        this.seProjectCooperate.ownPutFlag = 0
-      } else if (this.seProjectCooperate.ownPutFlag == true) {
-        this.seProjectCooperate.ownPutFlag = 1
-      }
-      if(this.seProjectCooperate.electricityDiscountFlag == false ) {
-        this.seProjectCooperate.electricityDiscountFlag = 0
-      } else if (this.seProjectCooperate.electricityDiscountFlag == true) {
-        this.seProjectCooperate.electricityDiscountFlag = 1
-      }
-      if(this.seProjectCooperate.houseLeaseFlag == false ) {
-        this.seProjectCooperate.houseLeaseFlag = 0
-      } else if (this.seProjectCooperate.houseLeaseFlag == true) {
-        this.seProjectCooperate.houseLeaseFlag = 1
-      }
       if(this.seProjectCooperate.cooperateType == 0) {
+        this.seProjectCooperate.ownPutFlag = 1
         this.seProjectCooperate.electricityDiscountFlag = 0
-        this.seProjectCooperate.electricityDiscountScale = ''
+        this.seProjectCooperate.electricityDiscountScale = null
         this.seProjectCooperate.houseLeaseFlag = 0
-        this.seProjectCooperate.houseLeaseMoney = ''
-      }
-      if(this.seProjectCooperate.cooperateType == 1) {
+        this.seProjectCooperate.houseLeaseMoney = null
+      } else if(this.seProjectCooperate.cooperateType == 1) {
         this.seProjectCooperate.ownPutFlag = 0
-        this.seProjectCooperate.ownPutMoney = ''
+        this.seProjectCooperate.ownPutMoney = null
+        if(this.seProjectCooperate.electricityDiscountFlag) {
+          this.seProjectCooperate.electricityDiscountFlag = 1
+        } else {
+          this.seProjectCooperate.electricityDiscountFlag = 0
+        }
+        if(this.seProjectCooperate.houseLeaseFlag) {
+          this.seProjectCooperate.houseLeaseFlag = 1
+        } else {
+          this.seProjectCooperate.houseLeaseFlag = 0
+        }
       }
       projectInput({projectId: this.projectId,
         seProjectCompanyInfo: this.seProjectCompanyInfo,
@@ -786,10 +781,42 @@ export default {
     },
     // 保存
     save() {
-      this.front()
+      this.saveLoading = true
+      if(this.seProjectCooperate.cooperateType == 0) {
+        this.seProjectCooperate.ownPutFlag = 1
+        this.seProjectCooperate.electricityDiscountFlag = 0
+        this.seProjectCooperate.electricityDiscountScale = null
+        this.seProjectCooperate.houseLeaseFlag = 0
+        this.seProjectCooperate.houseLeaseMoney = null
+      } else if(this.seProjectCooperate.cooperateType == 1) {
+        this.seProjectCooperate.ownPutFlag = 0
+        this.seProjectCooperate.ownPutMoney = null
+        if(this.seProjectCooperate.electricityDiscountFlag) {
+          this.seProjectCooperate.electricityDiscountFlag = 1
+        }
+        if(this.seProjectCooperate.houseLeaseFlag) {
+          this.seProjectCooperate.houseLeaseFlag = 1
+        }
+      }
+      this.seProjectCooperate.projectId = this.projectId
+      projectInput({projectId: this.projectId,
+        seProjectCompanyInfo: this.seProjectCompanyInfo,
+        seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
+        seProjectPowerInfo: this.seProjectPowerInfo,
+        seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
+        seProjectCooperate: this.seProjectCooperate,
+        seProjectRelevantFile: this.seProjectRelevantFile
+      }).then(res => {
+        this.saveLoading = false
+          this.$message.success('保存成功')
+        this.getProjectInfo(this.projectId)
+      }).catch(err => {
+        this.saveLoading = false
+      })
     },
     // 提交审核
     async sub() {
+      this.front(1)
       const confirmResult = await this.$confirm('是否提交审核?', '提示', {
         confirmButtonText: '确 定',
         cancelButtonText: '取 消',
@@ -798,13 +825,16 @@ export default {
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消')
       }
-      this.front(1)
       this.subLoading = true
       projectInputSubmit({projectId: this.projectId}).then(res => {
         console.log(res)
         this.subLoading = false
-        if(res.code == 0) this.$message.success('提交成功')
-        this.$router.back()
+        if(res.code == 0) {
+          this.$message.success('提交成功') 
+          this.$router.back()
+        } else {
+          this.$message.error(res.msg)
+        }
       }).catch( err => {
         this.subLoading = false
       })
@@ -852,27 +882,31 @@ export default {
       this.editDialogVisible = false
       this.editForm = {}
     },
-
-    handleEle() {
-      if(this.seProjectCooperate.cooperateType === 1 && this.seProjectCooperate.electricityDiscountFlag == false ) {
-        this.$set(this.seProjectCooperate,'electricityDiscountFlag', 'true')
-      } else {
-        this.$set(this.seProjectCooperate,'electricityDiscountFlag', 'false')
-      }
-    },
-    handleHou() {},
     // 合作模式
     selectChange(val) {
       if(val === 0) {
         this.seProjectCooperate.ownPutFlag = true
-        this.seProjectCooperate.electricityDiscountFlag = false
-        this.seProjectCooperate.electricityDiscountScale = ''
-        this.seProjectCooperate.houseLeaseFlag = false
-        this.seProjectCooperate.houseLeaseMoney = ''
-      } else if(val === 1) {
-        this.seProjectCooperate.ownPutFlag = false
-        this.seProjectCooperate.ownPutMoney = ''
+        // this.seProjectCooperate.electricityDiscountFlag = false
+        // this.seProjectCooperate.electricityDiscountScale = ''
+        // this.seProjectCooperate.houseLeaseFlag = false
+        // this.seProjectCooperate.houseLeaseMoney = ''
+      // } else if(val === 1) {
+      //   this.seProjectCooperate.ownPutFlag = false
+      //   this.seProjectCooperate.ownPutMoney = ''
       } 
+    },
+    handleOwn() {},
+    handleEle(val) {
+      if(val == false) {
+        this.seProjectCooperate.electricityDiscountFlag = 0
+        this.seProjectCooperate.electricityDiscountScale = null
+      }
+    },
+    handleHou(val) {
+      if(val == false) {
+        this.seProjectCooperate.houseLeaseFlag = 0
+        this.seProjectCooperate.houseLeaseMoney = null
+      }
     },
     housePartTypeChange(value) { // 屋面材质
       this.seProjectCompanyBuildInfo.housePartType = value.join(',')

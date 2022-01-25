@@ -6,15 +6,15 @@
         <span style="font-size:20px;color:#313131;margin-left:145px;margin-top:33px;">欢迎登录</span>
         <el-form :model="form" class="form">
           <el-form-item>
-            <el-input prefix-icon="el-icon-user" v-model="form.userName" placeholder="请输入手机号码" />
+            <el-input prefix-icon="el-icon-user" v-model="form.userName" placeholder="请输入手机号码" clearable />
           </el-form-item>
           <el-form-item>
-            <el-input type="password" prefix-icon="el-icon-lock" v-model="form.password" placeholder="请输入密码" />
+            <el-input type="password" prefix-icon="el-icon-lock" v-model="form.password" placeholder="请输入密码" clearable />
           </el-form-item>
           <el-form-item style="height:44px;">
             <el-row :gutter="50">
               <el-col :span="15">
-                <el-input prefix-icon="el-icon-warning-outline" v-model="form.code" placeholder="请输入验证码" clearable="" />
+                <el-input prefix-icon="el-icon-warning-outline" v-model="form.code" placeholder="请输入验证码" clearable />
               </el-col>
               <el-col :span="9">
                 <img :src="imgSrc" alt="" @click="getImgSrc">
@@ -43,7 +43,8 @@ export default {
         key: ''
       },
       imgSrc: '',
-      loading:false
+      loading:false,
+      menu: '项目发起, 材料补充, 立项补充,项目初审, 图纸复核, 项目终审, 项目总览,账户管理, 角色管理, 下载管理'
     }
   },
   created() {
@@ -58,12 +59,16 @@ export default {
             console.log(res)
             this.loading = false
             this.$message.success('登录成功')
-            window.sessionStorage.setItem('token',res.data.token)
-            window.sessionStorage.setItem('nickName',res.data.nickName)
-            window.sessionStorage.setItem('image',res.data.image)
-            window.sessionStorage.setItem('menuId',res.data.seAdminRoleInfo.menuId)
-            console.log(res.data.seAdminRoleInfo.meunId)
-            this.$router.push('/home')
+            window.sessionStorage.setItem('token', res.data.token)
+            window.sessionStorage.setItem('nickName', res.data.nickName)
+            window.sessionStorage.setItem('image', res.data.image)
+            if(this.form.userName == 'admin') {
+              window.sessionStorage.setItem('menuId', this.menu)
+              this.$router.push('/home')
+            } else {
+              window.sessionStorage.setItem('menuId', res.data.seAdminRoleInfo.menuId)
+              this.$router.push('/home')
+            }
           }
         }).catch( err => {
           this.loading = false
@@ -76,7 +81,6 @@ export default {
     },
     getImgSrc() {
       getImg().then(res => {
-        // console.log(res)
         this.imgSrc = res.data.image
         this.form.key = res.data.key
       })
