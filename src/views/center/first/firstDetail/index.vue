@@ -193,10 +193,10 @@
                 <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.colorSteelCementTopScale }} %</el-col>
               </el-row>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="16">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">其他屋面材质说明</el-col>
-                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.otherMessage }}</el-col>
+                <el-col :span="4" class="span13">其他屋面材质说明</el-col>
+                <el-col :span="20" class="span130">{{ seProjectCompanyBuildInfo.otherMessage }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -266,10 +266,10 @@
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="16">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">其他供电说明</el-col>
-                <el-col :span="16" class="span130">{{ seProjectPowerInfo.otherMessage }}</el-col>
+                <el-col :span="4" class="span13">其他供电说明</el-col>
+                <el-col :span="20" class="span130">{{ seProjectPowerInfo.otherMessage }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -304,7 +304,7 @@
                   <el-checkbox v-model="seProjectCooperate.ownPutFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }}</span>
+                  <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }} 万元</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -440,15 +440,9 @@
               </el-row>
             </el-col>
           </el-row>
-          <el-row :gutter="20" style="margin:30px;">
-            <el-col :span="8">
-              <el-row :gutter="20">
-                <el-col :span="8" class="span13 mt5">项目发起额外说明</el-col>
-                <el-col :span="16" class="span130">
-                  <span>{{ seProjectRelevantFile.projectOtherMessage }}</span>
-                </el-col>
-              </el-row>
-            </el-col>
+          <el-row :gutter="20" style="margin:30px 0;">
+            <el-col :span="3" class="span13">项目发起额外说明</el-col>
+            <el-col :span="21" class="span130">{{ seProjectRelevantFile.projectOtherMessage }}</el-col>
           </el-row>
         </el-tab-pane>
 
@@ -549,7 +543,7 @@
                   <el-checkbox v-model="seProjectCooperate.ownPutFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }}</span>
+                  <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }} 万元</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -667,7 +661,7 @@
             </div>
             <div class="t1" style="background-color:#6FACFD;">
               <p style="font-size: 14px;margin-left:30px;">总投资费用（万元）</p>
-              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.totalInvestPrice">{{ projectTotalProfitModel.totalInvestPrice }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.totalInvestPrice">{{ projectTotalProfitModel.totalInvestPrice.toFixed(2) }}</p>
               <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-else> - </p>
             </div>
             <div class="t1" style="background-color:#ED7E77;">

@@ -97,8 +97,8 @@
           </el-form-item>
         </el-form>
         <div class="divul" v-show="options.length">
-          <ul style="list-style: none;">
-            <li v-for="(item, index) in options" :key="item.id" class="divli" @click="handleSelect(item, index)">{{ item.name }}</li>
+          <ul v-show="options.length" style="list-style: none;">
+            <li v-for="(item, index) in options" :key="item.id" class="divli" :class="{ bgc: index === currentIndex }" @click="handleSelect(item, index)" @mousemove="handleMove(index)">{{ item.name }}</li>
           </ul>
         </div>
       </div>
@@ -190,6 +190,7 @@ export default {
           { min: 6, max: 50, message: '长度在 6 到 50 个字符', trigger: 'blur' }
         ]
       },
+      currentIndex: null,
 
       // 审批记录
       logVisible: false,
@@ -203,7 +204,7 @@ export default {
     // 列表请求
     getList() {
       getList(this.tableInfo).then(res => {
-        console.log(res)
+        // console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -267,13 +268,16 @@ export default {
     },
     handleInput() {
       if( this.ruleForm.companyName.length > 5 ) {
-        getCompanyInfoList(this.ruleForm).then(res => {
-          console.log(res)
-          this.options = res.data
-          this.optionss = res.data
-        })
+        setTimeout(() => {
+          getCompanyInfoList(this.ruleForm).then(res => {
+            console.log(res)
+            this.options = res.data
+            this.optionss = res.data
+          })
+        }, 300)
       } else {
         this.options = []
+        this.optionss = []
       }
     },
     handleSelect(item, index) {
@@ -292,10 +296,15 @@ export default {
         registerMoney: '',
         sameCreditCode: ''
       }
+      this.options = []
+      this.optionss = []
     },
     handleClear() {
       this.ruleForm.companyName = ''
       this.options = []
+    },
+    handleMove(index) {
+      this.currentIndex = index
     },
     createProject() { // 创建项目
       this.$refs.ruleForm.validate(valid => {
@@ -336,17 +345,23 @@ export default {
     margin-bottom: 25px;
   }
   .divul {
-    width: 300px;
-    height: 310px;
+    max-width: 600px;
+    min-width: 350px;
+    list-style: none;
     background-color: #fff;
     position: absolute;
     top: 170px;
     left: 153px;
     border:1px solid #DCDFE6;
     border-radius: 5px;
+    overflow: auto;
   }
   .divli {
     margin-bottom: 10px;
     cursor: pointer;
+    width: 100%;
+  }
+  .bgc:hover {
+    color: blue;
   }
 </style>

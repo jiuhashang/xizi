@@ -298,7 +298,7 @@
               <el-checkbox v-model="seProjectCooperate.ownPutFlag" disabled></el-checkbox>
             </el-col>
             <el-col :span="16" class="span130">
-              <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }}</span>
+              <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }} 万元</span>
             </el-col>
           </el-row>
         </el-col>

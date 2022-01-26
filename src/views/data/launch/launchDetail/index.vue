@@ -289,8 +289,8 @@
             <el-table-column prop="transformVolume" label="容量（kVA）" />
             <el-table-column label="操作">
               <template slot-scope="scope">
-                <el-button type="danger" size="small" @click="deleteData(scope.row)">删除</el-button>
-                <el-button type="info" size="small" @click="editData(scope.row)">编辑</el-button>
+                <el-button type="danger" size="small" @click="deleteData(scope.row)" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99">删除</el-button>
+                <el-button type="info" size="small" @click="editData(scope.row)" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99">编辑</el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -706,21 +706,6 @@ export default {
       this.options = res.data
     })
   },
-  // watch: {
-  //   'seProjectCooperate.cooperateType':function(newVal, oldVal) {
-  //     console.log(newVal, oldVal)
-  //     if(newVal === 0) {
-  //       this.seProjectCooperate.ownPutFlag = true
-  //       this.seProjectCooperate.electricityDiscountFlag = false
-  //       this.seProjectCooperate.electricityDiscountScale = ''
-  //       this.seProjectCooperate.houseLeaseFlag = false
-  //       this.seProjectCooperate.houseLeaseMoney = ''
-  //     } else if(newVal === 1) {
-  //       this.seProjectCooperate.ownPutFlag = false
-  //       this.seProjectCooperate.ownPutMoney = ''
-  //     } 
-  //   }
-  // },
   methods: {
     getProjectInfo( projectId ) {
       getProjectInfo({ projectId }).then(res => {
@@ -737,7 +722,7 @@ export default {
         this.seProjectCompanyInfo.value = [this.seProjectCompanyInfo.province, this.seProjectCompanyInfo.city]
         if(this.seProjectCompanyBuildInfo.housePartType) { this.housePartType = this.seProjectCompanyBuildInfo.housePartType.split(',') }
         if(this.seProjectCompanyBuildInfo.colorSteelType) { this.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.split(',') }
-        if(this.seProjectCompanyBuildInfo.housePartType.indexOf('2') !== -1) { this.houseDis = false }
+        if(this.seProjectCompanyBuildInfo.housePartType && this.seProjectCompanyBuildInfo.housePartType.indexOf('2') !== -1) { this.houseDis = false }
       })
     },
     front(msg) {
@@ -844,8 +829,12 @@ export default {
       this.addDialogVisible = true
     },
     add() { // 添加变压器
-      this.seProjectPowerTransformInfoList.push(this.addForm)
-      this.save()
+      let obj = {
+        projectId: this.$route.query.projectId,
+        transformName: this.addForm.transformName,
+        transformVolume: this.addForm.transformVolume,
+      }
+      this.seProjectPowerTransformInfoList.push(obj)
       this.addDialogVisible = false
       this.addForm = { 
         projectId: this.$route.query.projectId,

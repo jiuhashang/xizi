@@ -191,10 +191,10 @@
                 <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.colorSteelCementTopScale }} %</el-col>
               </el-row>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="16">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">其他屋面材质说明</el-col>
-                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.otherMessage ? seProjectCompanyBuildInfo.otherMessage : '-' }}</el-col>
+                <el-col :span="4" class="span13">其他屋面材质说明</el-col>
+                <el-col :span="20" class="span130">{{ seProjectCompanyBuildInfo.otherMessage ? seProjectCompanyBuildInfo.otherMessage : '-' }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -264,10 +264,10 @@
                 </el-col>
               </el-row>
             </el-col>
-            <el-col :span="8">
+            <el-col :span="16">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">其他供电说明</el-col>
-                <el-col :span="16" class="span130">{{ seProjectPowerInfo.otherMessage ? seProjectPowerInfo.otherMessage : '-' }}</el-col>
+                <el-col :span="4" class="span13">其他供电说明</el-col>
+                <el-col :span="20" class="span130">{{ seProjectPowerInfo.otherMessage ? seProjectPowerInfo.otherMessage : '-' }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -302,7 +302,7 @@
                   <el-checkbox v-model="seProjectCooperate.ownPutFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }}</span>
+                  <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }} 万元</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -474,15 +474,9 @@
               </el-row>
             </el-col>
           </el-row>
-          <el-row :gutter="20" style="margin:30px;">
-            <el-col :span="8">
-              <el-row :gutter="20">
-                <el-col :span="8" class="span13">项目发起额外说明</el-col>
-                <el-col :span="16" class="span130">
-                  <span>{{ seProjectRelevantFile.projectOtherMessage }}</span>
-                </el-col>
-              </el-row>
-            </el-col>
+          <el-row :gutter="20" style="margin:30px 0;">
+            <el-col :span="3" class="span13">项目发起额外说明</el-col>
+            <el-col :span="21" class="span130">{{ seProjectRelevantFile.projectOtherMessage }}</el-col>
           </el-row>
 
           <div class="xian" style="margin-top:20px;">
@@ -508,13 +502,9 @@
               </el-row>
             </el-col>
           </el-row>
-          <el-row :gutter="20" style="margin:30px;">
-            <el-col :span="8" class="span13">
-              <el-row :gutter="20">
-                <el-col :span="8" class="span13">额外说明</el-col>
-                <el-col :span="16">{{ seProjectSupplementFile.projectOtherMessage }}</el-col>
-              </el-row>
-            </el-col>
+          <el-row :gutter="20" style="margin:30px 0;">
+            <el-col :span="3" class="span13">额外说明</el-col>
+            <el-col :span="21" class="span130">{{ seProjectSupplementFile.otherMessage }}</el-col>
           </el-row>
         </el-tab-pane>
 
@@ -609,7 +599,7 @@
                   <el-checkbox v-model="seProjectCooperate.ownPutFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }}</span>
+                  <span>业主自投，预算 : {{ seProjectCooperate.ownPutMoney }} 万元</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -707,19 +697,23 @@
           <div style="margin-top:15px;display:flex;justify-content:space-around;">
             <div class="t1" style="background-color:#3C4563;">
               <p style="font-size: 14px;margin-left:30px;">全投资内部收益率</p>
-              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;">{{ projectTotalProfitModel.innerScal }}%</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.innerScal">{{ projectTotalProfitModel.innerScal.toFixed(2) }}%</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-else> - </p>
             </div>
             <div class="t1" style="background-color:#8892DF;">
               <p style="font-size: 14px;margin-left:30px;">投资偿还期（年）</p>
-              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;">{{ projectTotalProfitModel.investNum }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.investNum">{{ projectTotalProfitModel.investNum.toFixed(2) }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-else> - </p>
             </div>
             <div class="t1" style="background-color:#6FACFD;">
               <p style="font-size: 14px;margin-left:30px;">总投资费用（万元）</p>
-              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;">{{ projectTotalProfitModel.totalInvestPrice }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.totalInvestPrice">{{ projectTotalProfitModel.totalInvestPrice.toFixed(2) }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-else> - </p>
             </div>
             <div class="t1" style="background-color:#ED7E77;">
               <p style="font-size: 14px;margin-left:30px;">首年发电量</p>
-              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;">{{ projectTotalProfitModel.firstElectric }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-if="projectTotalProfitModel.firstElectric">{{ projectTotalProfitModel.firstElectric.toFixed(2) }}</p>
+              <p style="font-size: 36px;font-weight:900;text-align:center;margin-top:25px;" v-else> - </p>
             </div>
           </div>
           <div style="margin-top:15px;display:flex;justify-content:space-around;">
@@ -912,8 +906,8 @@ export default {
           if( seProjectNearThreeYearSellProfixList.length > 0 ) { this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList }
           this.seProjectPowerInfo = seProjectPowerInfo
           this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList
-          this.seProjectRelevantFile = seProjectRelevantFile
-          this.seProjectSupplementFile = seProjectSupplementFile
+          this.seProjectRelevantFile = { ...seProjectRelevantFile }
+          this.seProjectSupplementFile = { ...seProjectSupplementFile }
         })
       },
       getProfitMessage() {
