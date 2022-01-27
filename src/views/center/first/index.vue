@@ -179,11 +179,11 @@ export default {
     
     // 审批记录
     approval(projectId) {
-      this.logVisible = true
       getProjectExamineLog({ projectId }).then(res => {
         console.log(res)
         this.activities = res.data
       })
+      this.logVisible = true
     },
 
     handleSizeChange(val) {

@@ -11,11 +11,8 @@
           <h2>&lt; {{ $route.meta.title }}</h2>
         </div>
         <div class="btnnn">
-          <!-- <el-button size="small" @click="handleOver">终止项目</el-button> -->
           <!-- <el-button size="small">工商数据查看</el-button> -->
           <el-button size="small" @click="handleApproval">审批记录</el-button>
-          <!-- <el-button size="small" type="danger" @click="handleReject">驳回审核</el-button> -->
-          <!-- <el-button size="small" type="primary" @click="handlePass">审核通过</el-button> -->
         </div>
       </div>
     </div>

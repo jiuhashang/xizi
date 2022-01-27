@@ -7,6 +7,7 @@
         :default-active="$route.path"
         class="el-menu-demo"
         mode="horizontal"
+        active-text-color="#1890FF"
         @select="handleSelect"
         router>
         <el-menu-item index="/dashboard">首页</el-menu-item>

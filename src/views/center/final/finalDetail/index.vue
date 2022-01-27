@@ -955,11 +955,11 @@ export default {
           message: this.message
         }).then(res => {
           if( this.type == 0 ) {
-            this.$message.success('项目已审核通过')
+            this.$message.success('项目已审核驳回')
             this.dialogVisible = false
             this.$router.back()
           } else if( this.type == 1 ) {
-            this.$message.success('项目已审核驳回')
+            this.$message.success('项目已审核成功')
             this.dialogVisible = false
             this.$router.back()
           } else if( this.type == 2 ) {

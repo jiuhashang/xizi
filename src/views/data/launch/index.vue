@@ -93,7 +93,7 @@
             <el-input v-model="ruleForm.projectName" placeholder="请输入" clearable />
           </el-form-item>
           <el-form-item label="公司名称" prop="companyName">
-            <el-input v-model="ruleForm.companyName" placeholder="请输入" clearable @input="handleInput" @clear="handleClear" />
+            <el-input v-model.trim="ruleForm.companyName" placeholder="请输入" clearable @input="handleInput" @clear="handleClear" />
           </el-form-item>
         </el-form>
         <div class="divul" v-show="options.length">
@@ -104,7 +104,7 @@
       </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="createProject">创 建</el-button>
+        <el-button type="primary" @click="createProject" :loading="loading">创 建</el-button>
       </span>
     </el-dialog>
     <!-- 审批记录 -->
@@ -191,6 +191,7 @@ export default {
         ]
       },
       currentIndex: null,
+      loading: false,
 
       // 审批记录
       logVisible: false,
@@ -204,7 +205,6 @@ export default {
     // 列表请求
     getList() {
       getList(this.tableInfo).then(res => {
-        // console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -247,10 +247,10 @@ export default {
     
     // 审批记录
     approval(projectId) {
-      this.logVisible = true
       getProjectExamineLog({projectId}).then(res => {
         this.activities = res.data
       })
+      this.logVisible = true
     },
 
     handleSizeChange(val) {
@@ -270,7 +270,6 @@ export default {
       if( this.ruleForm.companyName.length > 5 ) {
         setTimeout(() => {
           getCompanyInfoList(this.ruleForm).then(res => {
-            console.log(res)
             this.options = res.data
             this.optionss = res.data
           })
@@ -286,7 +285,6 @@ export default {
       this.ruleForm.registerMoney = item.regCapital
       this.ruleForm.sameCreditCode = item.creditCode
       this.options = []
-      this.optionss = []
     },
     colseDialog() {
       this.ruleForm = {
@@ -307,23 +305,35 @@ export default {
       this.currentIndex = index
     },
     createProject() { // 创建项目
-      this.$refs.ruleForm.validate(valid => {
-        if(valid) {
-          addOne(this.ruleForm).then(res => {
-            console.log('创建项目表单', res)
-            this.$message.success('创建项目表单成功')
-            this.$router.push({ name: 'LaunchDetail', query: { 
-              projectId: res.data.projectId,
-              createTime: res.data.createTime,
-              createUserNickName: res.data.createUserNickName,
-              createUserPhone: res.data.createUserPhone,
-              projectName: res.data.projectName,
-              companyName: res.data.companyName
-              }
-            })
-          })
-        }
+      this.loading = true
+      const result = this.optionss.find(item => {
+        return item.name === this.ruleForm.companyName
       })
+      if(result == undefined) {
+        this.$message.error('必须选择一项才能进行下一步操作')
+        this.loading = false
+        return
+      } else {
+        this.$refs.ruleForm.validate(valid => {
+          if(valid) {
+            addOne(this.ruleForm).then(res => {
+              this.loading = false
+              this.$message.success('创建项目表单成功')
+              this.$router.push({ name: 'LaunchDetail', query: { 
+                projectId: res.data.projectId,
+                createTime: res.data.createTime,
+                createUserNickName: res.data.createUserNickName,
+                createUserPhone: res.data.createUserPhone,
+                projectName: res.data.projectName,
+                companyName: res.data.companyName
+                }
+              })
+            }).catch(err => {
+              this.loading = false
+            })
+          }
+        })
+      }
     }
   }
 }
