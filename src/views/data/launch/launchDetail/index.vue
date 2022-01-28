@@ -568,7 +568,7 @@ export default {
       if (!value) {
         return callback(new Error('手机号不能为空'))
       } else {
-        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        const reg = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
         // console.log(reg.test(value))
         if (reg.test(value)) {
           callback()
@@ -621,6 +621,10 @@ export default {
         value: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
         setAddress: [{ min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }],
         legalPerson: [{ min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }],
+        // companyPhone: [
+        //   { message: '请输入手机号码', trigger: 'blur' },
+        //   { min: 11, max: 11, message: '手机号码格式不对，长度在 11位数字', trigger: 'blur' }
+        // ]
         companyPhone: [{ validator: checkPhone, trigger: 'blur' }]
       },
 

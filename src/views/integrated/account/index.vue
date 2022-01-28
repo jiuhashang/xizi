@@ -136,7 +136,7 @@ export default {
       if (!value) {
         return callback(new Error('手机号不能为空'))
       } else {
-        const reg = /^1[3|4|5|7|8][0-9]\d{8}$/
+        const reg = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
         // console.log(reg.test(value))
         if (reg.test(value)) {
           callback()

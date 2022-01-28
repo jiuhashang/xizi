@@ -205,6 +205,7 @@ export default {
     // 列表请求
     getList() {
       getList(this.tableInfo).then(res => {
+        // console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -270,6 +271,7 @@ export default {
       if( this.ruleForm.companyName.length > 5 ) {
         setTimeout(() => {
           getCompanyInfoList(this.ruleForm).then(res => {
+            console.log(res)
             this.options = res.data
             this.optionss = res.data
           })
