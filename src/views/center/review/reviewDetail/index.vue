@@ -160,10 +160,10 @@
           <el-row :gutter="20">
             <el-col :span="8" class="span13">屋面材质</el-col>
             <el-col :span="16" class="span130">
-              <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">&nbsp;瓦铄屋面</span>&nbsp;
-              <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">&nbsp;混泥土屋面</span>
-              <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">&nbsp;彩钢瓦屋面</span>
-              <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">&nbsp;其他</span>
+              <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">瓦铄屋面&nbsp;</span>
+              <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">混泥土屋面&nbsp;</span>
+              <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">彩钢瓦屋面&nbsp;</span>
+              <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">其他</span>
             </el-col>
           </el-row>
         </el-col>
@@ -171,11 +171,11 @@
           <el-row :gutter="20">
             <el-col :span="8" class="span13">彩钢瓦类型</el-col>
             <el-col :span="16" class="span130">
-              <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(0) !== -1">无</span>
-              <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(1) !== -1">直立锁边</span>
-              <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角齿</span>
-              <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(3) !== -1">T型</span>
-              <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(4) !== -1">其他</span>
+              <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(0) !== -1">无</span>
+              <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(1) !== -1">直立锁边</span>
+              <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角齿</span>
+              <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(3) !== -1">T型</span>
+              <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(4) !== -1">其他</span>
             </el-col>
           </el-row>
         </el-col>

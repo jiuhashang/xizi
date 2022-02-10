@@ -65,9 +65,20 @@ export function updateOne(params) {
   )
 }
 
-// 下载列表
-export function selectDownFileList(params) {
-  return request.post('/admin/seProjectDownFile/selectDownFileList', 
+// 下载列表查询
+export function selectDownFileList(data, params) {
+  return request({
+    url: '/admin/seProjectDownFile/selectDownFileList', 
+    method: 'post',
+    data,
+    params,
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+  })
+}
+
+// 下载删除
+export function deleteDownFileList(params) {
+  return request.post('/admin/seProjectDownFile/deleteDownFileList', 
   params
   )
 }

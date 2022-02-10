@@ -60,6 +60,7 @@
       title="创建账号"
       :visible.sync="createDialogVisible"
       :close-on-click-modal="false"
+      @close="handleClose"
       width="40%">
       <el-alert title="账号创建后无法删除，手机号码唯一，一人可持有多个账号" type="success" :closable="false" />
       <el-form ref="addRef" :rules="addRules" :model="addForm" label-width="100px" style="padding:0 50px;">
@@ -76,7 +77,7 @@
           <el-input v-model="addForm.password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="roleName">
-          <el-select v-model="addForm.roleName" placeholder="请选择角色" class="width100" clearable @change="handleRole">
+          <el-select v-model="addForm.roleName" placeholder="请选择" class="width100" clearable @change="handleRole">
             <el-option v-for="(item, index) in options" :label="item.roleName" :value="item.roleId" :key="index"></el-option>
           </el-select>
         </el-form-item>
@@ -110,7 +111,7 @@
           <el-input v-model="editForm.password" type="password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="roleName">
-          <el-select v-model="editForm.roleName" placeholder="请选择角色" class="width100" clearable>
+          <el-select v-model="editForm.roleName" placeholder="请选择" class="width100" clearable>
             <el-option v-for="(item, index) in options" :label="item" :value="item" :key="index"></el-option>
           </el-select>
         </el-form-item>
@@ -291,6 +292,9 @@ export default {
           })
         }
       })
+    },
+    handleClose() {
+      this.addForm = {}
     },
 
     // 编辑账号

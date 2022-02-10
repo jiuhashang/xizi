@@ -26,15 +26,22 @@
         :closable="false">
       </el-alert>
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
-        <el-table-column label="项目名称" />
-        <el-table-column label="完成预下载时间" />
-        <el-table-column label="进度" />
-        <el-table-column label="文件大小" />
-        <el-table-column label="剩余存储时间" />
+        <el-table-column prop="fileName" label="项目名称" />
+        <el-table-column prop="readyTime" label="完成预下载时间" />
+        <el-table-column label="进度">
+          <template slot-scope="scope">
+            <span v-show="scope.row.status == 0">正在预下载</span>
+            <span v-show="scope.row.status == 1">完成预下载</span>
+            <span v-show="scope.row.status == 2">下载失败</span>
+            <span v-show="scope.row.status == 3">文件过期</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="fileSize" label="文件大小" />
+        <el-table-column prop="fileValidityDate" label="存储到期时间" />
         <el-table-column label="操作">
-          <template>
-            <el-button type="text">下载</el-button>
-            <el-button type="text" style="color:red;">删除</el-button>
+          <template slot-scope="scope">
+            <el-button type="text" @click="handleDown(scope.row.downUrl)">下载</el-button>
+            <el-button type="text" style="color:red;" @click="handleRemove(scope.row.projectId)">删除</el-button>
           </template>
         </el-table-column> 
       </el-table>
@@ -44,7 +51,7 @@
 </template>
 
 <script>
-import { selectDownFileList } from '@/api/integrated'
+import { selectDownFileList, deleteDownFileList } from '@/api/integrated'
 
 export default {
   name: 'Download',
@@ -52,8 +59,8 @@ export default {
     return {
       tableInfo: {
         projectName: '',
-        pageIndex: 1,
-        pageSize: 10
+        pageIndex: 0,
+        pageSize: 5
       },
       tableData: [],
       total: 0,
@@ -74,7 +81,7 @@ export default {
     },
     // 表dan查询
     handleQuery() {
-      this.tableInfo.pageIndex = 1
+      this.tableInfo.pageIndex = 0
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.selectDownFileList()
     },
@@ -82,13 +89,32 @@ export default {
     reset() {
       this.tableInfo = {
         projectName: '',
-        pageIndex: 1,
-        pageSize: 10
+        pageIndex: 0,
+        pageSize: 5
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.selectDownFileList()
     },
+
+    handleDown(url) {
+      window.open(url)
+    },
     
+    async handleRemove(projectId) {
+      const confirmResult = await this.$confirm('此操作会永久删除，是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).catch((err) => err)
+      if (confirmResult !== 'confirm') {
+        return this.$message.info('已取消')
+      }
+      deleteDownFileList({ projectId }).then(res => {
+        this.$message.success(res.msg)
+        this.selectDownFileList()
+      })
+    },
+
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val

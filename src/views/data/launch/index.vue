@@ -84,7 +84,7 @@
       @close="colseDialog">
       <div style="position: relative;">
         <el-alert
-          title="请在搜索结果中选择匹配的公司名称，且创建表单后将无法修改，请认真核对。"
+          title="请在搜索结果中选择匹配的公司名称，且创建表单后将无法修改，请认真核对 !"
           type="success"
           :closable="false">
         </el-alert>
@@ -205,7 +205,6 @@ export default {
     // 列表请求
     getList() {
       getList(this.tableInfo).then(res => {
-        // console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -271,7 +270,6 @@ export default {
       if( this.ruleForm.companyName.length > 5 ) {
         setTimeout(() => {
           getCompanyInfoList(this.ruleForm).then(res => {
-            console.log(res)
             this.options = res.data
             this.optionss = res.data
           })

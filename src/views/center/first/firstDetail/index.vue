@@ -166,10 +166,10 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋面材质</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">瓦铄屋面&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">混泥土屋面&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">彩钢瓦屋面&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">其他</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">瓦铄屋面&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">混泥土屋面&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">彩钢瓦屋面&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">其他</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -177,11 +177,11 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">彩钢瓦类型</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.join().indexOf(0) !== -1">无&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.join().indexOf(1) !== -1">直立锁边&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.join().indexOf(2) !== -1">角齿&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.join().indexOf(3) !== -1">T型&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.join().indexOf(4) !== -1">其他</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(0) !== -1">无&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(1) !== -1">直立锁边&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角齿&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(3) !== -1">T型&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(4) !== -1">其他</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -489,10 +489,10 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋面材质</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">&nbsp;瓦铄屋面</span>&nbsp;
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">&nbsp;混泥土屋面</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">&nbsp;彩钢瓦屋面</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">&nbsp;其他</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">&nbsp;瓦铄屋面</span>&nbsp;
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">&nbsp;混泥土屋面</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">&nbsp;彩钢瓦屋面</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">&nbsp;其他</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -553,7 +553,8 @@
                   <el-checkbox v-model="seProjectCooperate.electricityDiscountFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>电费折扣，比例 : {{ seProjectCooperate.electricityDiscountScale }} %</span>
+                  <span v-if="seProjectCooperate.electricityDiscountScale">电费折扣，比例 : {{ seProjectCooperate.electricityDiscountScale }} %</span>
+                  <span v-else>电费折扣，比例 :</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -563,7 +564,8 @@
                   <el-checkbox v-model="seProjectCooperate.houseLeaseFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney }} 万元/年</span>
+                  <span v-if="seProjectCooperate.houseLeaseMoney">出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney }} 万元/年</span>
+                  <span v-else>出租屋面，租金 :</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -573,16 +575,16 @@
             <div>参数配置</div>
             <el-button type="primary" size="mini" @click="handleMeasure" :disabled="firstExamine == 2 || firstExamine == 3 || firstExamine == 99">测算数据</el-button>
           </div>
-          <el-form ref="form" :model="seProjectProfitConfig" :disabled="firstExamine == 2 || firstExamine == 3 || firstExamine == 99" label-width="130px">
+          <el-form ref="seProjectProfitConfigRef" :model="seProjectProfitConfig" :rules="seProjectProfitConfigRules" :disabled="firstExamine == 2 || firstExamine == 3 || firstExamine == 99" label-width="140px">
             <el-row :gutter="20" style="margin:30px 30px 0 30px;">
               <el-col :span="8" style="margin-top:10px;">
                 <el-row :gutter="20">
-                  <el-col :span="8" class="span13">脱硫煤电价</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.desulfurizeElectricityPrice }} 元/KWH</el-col>
+                  <el-col :span="8" class="span13" style="padding-right:0;">脱硫煤电价</el-col>
+                  <el-col :span="16" class="span130" style="padding-left:15px;">{{ seProjectProfitConfig.desulfurizeElectricityPrice }} 元/KWH</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8" style="padding-left:70px;">
-                <el-form-item label="加权电价">
+                <el-form-item label="加权电价" prop="weightElectricityPrice">
                   <el-input v-model="seProjectProfitConfig.weightElectricityPrice" type="number" @input="handleBlur" placeholder="请输入" clearable>
                     <span slot="suffix">元/KWH</span>
                   </el-input>
@@ -590,29 +592,29 @@
               </el-col>
               <el-col :span="8" style="margin-top:10px;">
                 <el-row :gutter="20">
-                  <el-col :span="8" class="span13">折后电价</el-col>
-                  <el-col :span="16" class="span130" v-if="seProjectProfitConfig.discountElectricityPrice">{{ seProjectProfitConfig.discountElectricityPrice }} 元/KWH</el-col>
-                  <el-col :span="16" class="span130" v-else> - </el-col>
+                  <el-col :span="8" class="span13" style="padding-right:0;">折后电价</el-col>
+                  <el-col :span="16" class="span130" style="padding-left:15px;" v-if="seProjectProfitConfig.discountElectricityPrice">{{ seProjectProfitConfig.discountElectricityPrice }} 元/KWH</el-col>
+                  <el-col :span="16" class="span130" style="padding-left:15px;" v-else> - </el-col>
                 </el-row>
               </el-col>
             </el-row>
             <el-row :gutter="20" style="margin: 10px 30px 10px;">
               <el-col :span="8" style="padding-left:70px;">
-                <el-form-item label="每年固定运维费用">
+                <el-form-item label="每年固定运维费用" prop="yearRepairPrice">
                   <el-input v-model="seProjectProfitConfig.yearRepairPrice" type="number" placeholder="请输入" clearable>
                     <span slot="suffix">元/瓦</span>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8" style="padding-left:70px;">
-                <el-form-item label="第10年运维费用">
+                <el-form-item label="第10年运维费用" prop="tenRepairPrice">
                   <el-input v-model="seProjectProfitConfig.tenRepairPrice" type="number" placeholder="请输入" clearable>
                     <span slot="suffix">元/瓦</span>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8" style="padding-left:70px;">
-                <el-form-item label="第15年运维费用">
+                <el-form-item label="第15年运维费用" prop="fifteenRepairPrice">
                   <el-input v-model="seProjectProfitConfig.fifteenRepairPrice" type="number" placeholder="请输入" clearable>
                     <span slot="suffix">元/瓦</span>
                   </el-input>
@@ -621,21 +623,21 @@
             </el-row>
             <el-row :gutter="20" style="margin:0 30px 30px;">
               <el-col :span="8" style="padding-left:70px;">
-                <el-form-item label="自发自用比例">
+                <el-form-item label="自发自用比例" prop="selfUseScale">
                   <el-input v-model="seProjectProfitConfig.selfUseScale" type="number" placeholder="请输入" clearable>
                     <span slot="suffix">%</span>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8" style="padding-left:70px;">
-                <el-form-item label="单瓦价格">
+                <el-form-item label="单瓦价格" prop="unitPrice">
                   <el-input v-model="seProjectProfitConfig.unitPrice" type="number" placeholder="请输入" clearable>
                     <span slot="suffix">元/瓦</span>
                   </el-input>
                 </el-form-item>
               </el-col>
               <el-col :span="8" style="padding-left:70px;">
-                <el-form-item label="并网电压类型">
+                <el-form-item label="并网电压类型" prop="voltageType">
                   <el-select v-model="seProjectProfitConfig.voltageType" placeholder="请选择" class="width100">
                     <el-option label="高压" :value="1"></el-option>
                     <el-option label="低压" :value="0"></el-option>
@@ -773,6 +775,28 @@ import { getProfitMessage, putProfitMessage, projectFirstExamine } from '@/api/c
 export default {
   name: 'FirstDetail',
   data() {
+    var checkCe = (rule, value, callback) => {
+      // if (!value) {
+      //   return callback(new Error('内容不能为空'))
+      // } else {
+      const reg = /^(?:100|\d{1,2})(?:\.\d{1,2})?$/ 
+      if (reg.test(value)) {
+        callback()
+      } else {
+        return callback(new Error('限数字，0-100之间，小数点后2位'))
+      }
+    }
+    var checkFour = (rule, value, callback) => {
+      // if (!value) {
+      //   return callback(new Error('内容不能为空'))
+      // } else {
+      const reg = /^\d+(\.\d{1,4})?$/ 
+      if (reg.test(value)) {
+        callback()
+      } else {
+        return callback(new Error('限数字，若小数最多4位，＞0'))
+      }
+    }
     return {
       firstExamine: '',
       province: '',
@@ -789,10 +813,38 @@ export default {
       mayInstallVolume: '',
       seProjectProfitConfig: {
         projectId: this.$route.query.projectId,
-        weightElectricityPrice: undefined,
-        voltageType: 0,
+        // weightElectricityPrice: undefined
       }, // 参数配置
       projectTotalProfitModel: {}, // 收益统计
+      seProjectProfitConfigRules: {
+        weightElectricityPrice: [
+          { required: true, message: '请输入加权电价', trigger: 'blur' },
+          { validator: checkFour, trigger: 'blur' }
+        ],
+        yearRepairPrice: [
+          { required: true, message: '请输入每年固定运维费用', trigger: 'blur' },
+          { validator: checkFour, trigger: 'blur' }
+        ],
+        tenRepairPrice: [
+          { required: true, message: '请输入第10年运维费用', trigger: 'blur' },
+          { validator: checkFour, trigger: 'blur' }
+        ],
+        fifteenRepairPrice: [
+          { required: true, message: '请输入第15年运维费用', trigger: 'blur' },
+          { validator: checkFour, trigger: 'blur' }
+        ],
+        selfUseScale: [
+          { required: true, message: '请输入自发自用比例', trigger: 'blur' },
+          { validator: checkCe, trigger: 'blur' }
+        ],
+        unitPrice: [
+          { required: true, message: '请输入单瓦价格', trigger: 'blur' },
+          { validator: checkFour, trigger: 'blur' }
+        ],
+        voltageType: [
+          { required: true, message: '请选择并网电压类型', trigger: 'change' }
+        ]
+      },
       seProjectProfitCountList: [], //  收益表格数据
 
       // 审核
@@ -813,22 +865,20 @@ export default {
   },
   methods: {
     handleClick(tab, event) {
-
       if(this.activeName == 'second') {
         getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算
-          console.log('11', res)
           const { yearSunShine, mayInstallVolume, seProjectProfitConfig, projectTotalProfitModel, seProjectProfitCountList } = res.data
           this.yearSunShine = yearSunShine
           this.mayInstallVolume = mayInstallVolume
           this.projectTotalProfitModel = projectTotalProfitModel
           this.seProjectProfitConfig = seProjectProfitConfig
           this.seProjectProfitCountList = seProjectProfitCountList
+          this.seProjectProfitConfig.voltageType = 0
         })
       }
     },
     getProjectInfo() {
       getProjectInfo({ projectId: this.projectId }).then(res => {
-        console.log('22', res)
         const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectCooperate, seProjectRelevantFile } = res.data
         this.seProjectCompanyInfo = seProjectCompanyInfo
         this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
@@ -851,50 +901,59 @@ export default {
       })
     },
     handleMeasure() { // 测算数据
-      this.seProjectCompanyBuildInfo.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.join(',')
-      if(this.seProjectCooperate.electricityDiscountFlag == true) {
-        this.seProjectCooperate.electricityDiscountFlag = 1
-      }
-      if(this.seProjectCooperate.houseLeaseFlag == true) {
-        this.seProjectCooperate.houseLeaseFlag = 1
-      }
-      if(this.seProjectCooperate.ownPutFlag == true) {
-        this.seProjectCooperate.ownPutFlag = 1
-      }
-      putProfitMessage({
-        province: this.province,
-        city: this.city,
-        mayInstallVolume: this.mayInstallVolume,
-        yearSunShine: this.yearSunShine,
-        seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
-        seProjectCooperate: this.seProjectCooperate,
-        seProjectProfitConfig: this.seProjectProfitConfig,
-        projectTotalProfitModel: this.projectTotalProfitModel,
-        seProjectProfitCountList: this.seProjectProfitCountList
-
-      }).then(res => {
-        console.log('33', res)
-        this.$message.success('测算成功')
-        getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算
-          const { projectTotalProfitModel, seProjectProfitCountList, seProjectCompanyBuildInfo, seProjectCooperate, yearSunShine } = res.data
-          this.yearSunShine = yearSunShine
-          this.projectTotalProfitModel = projectTotalProfitModel
-          this.seProjectProfitCountList = seProjectProfitCountList
-          this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
-          if(seProjectCompanyBuildInfo.colorSteelType) {
-            this.seProjectCompanyBuildInfo.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.split(',')
+      this.$refs.seProjectProfitConfigRef.validate((valid) => {
+        if(!valid) {
+          this.$message.error('请填写相关测算数据') 
+          return
+        } else {
+          if(this.seProjectCompanyBuildInfo.colorSteelType.length > 1) {
+            this.seProjectCompanyBuildInfo.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.join(',')
+          } else {
+            this.seProjectCompanyBuildInfo.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType[0]
           }
-          this.seProjectCooperate = seProjectCooperate
-          if(seProjectCooperate.ownPutFlag == 1) {
-            this.seProjectCooperate.ownPutFlag = true 
+          if(this.seProjectCooperate.electricityDiscountFlag == true) {
+            this.seProjectCooperate.electricityDiscountFlag = 1
           }
-          if(seProjectCooperate.electricityDiscountFlag == 1) {
-            this.seProjectCooperate.electricityDiscountFlag = true
+          if(this.seProjectCooperate.houseLeaseFlag == true) {
+            this.seProjectCooperate.houseLeaseFlag = 1
           }
-          if(seProjectCooperate.houseLeaseFlag == 1) {
-            this.seProjectCooperate.houseLeaseFlag = true
+          if(this.seProjectCooperate.ownPutFlag == true) {
+            this.seProjectCooperate.ownPutFlag = 1
           }
-        })
+          putProfitMessage({
+            province: this.province,
+            city: this.city,
+            mayInstallVolume: this.mayInstallVolume,
+            yearSunShine: this.yearSunShine,
+            seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
+            seProjectCooperate: this.seProjectCooperate,
+            seProjectProfitConfig: this.seProjectProfitConfig,
+            projectTotalProfitModel: this.projectTotalProfitModel,
+            seProjectProfitCountList: this.seProjectProfitCountList
+          }).then(res => {
+            this.$message.success('测算成功')
+            getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算
+              const { projectTotalProfitModel, seProjectProfitCountList, seProjectCompanyBuildInfo, seProjectCooperate, yearSunShine } = res.data
+              this.yearSunShine = yearSunShine
+              this.projectTotalProfitModel = projectTotalProfitModel
+              this.seProjectProfitCountList = seProjectProfitCountList
+              this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
+              if(seProjectCompanyBuildInfo.colorSteelType) {
+                this.seProjectCompanyBuildInfo.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.split(',')
+              }
+              this.seProjectCooperate = seProjectCooperate
+              if(seProjectCooperate.ownPutFlag == 1) {
+                this.seProjectCooperate.ownPutFlag = true 
+              }
+              if(seProjectCooperate.electricityDiscountFlag == 1) {
+                this.seProjectCooperate.electricityDiscountFlag = true
+              }
+              if(seProjectCooperate.houseLeaseFlag == 1) {
+                this.seProjectCooperate.houseLeaseFlag = true
+              }
+            })
+          })
+        }
       })
     },
     handleBlur() { // 计算折后电价
