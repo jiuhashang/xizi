@@ -39,7 +39,7 @@
         <el-table-column prop="companyName" label="公司名称" />
         <el-table-column label="建站地址">
           <template slot-scope="scope">
-            {{ scope.row.province }} {{ scope.row.city }}
+            {{ scope.row.province }} - {{ scope.row.city }}
           </template>
         </el-table-column>
         <el-table-column prop="createTime" label="项目发起时间" />

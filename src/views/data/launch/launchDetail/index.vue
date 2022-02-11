@@ -345,6 +345,54 @@
       </el-form>
 
       <div class="xian">
+        <div>近3年销售与利润</div>
+      </div>
+      <table style="width: 100%;text-align:center;" class="ht" cellpadding="0" cellspacing="0">
+        <tr style="background:#f2f2f2;">
+          <td></td>
+          <td>2019年</td>
+          <td>2020年</td>
+          <td>2021年</td>
+        </tr>
+        <tr>
+          <td>年销售额（万元）</td>
+          <td>
+            <el-input v-model="first.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+          <td>
+            <el-input v-model="second.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+          <td>
+            <el-input v-model="three.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+        </tr>
+        <tr>
+          <td>年利润额（万元）</td>
+          <td>
+            <el-input v-model="first.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+          <td>
+            <el-input v-model="second.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+          <td>
+            <el-input v-model="three.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+              <span slot="suffix">万元</span>
+            </el-input>
+          </td>
+        </tr>
+      </table>
+
+      <div class="xian">
         <div>相关材料</div>
       </div>
       <el-alert title="如文件较多，可将文件进行压缩打包上传，并等待文件完成上传。" type="success" :closable="false" />
@@ -448,7 +496,7 @@
         <el-row :gutter="20" style="margin:0 30px;">
           <el-col>
             <el-form-item label="项目发起额外说明">
-              <el-input placeholder="请输入" v-model="seProjectRelevantFile.projectOtherMessage" class="width100"></el-input>
+              <el-input v-model="seProjectRelevantFile.projectOtherMessage" class="width100"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -686,6 +734,28 @@ export default {
       }, // 合作模式
       cooperateRules: {
         cooperateType: [{ required: this.must, message: '请选择', trigger: 'change, blur' }]
+      },
+
+      first: {
+        id: undefined,
+        projectId: this.$route.query.projectId,
+        yearNum: 2019,
+        sellMoney: undefined,
+        profix: undefined
+      },
+      second: {
+        id: undefined,
+        projectId: this.$route.query.projectId,
+        yearNum: 2020,
+        sellMoney: undefined,
+        profix: undefined
+      },
+      three: {
+        id: undefined,
+        projectId: this.$route.query.projectId,
+        yearNum: 2021,
+        sellMoney: undefined,
+        profix: undefined
       },
 
       seProjectRelevantFile: {
@@ -978,4 +1048,25 @@ export default {
     padding-left: 10px;
     text-align: left;
   }
+  table {
+    width: 100%;
+    height: 200px;
+    margin: 30px 0;
+    border-collapse:collapse; 
+    border: 1px solid #aaa;
+    tr {
+      border: 1px solid #aaa;
+      td {
+        border: 1px solid #aaa;
+        width: 25%;
+      }
+    }
+    .el-input {
+      width: 90%;
+    }
+    /deep/ .el-input__suffix {
+      top: 10px;
+    }
+  }
+
 </style>

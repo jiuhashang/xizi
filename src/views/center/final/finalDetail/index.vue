@@ -164,10 +164,10 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋面材质</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">&nbsp;瓦铄屋面</span>&nbsp;
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">&nbsp;混泥土屋面</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">&nbsp;彩钢瓦屋面</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">&nbsp;其他</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">瓦铄屋面&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">混泥土屋面&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">彩钢瓦屋面&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">其他</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -175,11 +175,11 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">彩钢瓦类型</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(0) !== -1">无</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(1) !== -1">直立锁边</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角齿</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(3) !== -1">T型</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(4) !== -1">其他</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(0) !== -1">无&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(1) !== -1">直立锁边&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角齿&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(3) !== -1">T型&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType.indexOf(4) !== -1">其他&nbsp;</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -194,7 +194,7 @@
             <el-col :span="16">
               <el-row :gutter="20">
                 <el-col :span="4" class="span13">其他屋面材质说明</el-col>
-                <el-col :span="20" class="span130">{{ seProjectCompanyBuildInfo.otherMessage ? seProjectCompanyBuildInfo.otherMessage : '-' }}</el-col>
+                <el-col :span="20" class="span130">{{ seProjectCompanyBuildInfo.otherMessage }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -267,7 +267,7 @@
             <el-col :span="16">
               <el-row :gutter="20">
                 <el-col :span="4" class="span13">其他供电说明</el-col>
-                <el-col :span="20" class="span130">{{ seProjectPowerInfo.otherMessage ? seProjectPowerInfo.otherMessage : '-' }}</el-col>
+                <el-col :span="20" class="span130">{{ seProjectPowerInfo.otherMessage }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -322,7 +322,8 @@
                   <el-checkbox v-model="seProjectCooperate.houseLeaseFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney ? seProjectCooperate.houseLeaseMoney : '-' }} 万元/年</span>
+                  <span v-if="seProjectCooperate.houseLeaseMoney">出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney }} 万元/年</span>
+                  <span v-else>出租屋面，租金 :</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -332,7 +333,7 @@
             <div>近3年销售与利润</div>
           </div>
           <table style="width: 100%;text-align:center;margin:20px 0;" class="ht" cellpadding="0" cellspacing="0">
-            <tr>
+            <tr style="background:#f2f2f2;">
               <td></td>
               <td>2019年</td>
               <td>2020年</td>
@@ -341,25 +342,25 @@
             <tr>
               <td>年销售额（万元）</td>
               <td>
-                {{ first.sellMoney }}
+                {{ first.sellMoney ? 'first.sellMoney' : '-' }}
               </td>
               <td>
-                {{ second.sellMoney }}
+                {{ second.sellMoney ? 'second.sellMoney' : '-' }}
               </td>
               <td>
-                {{ three.sellMoney }}
+                {{ three.sellMoney ? 'three.sellMoney' : '-' }}
               </td>
             </tr>
             <tr>
               <td>年利润额（万元）</td>
               <td>
-                {{ first.profix }}
+                {{ first.profix ? 'first.profix' : '-' }}
               </td>
               <td>
-                {{ second.profix }}
+                {{ second.profix ? 'second.profix' : '-' }}
               </td>
               <td>
-                {{ three.profix }}
+                {{ three.profix ? 'three.profix' : '-' }}
               </td>
             </tr>
           </table>
@@ -619,7 +620,8 @@
                   <el-checkbox v-model="seProjectCooperate.houseLeaseFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney ? seProjectCooperate.houseLeaseMoney : '-' }} 万元/年</span>
+                  <span v-if="seProjectCooperate.houseLeaseMoney">出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney }} 万元/年</span>
+                  <span v-else>出租屋面，租金 :</span>
                 </el-col>
               </el-row>
             </el-col>

@@ -84,7 +84,7 @@
                   <span v-else-if="seProjectCompanyInfo.companyType == 2">国企</span>
                   <span v-else-if="seProjectCompanyInfo.companyType == 3">上市公司</span>
                   <span v-else-if="seProjectCompanyInfo.companyType == 4">股份制</span>
-                  <span v-else>其他</span>
+                  <!-- <span v-else>其他</span> -->
                 </el-col>
               </el-row>
             </el-col>
@@ -123,7 +123,7 @@
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋面总面积</el-col>
-                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.houseArea }} m²</el-col>
+                <el-col :span="16" class="span130" v-show="seProjectCompanyBuildInfo.houseArea">{{ seProjectCompanyBuildInfo.houseArea }} m²</el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
@@ -136,8 +136,8 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋面正南遮挡物</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-if="seProjectCompanyBuildInfo.houseSouthScreenFlag ==0">否</span>
-                  <span v-else>是</span>
+                  <span v-show="seProjectCompanyBuildInfo.houseSouthScreenFlag == 0">否</span>
+                  <span v-show="seProjectCompanyBuildInfo.houseSouthScreenFlag == 1">是</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -153,7 +153,7 @@
                   <span v-else-if="seProjectCompanyBuildInfo.useYears == 3">16-20年</span>
                   <span v-else-if="seProjectCompanyBuildInfo.useYears == 4">21-25年</span>
                   <span v-else-if="seProjectCompanyBuildInfo.useYears == 5">26-30年</span>
-                  <span v-else>31年以上</span>
+                  <span v-else-if="seProjectCompanyBuildInfo.useYears == 6">31年以上</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -161,9 +161,9 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">屋面材质</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">瓦铄屋面&nbsp;&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">混泥土屋面&nbsp;&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">彩钢瓦屋面&nbsp;&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">瓦铄屋面&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">混泥土屋面&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">彩钢瓦屋面&nbsp;</span>
                   <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">其他</span>
                 </el-col>
               </el-row>
@@ -185,13 +185,13 @@
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">彩钢瓦比水泥顶</el-col>
-                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.colorSteelCementTopScale }} %</el-col>
+                <el-col :span="16" class="span130" v-show="seProjectCompanyBuildInfo.colorSteelCementTopScale">{{ seProjectCompanyBuildInfo.colorSteelCementTopScale }} %</el-col>
               </el-row>
             </el-col>
             <el-col :span="16">
               <el-row :gutter="20">
                 <el-col :span="4" class="span13">其他屋面材质说明</el-col>
-                <el-col :span="20" class="span130">{{ seProjectCompanyBuildInfo.otherMessage ? seProjectCompanyBuildInfo.otherMessage : '-' }}</el-col>
+                <el-col :span="20" class="span130">{{ seProjectCompanyBuildInfo.otherMessage }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -203,18 +203,13 @@
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">供电类型</el-col>
-                <el-col :span="16" class="span130">
-                  <span v-if="seProjectPowerInfo.prowerType == 0">工业</span>
-                  <span v-else-if="seProjectPowerInfo.prowerType == 1">商业</span>
-                  <span v-else-if="seProjectPowerInfo.prowerType == 2">农用</span>
-                  <span v-else>居民用电</span>
-                </el-col>
+                <el-col :span="16" class="span130">{{ seProjectPowerInfo.prowerType }}</el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">变压器容量</el-col>
-                <el-col :span="16" class="span130">{{ seProjectPowerInfo.transformerVolume ? seProjectPowerInfo.transformerVolume : '-' }} kVA</el-col>
+                <el-col :span="16" class="span130" v-show="seProjectPowerInfo.transformerVolume">{{ seProjectPowerInfo.transformerVolume }} kVA</el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
@@ -228,26 +223,22 @@
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">预估装机容量</el-col>
-                <el-col :span="16" class="span130">{{ seProjectPowerInfo.mayInstallVolume ? seProjectPowerInfo.mayInstallVolume : '-' }} kW</el-col>
+                <el-col :span="16" class="span130" v-show="seProjectPowerInfo.mayInstallVolume">{{ seProjectPowerInfo.mayInstallVolume }} kW</el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">法定节假日是否休息</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-if="seProjectPowerInfo.legalHolidayFlag == 1">是</span>
-                  <span v-else>否</span>
+                  <span v-show="seProjectPowerInfo.legalHolidayFlag == 1">是</span>
+                  <span v-show="seProjectPowerInfo.legalHolidayFlag == 0">否</span>
                 </el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">周末生产情况</el-col>
-                <el-col :span="16" class="span130">
-                  <span v-if="seProjectPowerInfo.weekendFlag == 0">单班</span>
-                  <span v-else-if="seProjectPowerInfo.weekendFlag == 1">双班</span>
-                  <span v-else>连续生产</span>
-                </el-col>
+                <el-col :span="16" class="span130">{{ seProjectPowerInfo.weekendFlag }}</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -256,8 +247,8 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">中午设备是否停机</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-if="seProjectPowerInfo.noonEquipmentFlag == 1">是</span>
-                  <span v-else>否</span>
+                  <span v-show="seProjectPowerInfo.noonEquipmentFlag == 1">是</span>
+                  <span v-show="seProjectPowerInfo.noonEquipmentFlag == 0">否</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -288,8 +279,8 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">合作模式</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-if="seProjectCooperate.cooperateType == 0">业主投资</span>
-                  <span v-else>其他投资</span>
+                  <span v-show="seProjectCooperate.cooperateType == 0">业主投资</span>
+                  <span v-show="seProjectCooperate.cooperateType == 1">其他投资</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -319,7 +310,8 @@
                   <el-checkbox v-model="seProjectCooperate.houseLeaseFlag" disabled></el-checkbox>
                 </el-col>
                 <el-col :span="16" class="span130">
-                  <span>出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney ? seProjectCooperate.houseLeaseMoney : '-' }} 万元/年</span>
+                  <span v-if="seProjectCooperate.houseLeaseMoney">出租屋面，租金 : {{ seProjectCooperate.houseLeaseMoney }} 万元/年</span>
+                  <span v-else>出租屋面，租金 :</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -338,25 +330,25 @@
             <tr>
               <td>年销售额（万元）</td>
               <td>
-                {{ first.sellMoney }}
+                {{ first.sellMoney ? 'first.sellMoney' : '-' }}
               </td>
               <td>
-                {{ second.sellMoney }}
+                {{ second.sellMoney ? 'second.sellMoney' : '-' }}
               </td>
               <td>
-                {{ three.sellMoney }}
+                {{ three.sellMoney ? 'three.sellMoney' : '-' }}
               </td>
             </tr>
             <tr>
               <td>年利润额（万元）</td>
               <td>
-                {{ first.profix }}
+                {{ first.profix ? 'first.profix' : '-' }}
               </td>
               <td>
-                {{ second.profix }}
+                {{ second.profix ? 'second.profix' : '-' }}
               </td>
               <td>
-                {{ three.profix }}
+                {{ three.profix ? 'three.profix' : '-' }}
               </td>
             </tr>
           </table>
@@ -501,7 +493,7 @@
           </el-row>
           <el-row :gutter="20" style="margin:30px 0;">
             <el-col :span="3" class="span13">额外说明</el-col>
-            <el-col :span="21" class="span130">{{ seProjectSupplementFile.otherMessage ? seProjectSupplementFile.otherMessage : '-' }}</el-col>
+            <el-col :span="21" class="span130">{{ seProjectSupplementFile.otherMessage }}</el-col>
           </el-row>
 
           <div class="xian" style="margin-top:20px;">
@@ -564,7 +556,7 @@
           </el-row>
           <el-row :gutter="20" style="margin:30px 0;">
             <el-col :span="3" class="span13">额外说明</el-col>
-            <el-col :span="21" class="span130">{{ seProjectEndSupplementFile.otherMessage ? seProjectEndSupplementFile.otherMessage : '-' }}</el-col>
+            <el-col :span="21" class="span130">{{ seProjectEndSupplementFile.otherMessage }}</el-col>
           </el-row>
         </el-tab-pane>
 
@@ -588,7 +580,7 @@
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">预估装机容量</el-col>
-                <el-col :span="16" class="span130">{{ mayInstallVolume }} KW</el-col>
+                <el-col :span="16" class="span130" v-show="mayInstallVolume">{{ mayInstallVolume }} KW</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -603,7 +595,7 @@
                   <span v-else-if="seProjectCompanyBuildInfo.useYears == 3">16-20年</span>
                   <span v-else-if="seProjectCompanyBuildInfo.useYears == 4">21-25年</span>
                   <span v-else-if="seProjectCompanyBuildInfo.useYears == 5">26-30年</span>
-                  <span v-else>31年以上</span>
+                  <span v-else-if="seProjectCompanyBuildInfo.useYears == 6">31年以上</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -635,7 +627,7 @@
             <el-col :span="8">
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">彩钢瓦比水泥顶</el-col>
-                <el-col :span="16" class="span130">{{ seProjectCompanyBuildInfo.colorSteelCementTopScale }} %</el-col>
+                <el-col :span="16" class="span130" v-show="seProjectCompanyBuildInfo.colorSteelCementTopScale">{{ seProjectCompanyBuildInfo.colorSteelCementTopScale }} %</el-col>
               </el-row>
             </el-col>
           </el-row>
@@ -648,8 +640,8 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">合作模式</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-if="seProjectCooperate.cooperateType == 0">业主投资</span>
-                  <span v-else>其他投资</span>
+                  <span v-show="seProjectCooperate.cooperateType == 0">业主投资</span>
+                  <span v-show="seProjectCooperate.cooperateType == 1">其他投资</span>
                 </el-col>
               </el-row>
             </el-col>
@@ -693,19 +685,19 @@
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">脱硫煤电价</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.desulfurizeElectricityPrice }} 元/KWH</el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.desulfurizeElectricityPrice">{{ seProjectProfitConfig.desulfurizeElectricityPrice }} 元/KWH</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">加权电价</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.weightElectricityPrice }} 元/KWH</el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.weightElectricityPrice">{{ seProjectProfitConfig.weightElectricityPrice }} 元/KWH</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">折后电价</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.discountElectricityPrice }} 元/KWH</el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.discountElectricityPrice">{{ seProjectProfitConfig.discountElectricityPrice }} 元/KWH</el-col>
                 </el-row>
               </el-col>
             </el-row>
@@ -713,19 +705,19 @@
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">每年固定运维费用</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.yearRepairPrice }} 元/瓦</el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.yearRepairPrice">{{ seProjectProfitConfig.yearRepairPrice }} 元/瓦</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">第10年运维费用</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.tenRepairPrice }} 元/瓦</el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.tenRepairPrice">{{ seProjectProfitConfig.tenRepairPrice }} 元/瓦</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">第15年运维费用</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.fifteenRepairPrice }} 元/瓦</el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.fifteenRepairPrice">{{ seProjectProfitConfig.fifteenRepairPrice }} 元/瓦</el-col>
                 </el-row>
               </el-col>
             </el-row>
@@ -733,19 +725,20 @@
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">自发自用比例</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.selfUseScale }} %</el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.selfUseScale">{{ seProjectProfitConfig.selfUseScale }} %</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">单瓦价格</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.unitPrice }} 元/瓦</el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.unitPrice">{{ seProjectProfitConfig.unitPrice }} 元/瓦</el-col>
                 </el-row>
               </el-col>
               <el-col :span="8">
                 <el-row :gutter="20">
                   <el-col :span="8" class="span13">并网电压类型</el-col>
-                  <el-col :span="16" class="span130">{{ seProjectProfitConfig.voltageType ? '高压' : '低压'}} </el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.voltageType == 0">低压</el-col>
+                  <el-col :span="16" class="span130" v-show="seProjectProfitConfig.voltageType == 1">高压</el-col>
                 </el-row>
               </el-col>
             </el-row>
@@ -903,16 +896,16 @@ export default {
         type: '',
 
         first: {
-          sellMoney: '-',
-          profix: '-'
+          sellMoney: '',
+          profix: ''
         },
         second: {
-          sellMoney: '-',
-          profix: '-'
+          sellMoney: '',
+          profix: ''
         },
         three: {
-          sellMoney: '-',
-          profix: '-'
+          sellMoney: '',
+          profix: ''
         },
       }
     },
@@ -936,27 +929,20 @@ export default {
       },
       getProjectInfo() {
         getProjectInfo({ projectId: this.projectId }).then(res => {
-          console.log(res)
           const { seProjectCompanyBuildInfo, seProjectCompanyInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile, seProjectEndSupplementFile } = res.data
           if(seProjectCompanyBuildInfo) { this.seProjectCompanyBuildInfo = { ...seProjectCompanyBuildInfo } }
           if(seProjectCompanyInfo) { this.seProjectCompanyInfo = { ...seProjectCompanyInfo } }
           if(seProjectCooperate) { this.seProjectCooperate = { ...seProjectCooperate } }
-          if(this.seProjectCooperate.electricityDiscountFlag && this.seProjectCooperate.electricityDiscountFlag == 1) {
-            this.seProjectCooperate.electricityDiscountFlag = true
-          }
-          if(this.seProjectCooperate.houseLeaseFlag && this.seProjectCooperate.houseLeaseFlag == 1) {
-            this.seProjectCooperate.houseLeaseFlag = true
-          }
-          if(this.seProjectCooperate.ownPutFlag && this.seProjectCooperate.ownPutFlag == 1) {
-            this.seProjectCooperate.ownPutFlag = true
-          }
+          if(this.seProjectCooperate.electricityDiscountFlag && this.seProjectCooperate.electricityDiscountFlag == 1) { this.seProjectCooperate.electricityDiscountFlag = true }
+          if(this.seProjectCooperate.houseLeaseFlag && this.seProjectCooperate.houseLeaseFlag == 1) { this.seProjectCooperate.houseLeaseFlag = true }
+          if(this.seProjectCooperate.ownPutFlag && this.seProjectCooperate.ownPutFlag == 1) { this.seProjectCooperate.ownPutFlag = true }
           if( seProjectNearThreeYearSellProfixList.length > 0 ) {this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList }
           if(seProjectPowerInfo) { this.seProjectPowerInfo = { ...seProjectPowerInfo } }
           if(seProjectPowerTransformInfoList) { this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList }
           if(seProjectRelevantFile) { this.seProjectRelevantFile = { ...seProjectRelevantFile } }
           if(seProjectSupplementFile) { this.seProjectSupplementFile = { ...seProjectSupplementFile } }
           if(seProjectEndSupplementFile) { this.seProjectEndSupplementFile = { ...seProjectEndSupplementFile } }
-        })
+        }).catch(err => err)
       },
       getProfitMessage() {
         getProfitMessage({ projectId: this.projectId}).then(res => { // 收益试算

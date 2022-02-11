@@ -121,7 +121,7 @@
         <div>近3年销售与利润</div>
       </div>
       <table style="width: 100%;text-align:center;" class="ht" cellpadding="0" cellspacing="0">
-        <tr>
+        <tr style="background:#f2f2f2;">
           <td></td>
           <td>2019年</td>
           <td>2020年</td>
@@ -190,7 +190,7 @@
           </el-col>
         </el-row>
         <el-form-item label="补充说明">
-          <el-input placeholder="请输入" v-model="seProjectSupplementFile.otherMessage" class="width100"></el-input>
+          <el-input v-model="seProjectSupplementFile.otherMessage" class="width100"></el-input>
         </el-form-item>
       </el-form>
       

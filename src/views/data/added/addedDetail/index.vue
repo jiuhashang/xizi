@@ -124,8 +124,7 @@
               <file-upload-string
                 v-model="seProjectEndSupplementFile.energyContractFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
               </file-upload-string>
             </el-form-item>
           </el-col>
@@ -134,8 +133,7 @@
               <file-upload-string
                 v-model="seProjectEndSupplementFile.adviseBookFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
               </file-upload-string>
             </el-form-item>
           </el-col>
@@ -144,8 +142,7 @@
               <file-upload-string
                 v-model="seProjectEndSupplementFile.recordFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
               </file-upload-string>
             </el-form-item>
           </el-col>
@@ -156,8 +153,7 @@
               <file-upload-string
                 v-model="seProjectEndSupplementFile.insertFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
               </file-upload-string>
             </el-form-item>
           </el-col>
@@ -166,30 +162,29 @@
               <file-upload-string
                 v-model="seProjectEndSupplementFile.businessFile"
                 :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm"
-              >
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
               </file-upload-string>
             </el-form-item>
           </el-col>
           <el-col :span="8" style="padding-left:48px;">
             <el-form-item label="关联项目公司" class="must-form-item">
-              <el-input v-model="seProjectEndSupplementFile.projectCompanyName" placeholder="请选择" clearable @input="handleInput" @clear="handleClear" ></el-input>
+              <el-input v-model="seProjectEndSupplementFile.projectCompanyName" placeholder="请输入" clearable @input="handleInput" @clear="handleClear" />
             </el-form-item>
+            <div class="divul" v-show="options.length">
+              <ul style="list-style: none;">
+                <li v-for="(item, index) in options" :key="item.id" class="divli" @click="handleSelect(item, index)">{{ item.name }}</li>
+              </ul>
+            </div>
           </el-col>
         </el-row>
         <el-row :gutter="20">
           <el-col>
             <el-form-item label="补充说明">
-              <el-input placeholder="请输入" v-model="seProjectEndSupplementFile.otherMessage" class="width100"></el-input>
+              <el-input v-model="seProjectEndSupplementFile.otherMessage" class="width100"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
       </el-form>
-      <div class="divul" v-show="options.length">
-          <ul style="list-style: none;">
-            <li v-for="(item, index) in options" :key="item.id" class="divli" @click="handleSelect(item, index)">{{ item.name }}</li>
-          </ul>
-        </div>
 
       <!-- 审批记录 -->
       <el-dialog
