@@ -31,13 +31,13 @@
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">业务人员</el-col>
+                <el-col :span="8" class="span13">负责人</el-col>
                 <el-col :span="16" class="span130">{{ $route.query.createUserNickName }}</el-col>
               </el-row>
             </el-col>
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13">业务电话</el-col>
+                <el-col :span="8" class="span13">负责人电话</el-col>
                 <el-col :span="16" class="span130">{{ $route.query.createUserPhone }}</el-col>
               </el-row>
             </el-col>
@@ -174,7 +174,7 @@
                 <el-col :span="16" class="span130">
                   <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(0) !== -1">无&nbsp;</span>
                   <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(1) !== -1">直立锁边&nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角齿&nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角驰&nbsp;</span>
                   <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(3) !== -1">T型&nbsp;</span>
                   <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(4) !== -1">其他&nbsp;</span>
                 </el-col>
@@ -330,25 +330,25 @@
             <tr>
               <td>年销售额（万元）</td>
               <td>
-                {{ first.sellMoney ? 'first.sellMoney' : '-' }}
+                {{ first.sellMoney ? first.sellMoney : '-' }}
               </td>
               <td>
-                {{ second.sellMoney ? 'second.sellMoney' : '-' }}
+                {{ second.sellMoney ? second.sellMoney : '-' }}
               </td>
               <td>
-                {{ three.sellMoney ? 'three.sellMoney' : '-' }}
+                {{ three.sellMoney ? three.sellMoney : '-' }}
               </td>
             </tr>
             <tr>
               <td>年利润额（万元）</td>
               <td>
-                {{ first.profix ? 'first.profix' : '-' }}
+                {{ first.profix ? first.profix : '-' }}
               </td>
               <td>
-                {{ second.profix ? 'second.profix' : '-' }}
+                {{ second.profix ? second.profix : '-' }}
               </td>
               <td>
-                {{ three.profix ? 'three.profix' : '-' }}
+                {{ three.profix ? three.profix : '-' }}
               </td>
             </tr>
           </table>
@@ -558,6 +558,22 @@
             <el-col :span="3" class="span13">额外说明</el-col>
             <el-col :span="21" class="span130">{{ seProjectEndSupplementFile.otherMessage }}</el-col>
           </el-row>
+
+          <div class="xian">
+            <div>载荷报告</div>
+          </div>
+          <el-row :gutter="20" style="margin:30px;">
+            <el-col :span="8">
+              <el-row :gutter="20">
+                <el-col :span="8" class="span13 mt5">载荷报告</el-col>
+                <el-col :span="16" class="span130">
+                  <el-button size="small" type="primary"
+                  :disabled="seProjectRelevantFile.realPropertyRightFile == '' || seProjectRelevantFile.realPropertyRightFile == null ">下 载</el-button>
+                </el-col>
+              </el-row>
+            </el-col>
+          </el-row>
+          
         </el-tab-pane>
 
         <el-tab-pane label="收益测算" name="second">
@@ -616,7 +632,7 @@
                 <el-col :span="16" class="span130">
                   <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(0) !== -1">无 &nbsp;</span>
                   <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(1) !== -1">直立锁边 &nbsp;</span>
-                  <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角齿 &nbsp;</span>
+                  <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(2) !== -1">角驰 &nbsp;</span>
                   <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(3) !== -1">T型 &nbsp;</span>
                   <span v-show="seProjectCompanyBuildInfo.colorSteelType && seProjectCompanyBuildInfo.colorSteelType.indexOf(4) !== -1">其他</span>
                 </el-col>
@@ -837,29 +853,15 @@
       </el-tabs>
     </el-card>
     <!-- 审批记录 -->
-    <el-dialog
-      title="审批记录"
-      :visible.sync="logVisible"
-      width="50%"
-      :close-on-click-modal="false">
-      <el-timeline :reverse="true">
-        <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index">
-          <el-card style="margin-top:0;margin-bottom:0;">
-            <p>{{activity.title}}</p>
-            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
-            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
-          </el-card>
-        </el-timeline-item>
-      </el-timeline>
-    </el-dialog>
+    <ApprovalLog :logVisible.sync="logVisible" :activities="activities" />
   </div>
 </template>
 
 <script>
 import { getProjectInfo, getProjectExamineLog } from '@/api/listProject'
 import { getProfitMessage } from '@/api/center'
+
+import ApprovalLog from '@/components/Log/ApprovalLog.vue'
 
 export default {
   name: 'OverDetail',
@@ -909,6 +911,7 @@ export default {
         },
       }
     },
+    components: { ApprovalLog },
     created() {
       this.projectId = this.$route.query.projectId
       this.getProjectInfo(this.projectId)
@@ -957,10 +960,10 @@ export default {
         }).catch(err => err)
       },
       handleApproval() { // 审批记录
-        this.logVisible = true
         getProjectExamineLog({ projectId: this.projectId }).then(res => {
           this.activities = res.data
         })
+        this.logVisible = true
       },
       handleDown(url) {
         window.open(url)

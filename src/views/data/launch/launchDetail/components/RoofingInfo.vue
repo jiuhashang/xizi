@@ -66,7 +66,7 @@
               class="width100"
               :disabled="houseDis">
               <el-option label="直立锁边" value="1"></el-option>
-              <el-option label="角齿" value="2"></el-option>
+              <el-option label="角驰" value="2"></el-option>
               <el-option label="T型" value="3"></el-option>
               <el-option label="其它" value="4"></el-option>
             </el-select>

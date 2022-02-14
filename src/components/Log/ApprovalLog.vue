@@ -3,7 +3,9 @@
     title="审批记录"
     :visible.sync="logVisible"
     width="50%"
-    :close-on-click-modal="false">
+    :close-on-click-modal="false"
+    :before-close="handleClose"
+    >
     <el-timeline :reverse="true">
       <el-timeline-item
         v-for="(activity, index) in activities"
@@ -37,7 +39,9 @@ export default {
     }
   },
   methods: {
-    
+    handleClose() {
+      this.$emit('update:logVisible', false)
+    }
   }
 };
 </script>

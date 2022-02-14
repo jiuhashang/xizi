@@ -65,29 +65,15 @@
       <c-pagination ref="pagination" :total="total" @sendsize="handleSizeChange" @sendpage="handleCurrentChange" />
     </el-card>
     <!-- 审批记录 -->
-    <el-dialog
-      title="审批记录"
-      :visible.sync="logVisible"
-      width="50%"
-      :close-on-click-modal="false">
-      <el-timeline :reverse="true">
-        <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index">
-          <el-card style="margin-top:0;margin-bottom:0;">
-            <p>{{activity.title}}</p>
-            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
-            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
-          </el-card>
-        </el-timeline-item>
-      </el-timeline>
-    </el-dialog>
+    <ApprovalLog :logVisible.sync="logVisible" :activities="activities" />
   </div>
 </template>
 
 <script>
 import { getProjectExamineLog } from '@/api/listProject'
 import { selectListAll, getProjectPdf } from '@/api/center'
+
+import ApprovalLog from '@/components/Log/ApprovalLog.vue'
 
 export default {
   name: 'Overview',
@@ -139,6 +125,7 @@ export default {
       activities: []
     }
   },
+  components: { ApprovalLog },
   created() {
     this.selectListAll()
   },
@@ -146,7 +133,6 @@ export default {
     // 列表请求
     selectListAll() {
       selectListAll(this.tableInfo).then(res => {
-        console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -160,7 +146,6 @@ export default {
     },
     handlePdf(projectId) {
       getProjectPdf({ projectId }).then(res => {
-        console.log(res)
         window.open(res.data.url)
         this.$message.success('生产成功')
       })
@@ -182,21 +167,21 @@ export default {
     // 查看详情
     handleView(row) {
       this.$router.push({ name: 'OverviewDetail', query: { 
-        projectId: row.projectId,
-        createTime: row.createTime,
-        createUserNickName: row.createUserNickName,
-        createUserPhone: row.createUserPhone,
-        projectName: row.projectName
-       } })
+          projectId: row.projectId,
+          createTime: row.createTime,
+          createUserNickName: row.createUserNickName,
+          createUserPhone: row.createUserPhone,
+          projectName: row.projectName
+        }
+      })
     },
     
     // 审批记录
     approval(projectId) {
-      this.logVisible = true
       getProjectExamineLog({projectId}).then(res => {
-        console.log(res)
         this.activities = res.data
       })
+      this.logVisible = true
     },
 
     handleSizeChange(val) {

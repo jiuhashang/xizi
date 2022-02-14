@@ -187,29 +187,16 @@
       </el-form>
 
       <!-- 审批记录 -->
-      <el-dialog
-        title="审批记录"
-        :visible.sync="logVisible"
-        width="50%"
-        :close-on-click-modal="false">
-        <el-timeline :reverse="true">
-          <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index">
-          <el-card style="margin-top:0;margin-bottom:0;">
-            <p>{{activity.title}}</p>
-            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
-            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
-          </el-card>
-        </el-timeline-item>
-        </el-timeline>
-      </el-dialog>
+      <ApprovalLog :logVisible.sync="logVisible" :activities="activities" />
     </el-card>
   </div>
 </template>
 
 <script> 
 import { getProjectInfo, getProjectExamineLog, setProjectInput, getByCompanyName } from '@/api/listProject'
+
+import ApprovalLog from '@/components/Log/ApprovalLog.vue'
+
 export default {
   name: 'AddedDetail',
   data() {
@@ -224,6 +211,7 @@ export default {
       options: [],
     }
   },
+  components: { ApprovalLog },
   created() {
     this.projectId = this.$route.query.projectId
     this.getProjectInfo( this.projectId )
@@ -231,7 +219,6 @@ export default {
   methods: {
     getProjectInfo( projectId ) {
       getProjectInfo({ projectId }).then(res => {
-        console.log(res)
         const { seProjectCompanyInfo, seProjectEndSupplementFile } = res.data
         this.seProjectCompanyInfo = seProjectCompanyInfo
         this.seProjectEndSupplementFile = { ...seProjectEndSupplementFile }
@@ -239,7 +226,6 @@ export default {
     },
     handleInput() {
       getByCompanyName({ companyName: this.seProjectEndSupplementFile.projectCompanyName }).then(res => {
-        console.log(res)
         this.options = res.data.orders
       })
     },
@@ -249,15 +235,14 @@ export default {
     handleClear() {},
      // 审批记录
     approval() {
-      this.logVisible = true
       getProjectExamineLog({ projectId: this.projectId }).then( res => {
         this.activities = res.data
       })
+      this.logVisible = true
     },
     // 保存
     handleSave() {
       this.seProjectEndSupplementFile.projectId = this.$route.query.projectId
-      console.log(this.seProjectEndSupplementFile)
       setProjectInput( this.seProjectEndSupplementFile ).then(res => {
         this.$message.success('保存成功')
         this.getProjectInfo(this.projectId)

@@ -183,7 +183,7 @@
                 class="width100">
                 <el-option label="无" value="0"></el-option>
                 <el-option label="直立锁边" value="1"></el-option>
-                <el-option label="角齿" value="2"></el-option>
+                <el-option label="角驰" value="2"></el-option>
                 <el-option label="T型" value="3"></el-option>
                 <el-option label="其它" value="4"></el-option>
               </el-select>
@@ -357,17 +357,17 @@
         <tr>
           <td>年销售额（万元）</td>
           <td>
-            <el-input v-model="first.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="first.sellMoney" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="second.sellMoney" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="three.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="three.sellMoney" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
@@ -375,17 +375,17 @@
         <tr>
           <td>年利润额（万元）</td>
           <td>
-            <el-input v-model="first.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="first.profix" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="second.profix" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="three.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="three.profix" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
@@ -540,28 +540,15 @@
       </span>
     </el-dialog>
     <!-- 审批记录 -->
-    <el-dialog
-      title="审批记录"
-      :visible.sync="logVisible"
-      width="50%"
-      :close-on-click-modal="false">
-      <el-timeline :reverse="true">
-        <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index">
-          <el-card style="margin-top:0;margin-bottom:0;">
-            <p>{{activity.title}}</p>
-            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
-            <p v-show="activity.remark">审批备注: {{activity.remark}}</p>
-          </el-card>
-        </el-timeline-item>
-      </el-timeline>
-    </el-dialog>
+    <ApprovalLog :logVisible.sync="logVisible" :activities="activities" />
   </div>
 </template>
 
 <script>
 import { getProjectInfo, projectInput, projectInputSubmit, getProjectExamineLog, getProvinceCity, deleteOne } from '@/api/listProject'
+
+import ApprovalLog from '@/components/Log/ApprovalLog.vue'
+
 export default {
   name: 'LaunchDetail',
   data() {
@@ -754,10 +741,10 @@ export default {
         id: undefined,
         projectId: this.$route.query.projectId,
         yearNum: 2021,
-        sellMoney: undefined,
+        sellMoney: undefined, 
         profix: undefined
       },
-
+      seProjectNearThreeYearSellProfixList: [], // 近三年
       seProjectRelevantFile: {
         projectId: this.$route.query.projectId,
       }, // 相关材料
@@ -772,6 +759,7 @@ export default {
       }
     }
   },
+  components: { ApprovalLog },
   created() {
     this.firstExamine = this.$route.query.firstExamine
     this.projectId = this.$route.query.projectId
@@ -780,10 +768,19 @@ export default {
       this.options = res.data
     })
   },
+  watch: {
+    seProjectNearThreeYearSellProfixList(newVal, oldVal) {
+      if(newVal.length > 0) {
+        this.first = newVal[0]
+        this.second = newVal[1]
+        this.three = newVal[2]
+      }
+    }
+  },
   methods: {
     getProjectInfo( projectId ) {
       getProjectInfo({ projectId }).then(res => {
-        const {seProjectCompanyInfo,seProjectCompanyBuildInfo,seProjectPowerInfo,seProjectCooperate,seProjectRelevantFile,seProjectPowerTransformInfoList} = res.data
+        const {seProjectCompanyInfo,seProjectCompanyBuildInfo,seProjectPowerInfo,seProjectCooperate,seProjectRelevantFile,seProjectPowerTransformInfoList, seProjectNearThreeYearSellProfixList} = res.data
         this.seProjectCompanyInfo = {...seProjectCompanyInfo}
         this.seProjectCompanyBuildInfo = {...seProjectCompanyBuildInfo}
         this.seProjectPowerInfo = {...seProjectPowerInfo}
@@ -797,10 +794,12 @@ export default {
         if(this.seProjectCompanyBuildInfo.housePartType) { this.housePartType = this.seProjectCompanyBuildInfo.housePartType.split(',') }
         if(this.seProjectCompanyBuildInfo.colorSteelType) { this.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.split(',') }
         if(this.seProjectCompanyBuildInfo.housePartType && this.seProjectCompanyBuildInfo.housePartType.indexOf('2') !== -1) { this.houseDis = false }
+        this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList
       })
     },
     front(msg) {
       this.saveLoading = true
+      this.seProjectNearThreeYearSellProfixList.push(this.first, this.second, this.three)
       if(this.seProjectCooperate.cooperateType == 0) {
         this.seProjectCooperate.ownPutFlag = 1
         this.seProjectCooperate.electricityDiscountFlag = 0
@@ -827,6 +826,7 @@ export default {
         seProjectPowerInfo: this.seProjectPowerInfo,
         seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
         seProjectCooperate: this.seProjectCooperate,
+        seProjectNearThreeYearSellProfixList: this.seProjectNearThreeYearSellProfixList,
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
         this.saveLoading = false
@@ -841,6 +841,7 @@ export default {
     // 保存
     save() {
       this.saveLoading = true
+      this.seProjectNearThreeYearSellProfixList.push(this.first, this.second, this.three)
       if(this.seProjectCooperate.cooperateType == 0) {
         this.seProjectCooperate.ownPutFlag = 1
         this.seProjectCooperate.electricityDiscountFlag = 0
@@ -864,6 +865,7 @@ export default {
         seProjectPowerInfo: this.seProjectPowerInfo,
         seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
         seProjectCooperate: this.seProjectCooperate,
+        seProjectNearThreeYearSellProfixList: this.seProjectNearThreeYearSellProfixList,
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
         this.saveLoading = false
@@ -979,10 +981,10 @@ export default {
     },
     // 审批记录
     approval() {
-      this.logVisible = true
       getProjectExamineLog({projectId: this.projectId}).then(res => {
         this.activities = res.data
       })
+      this.logVisible = true
     },
     // 省市
     handleChange(val) {

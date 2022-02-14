@@ -195,29 +195,15 @@
       </el-form>
       
       <!-- 审批记录 -->
-      <el-dialog
-        title="审批记录"
-        :visible.sync="logVisible"
-        width="50%"
-        :close-on-click-modal="false">
-        <el-timeline :reverse="true">
-          <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index">
-          <el-card style="margin-top:0;margin-bottom:0;">
-            <p>{{activity.title}}</p>
-            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
-            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
-          </el-card>
-        </el-timeline-item>
-        </el-timeline>
-      </el-dialog>
+      <ApprovalLog :logVisible.sync="logVisible" :activities="activities" />
     </el-card>
   </div>
 </template>
 
 <script>
 import { getProjectInfo, getProjectExamineLog, relevantInput, relevantInputSubmit } from '@/api/listProject'
+
+import ApprovalLog from '@/components/Log/ApprovalLog.vue'
 
 export default {
   name: 'MaterialDetail',
@@ -261,6 +247,7 @@ export default {
       }, 
     }
   },
+  components: { ApprovalLog },
   created() {
     this.thirdExamine = this.$route.query.thirdExamine
     this.projectId = this.$route.query.projectId
@@ -278,7 +265,6 @@ export default {
   methods: {
     getProjectInfo() {
       getProjectInfo({ projectId: this.projectId }).then(res => {
-        console.log(res)
         const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile } = res.data
         this.seProjectCompanyInfo = { ...seProjectCompanyInfo }
         this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList
@@ -303,7 +289,6 @@ export default {
         seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
-        // console.log(res)
         if(res.code && !msg) { 
           this.$message.success('保存成功')
         }
@@ -324,10 +309,7 @@ export default {
         seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
-        // console.log(res)
-        // if(res.code && !msg) { 
-          this.$message.success('保存成功')
-        // }
+        this.$message.success('保存成功')
         this.getProjectInfo(this.projectId)
       })
     },
@@ -343,7 +325,6 @@ export default {
         return this.$message.info('已取消')
       }
       relevantInputSubmit({ projectId: this.projectId }).then(res => {
-        console.log(res)
         if(res.code == 0) {
           this.$message.success('提交成功')
           this.$router.back()
@@ -352,10 +333,10 @@ export default {
     },
     // 审批记录
     approval() {
-      this.logVisible = true
       getProjectExamineLog({ projectId: this.projectId }).then( res => {
         this.activities = res.data
       })
+      this.logVisible = true
     },
   }
 }

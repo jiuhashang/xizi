@@ -459,7 +459,7 @@
                 <el-col :span="16" class="span130">
                   <el-select multiple placeholder="请选择(可多选)" class="width100">
                     <el-option label="直立锁边" :value="1"></el-option>
-                    <el-option label="角齿" :value="2"></el-option>
+                    <el-option label="角驰" :value="2"></el-option>
                     <el-option label="T型" :value="3"></el-option>
                     <el-option label="其它" :value="4"></el-option>
                   </el-select>

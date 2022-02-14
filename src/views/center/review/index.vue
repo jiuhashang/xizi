@@ -35,7 +35,7 @@
         <el-table-column prop="projectName" label="项目名称" />
         <el-table-column prop="companyName" label="业主名称" />
         <el-table-column prop="messageInputSubmitTime" label="提交时间" />
-        <el-table-column prop="createUserNickName" label="业务员" />
+        <el-table-column prop="createUserNickName" label="负责人" />
         <el-table-column label="复核状态">
           <template slot-scope="scope">
             <span v-if="scope.row.secondExamine == 0">待提交</span>
@@ -55,28 +55,14 @@
       <c-pagination ref="pagination" :total="total" @sendsize="handleSizeChange" @sendpage="handleCurrentChange" />
     </el-card>
     <!-- 审批记录 -->
-    <el-dialog
-      title="审批记录"
-      :visible.sync="logVisible"
-      width="50%"
-      :close-on-click-modal="false">
-      <el-timeline :reverse="true">
-        <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index">
-          <el-card style="margin-top:0;margin-bottom:0;">
-            <p>{{activity.title}}</p>
-            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
-            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
-          </el-card>
-        </el-timeline-item>
-      </el-timeline>
-    </el-dialog>
+    <ApprovalLog :logVisible.sync="logVisible" :activities="activities" />
   </div>
 </template>
 
 <script>
 import { getExamineList, getProjectExamineLog } from '@/api/listProject'
+
+import ApprovalLog from '@/components/Log/ApprovalLog.vue'
 
 export default {
   name: 'Review',
@@ -91,10 +77,6 @@ export default {
         pageSize: 10
       },
       options: [
-        // {
-        //   firstExamine: '0',
-        //   label: '待提交'
-        // }, 
         {
           firstExamine: '1',
           label: '审核中'
@@ -120,6 +102,7 @@ export default {
       activities: []
     }
   },
+  components: { ApprovalLog },
   created() {
     this.getList()
   },
@@ -127,7 +110,6 @@ export default {
     // 列表请求
     getList() {
       getExamineList(this.tableInfo).then(res => {
-        console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -164,11 +146,10 @@ export default {
     
     // 审批记录
     approval(projectId) {
-      this.logVisible = true
       getProjectExamineLog({ projectId }).then(res => {
-        console.log(res)
         this.activities = res.data
       })
+      this.logVisible = true
     },
 
     handleSizeChange(val) {

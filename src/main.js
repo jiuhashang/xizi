@@ -13,7 +13,6 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 Vue.use(ElementUI)
 
-
 // axios.defaults.baseURL = 'http://10.11.32.30:7701'
 // axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded'
 

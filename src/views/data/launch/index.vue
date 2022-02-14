@@ -108,28 +108,14 @@
       </span>
     </el-dialog>
     <!-- 审批记录 -->
-    <el-dialog
-      title="审批记录"
-      :visible.sync="logVisible"
-      width="50%"
-      :close-on-click-modal="false">
-      <el-timeline :reverse="true">
-        <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index">
-          <el-card style="margin-top:0;margin-bottom:0;">
-            <p>{{activity.title}}</p>
-            <p><span>{{activity.userName}}</span><span style="margin-left:14px;">{{activity.createTime}}</span></p>
-            <p v-show="activity.remark">审批备注：{{activity.remark}}</p>
-          </el-card>
-        </el-timeline-item>
-      </el-timeline>
-    </el-dialog>
+    <ApprovalLog :logVisible.sync="logVisible" :activities="activities" />
   </div>
 </template>
 
 <script>
 import { getList, addOne, getCompanyInfoList, getProjectExamineLog } from '@/api/listProject'
+
+import ApprovalLog from '@/components/Log/ApprovalLog.vue'
 
 export default {
   name: 'Launch',
@@ -198,6 +184,7 @@ export default {
       activities: []
     }
   },
+  components: { ApprovalLog },
   created() {
     this.getList()
   },
