@@ -22,7 +22,7 @@
           <el-menu-item index="/first" v-show="menuId.indexOf('项目初审') !== -1">项目初审</el-menu-item>
           <el-menu-item index="/review" v-show="menuId.indexOf('图纸复核') !== -1">图纸复核</el-menu-item>
           <el-menu-item index="/final" v-show="menuId.indexOf('项目终审') !== -1">项目终审</el-menu-item>
-          <!-- <el-menu-item index="/share">项目分享</el-menu-item> -->
+          <!-- <el-menu-item index="/share" v-show="menuId.indexOf('项目分享') !== -1">项目分享</el-menu-item> -->
           <el-menu-item index="/overview" v-show="menuId.indexOf('项目总览') !== -1">项目总览</el-menu-item>
           <!-- <el-menu-item index="/preview">项目预览</el-menu-item> -->
         </el-submenu>
