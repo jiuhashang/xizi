@@ -40,7 +40,7 @@
       </el-row>
       <el-row :gutter="20" style="margin:0 30px;">
         <el-col :span="8">
-          <el-form-item label="配电图内部照片">
+          <el-form-item label="配电室内部照片">
             <file-upload-string
               v-model="seProjectRelevantFile.electricityRoomInsideFile"
               :limit="1"

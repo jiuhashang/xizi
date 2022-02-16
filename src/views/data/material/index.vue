@@ -135,7 +135,6 @@ export default {
     // 列表请求
     getList() {
       getList(this.tableInfo).then(res => {
-        console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total

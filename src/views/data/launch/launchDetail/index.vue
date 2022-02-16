@@ -425,7 +425,7 @@
         </el-row>
         <el-row :gutter="20" style="margin:0 30px;">
           <el-col :span="8">
-            <el-form-item label="配电图内部照片">
+            <el-form-item label="配电室内部照片">
               <file-upload-string
                 v-model="seProjectRelevantFile.electricityRoomInsideFile"
                 :limit="1"
@@ -656,10 +656,6 @@ export default {
         value: [{ required: this.must, message: '请选择', trigger: 'change, blur' }],
         setAddress: [{ min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }],
         legalPerson: [{ min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }],
-        // companyPhone: [
-        //   { message: '请输入手机号码', trigger: 'blur' },
-        //   { min: 11, max: 11, message: '手机号码格式不对，长度在 11位数字', trigger: 'blur' }
-        // ]
         companyPhone: [{ validator: checkPhone, trigger: 'blur' }]
       },
 

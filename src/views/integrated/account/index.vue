@@ -95,6 +95,7 @@
       title="编辑账号"
       :visible.sync="editDialogVisible"
       :close-on-click-modal="false"
+      @close="handleClose"
       width="40%">
       <el-alert title="账号创建后无法删除，手机号码唯一，一人可持有多个账号" type="success" :closable="false" />
       <el-form ref="editRef" :rules="editRules" :model="editForm" label-width="100px" style="padding:0 50px;">
@@ -207,17 +208,16 @@ export default {
       addForm: {},
       addRules: {
         userName: [{ required: true, message: '请输入手机号码', trigger: 'blur' },
-          { validator: checkPhone, trigger: 'blur' }],
+                   { validator: checkPhone, trigger: 'blur' }],
         nickName: [{ required: true, message: '请输入姓名', trigger: 'blur' },
-          { validator: checkName, trigger: 'blur' }],
-          idCard: [{ validator: checkId, trigger: 'blur' }],
+                   { validator: checkName, trigger: 'blur' }],
+          idCard: [{ message: '请输入身份证号码', trigger: 'blur' },
+                   { validator: checkId, trigger: 'blur' }],
         password: [{ required: true, message: '请输入登录密码', trigger: 'blur' },
-          { validator: checkPwd, trigger: 'blur' }],
+                   { validator: checkPwd, trigger: 'blur' }],
         roleName: [{ required: true, message: '请选择角色', trigger: 'change' }],
-        companyName: [
-            { required: true, message: '请输入所属公司', trigger: 'blur' },
-            { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
-          ],
+     companyName: [{ required: true, message: '请输入所属公司', trigger: 'blur' },
+                   { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }]
       },
       createDialogVisible: false,
       // 编辑账号
@@ -229,8 +229,8 @@ export default {
           { validator: checkName, trigger: 'blur' }],
           idCard: [{ required: true, message: '请输入身份证号码', trigger: 'blur' },
           { validator: checkId, trigger: 'blur' }],
-        password: [{ message: '请输入登录密码', trigger: 'blur' },
-          { validator: checkPwd, trigger: 'blur' }],
+        password: [{ required: false, message: '请输入登录密码', trigger: 'blur' },
+                   { validator: checkPwd, trigger: 'blur' }],
         roleName: [{ required: true, message: '请选择角色', trigger: 'change' }],
         companyName: [
             { required: true, message: '请输入所属公司', trigger: 'blur' },
@@ -247,7 +247,6 @@ export default {
     // 列表请求
     selectList() {
       selectList(this.tableInfo).then(res => {
-        console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -265,26 +264,21 @@ export default {
           }
           this.options.push(a)
         })
-        console.log(this.options)
       })
     },
     handleRole(val) {
-      console.log(val)
       this.addForm.roleId = val
       console.log(this.options)
       let handleRole = {}
-     handleRole = this.options.find((item)=>{
+      handleRole = this.options.find((item)=>{
         return item.roleId === val;
-        })
-      console.log(handleRole)
+      })
        this.addForm.roleName = handleRole.roleName
     },
     handleAdd() {
-      console.log(this.addForm)
       this.$refs.addRef.validate( valid => {
         if(valid) {
           addOne(this.addForm).then(res => {
-            console.log(res)
             this.$message.success('添加成功')
             this.createDialogVisible = false
             this.selectList()
@@ -294,6 +288,8 @@ export default {
     },
     handleClose() {
       this.addForm = {}
+      this.editForm = {}
+      this.options = []
     },
 
     // 编辑账号
@@ -307,10 +303,9 @@ export default {
       })
     },
     handleEdit() {
-      this.$refs.editRef.validate( valid => {
+      this.$refs.editRef.validate(valid => {
         if(valid) {
           updateAccont(this.editForm).then(res => {
-            console.log(res)
             this.$message.success('编辑成功')
             this.editDialogVisible = false
             this.selectList()
@@ -348,7 +343,6 @@ export default {
       this.editForm = row
       this.editForm.status = 2
       updateAccont(this.editForm).then(res => {
-        console.log(res)
         this.$message.success('状态修改成功')
         this.selectList()
       }) 

@@ -78,7 +78,6 @@ export default {
   methods: {
     getProjectCount() {
       getProjectCount().then(res => {
-        console.log(res)
         const { endFileSupplementNum, fileSupplementNum, firstExamineNum, projectInputNum, secondExamineNum, thirdExamineNum, totalNum } = res.data
         this.endFileSupplementNum = endFileSupplementNum
         this.fileSupplementNum = fileSupplementNum
