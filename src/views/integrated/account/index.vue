@@ -63,7 +63,7 @@
       @close="handleClose"
       width="40%">
       <el-alert title="账号创建后无法删除，手机号码唯一，一人可持有多个账号" type="success" :closable="false" />
-      <el-form ref="addRef" :rules="addRules" :model="addForm" label-width="100px" style="padding:0 50px;">
+      <el-form ref="addRef" :rules="addRules" :model="addForm" label-width="100px" style="padding:0 50px; position: relative;">
         <el-form-item prop="userName" label="手机号码">
           <el-input v-model="addForm.userName" placeholder="请输入" clearable></el-input>
         </el-form-item>
@@ -82,8 +82,13 @@
           </el-select>
         </el-form-item>
         <el-form-item prop="companyName" label="所属公司">
-          <el-input v-model="addForm.companyName" placeholder="请输入" clearable></el-input>
+          <el-input v-model="addForm.companyName" placeholder="请输入" @focus="handleFocus" clearable></el-input>
         </el-form-item>
+        <div class="divul" v-show="lis.length">
+          <ul v-show="lis.length" style="list-style: none;">
+            <li v-for="(item, index) in lis" :key="item.companyId" class="divli" :class="{ bgc: index === currentIndex }" @click="handleSelect(item, index)" @mousemove="handleMove(index)">{{ item.companyName }}</li>
+          </ul>
+        </div>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="createDialogVisible = false">取 消</el-button>
@@ -129,7 +134,7 @@
 </template>
 
 <script>
-import { selectList, addOne, updateAccont, roleList } from '@/api/integrated'
+import { selectList, addOne, updateAccont, roleList, getCompanyInfoList } from '@/api/integrated'
 
 export default {
   name: 'Account',
@@ -211,15 +216,17 @@ export default {
                    { validator: checkPhone, trigger: 'blur' }],
         nickName: [{ required: true, message: '请输入姓名', trigger: 'blur' },
                    { validator: checkName, trigger: 'blur' }],
-          idCard: [{ message: '请输入身份证号码', trigger: 'blur' },
-                   { validator: checkId, trigger: 'blur' }],
+          // idCard: [{ message: '请输入身份证号码', trigger: 'blur' },
+          //          { validator: checkId, trigger: 'blur' }],
         password: [{ required: true, message: '请输入登录密码', trigger: 'blur' },
                    { validator: checkPwd, trigger: 'blur' }],
         roleName: [{ required: true, message: '请选择角色', trigger: 'change' }],
-     companyName: [{ required: true, message: '请输入所属公司', trigger: 'blur' },
+     companyName: [{ required: true, message: '请输入所属公司', trigger: ['blur', 'change'] },
                    { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }]
       },
       createDialogVisible: false,
+      currentIndex: null,
+      lis: [],
       // 编辑账号
       editForm: {},
       editRules: {
@@ -229,8 +236,8 @@ export default {
           { validator: checkName, trigger: 'blur' }],
           idCard: [{ required: true, message: '请输入身份证号码', trigger: 'blur' },
           { validator: checkId, trigger: 'blur' }],
-        password: [{ required: false, message: '请输入登录密码', trigger: 'blur' },
-                   { validator: checkPwd, trigger: 'blur' }],
+        // password: [{ required: false, message: '请输入登录密码', trigger: 'blur' },
+        //            { validator: checkPwd, trigger: 'blur' }],
         roleName: [{ required: true, message: '请选择角色', trigger: 'change' }],
         companyName: [
             { required: true, message: '请输入所属公司', trigger: 'blur' },
@@ -252,13 +259,25 @@ export default {
         this.total = total
       })
     },
-
+    handleFocus() {
+      getCompanyInfoList().then(res => {
+        this.lis = res.data.records
+      })
+    },
+    handleMove(index) {
+      this.currentIndex = index
+    },
+    handleSelect(item) {
+      this.$set(this.addForm, 'companyName', item.companyName)
+      this.$set(this.addForm, 'companyId', item.companyId)
+      this.lis = []
+    },
     // 创建账号
     create() {
       this.createDialogVisible = true
       roleList(this.roleList).then(res => { // 获取角色
         res.data.records.map(item => {
-          var a = {
+          let a = {
             roleName: item.roleName,
             roleId: item.id
           }
@@ -268,7 +287,6 @@ export default {
     },
     handleRole(val) {
       this.addForm.roleId = val
-      console.log(this.options)
       let handleRole = {}
       handleRole = this.options.find((item)=>{
         return item.roleId === val;
@@ -290,8 +308,8 @@ export default {
       this.addForm = {}
       this.editForm = {}
       this.options = []
+      this.$refs.addRef.clearValidate()
     },
-
     // 编辑账号
     edit(row) {
       this.editForm = row
@@ -392,5 +410,25 @@ export default {
   }
   .el-alert {
     margin-bottom: 25px;
+  }
+  .divul {
+    max-width: 600px;
+    min-width: 200px;
+    list-style: none;
+    background-color: #fff;
+    position: absolute;
+    top: 360px;
+    left: 150px;
+    border:1px solid #DCDFE6;
+    border-radius: 5px;
+    overflow: auto;
+  }
+  .divli {
+    margin-bottom: 10px;
+    cursor: pointer;
+    width: 100%;
+  }
+  .bgc:hover {
+    color: blue;
   }
 </style>

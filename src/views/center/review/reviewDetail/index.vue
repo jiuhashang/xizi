@@ -483,14 +483,22 @@
       </el-row>
 
       <div class="xian">
-        <div>载荷报告</div>
+        <div>荷载报告</div>
       </div>
       <el-row :gutter="20" style="margin:30px;">
         <el-col :span="8">
           <el-row :gutter="20">
-            <el-col :span="8" class="span13 mt5">载荷报告</el-col>
-            <el-col :span="16" class="span130">
-              <el-button size="small" type="primary" :disabled="seProjectRelevantFile.projectOtherFile == '' || seProjectRelevantFile.projectOtherFile == null ">下 载</el-button>
+            <el-col :span="8" class="span13 mt5">荷载报告</el-col>
+            <el-col :span="16" class="span130" v-if="secondExamine == 1">
+              <file-upload-string
+                v-model="secondExamineReport"
+                :limit="1"
+                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
+              </file-upload-string>
+            </el-col>
+            <el-col :span="16" class="span130" v-else>
+              <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.secondExamineReport)"
+              :disabled="seProjectRelevantFile.secondExamineReport == '' || seProjectRelevantFile.secondExamineReport == null ">下 载</el-button>
             </el-col>
           </el-row>
         </el-col>
@@ -547,17 +555,18 @@ export default {
       alert: '',
       type: '',
       first: {
-          sellMoney: '',
-          profix: ''
-        },
-        second: {
-          sellMoney: '',
-          profix: ''
-        },
-        three: {
-          sellMoney: '',
-          profix: ''
-        },
+        sellMoney: '',
+        profix: ''
+      },
+      second: {
+        sellMoney: '',
+        profix: ''
+      },
+      three: {
+        sellMoney: '',
+        profix: ''
+      },
+      secondExamineReport: '', // 何在报告
       // 审批记录
       logVisible: false,
       activities: []
@@ -628,7 +637,8 @@ export default {
       projectSecondExamine({
         projectId: this.projectId,
         type: this.type,
-        message: this.message
+        message: this.message,
+        secondExamineReport: this.secondExamineReport
       }).then(res => {
         if( this.type == 0 ) {
           this.$message.success('项目已驳回')

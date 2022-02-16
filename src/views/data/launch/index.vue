@@ -221,14 +221,14 @@ export default {
     // 查看详情
     handleView(row) {
       this.$router.push({ name: 'LaunchDetail', query: { 
-        projectId: row.projectId,
-        createTime: row.createTime,
-        createUserNickName: row.createUserNickName,
-        createUserPhone: row.createUserPhone,
-        projectName: row.projectName,
-        companyName: row.companyName,
-        firstExamine: row.firstExamine
-       }
+          projectId: row.projectId,
+          createTime: row.createTime,
+          createUserNickName: row.createUserNickName,
+          createUserPhone: row.createUserPhone,
+          projectName: row.projectName,
+          companyName: row.companyName,
+          firstExamine: row.firstExamine
+        }
       })
     },
     
@@ -266,7 +266,7 @@ export default {
         this.optionss = []
       }
     },
-    handleSelect(item, index) {
+    handleSelect(item) {
       this.ruleForm.companyName = item.name
       this.ruleForm.legalPerson = item.legalPersonName
       this.ruleForm.registerMoney = item.regCapital

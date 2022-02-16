@@ -509,15 +509,15 @@
           </el-row>
 
           <div class="xian">
-            <div>载荷报告</div>
+            <div>荷载报告</div>
           </div>
           <el-row :gutter="20" style="margin:30px;">
             <el-col :span="8">
               <el-row :gutter="20">
-                <el-col :span="8" class="span13 mt5">载荷报告</el-col>
+                <el-col :span="8" class="span13 mt5">荷载报告</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary"
-                  :disabled="seProjectRelevantFile.realPropertyRightFile == '' || seProjectRelevantFile.realPropertyRightFile == null ">下 载</el-button>
+                  :disabled="seProjectRelevantFile.secondExamineReport == '' || seProjectRelevantFile.secondExamineReport == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>

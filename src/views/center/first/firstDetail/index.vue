@@ -490,12 +490,11 @@
                 <el-col :span="8" class="span13 mt5">载荷报告</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary"
-                  :disabled="seProjectRelevantFile.realPropertyRightFile == '' || seProjectRelevantFile.realPropertyRightFile == null ">下 载</el-button>
+                  :disabled="seProjectRelevantFile.secondExamineReport == '' || seProjectRelevantFile.secondExamineReport == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>
           </el-row>
-          
         </el-tab-pane>
 
         <el-tab-pane label="收益测算" name="second">

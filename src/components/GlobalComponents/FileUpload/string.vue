@@ -1,7 +1,7 @@
 <template>
   <div class="custom-upload-files" :class="required ? 'custom-upload-files-required': ''">
     <slot />
-    <el-button class="fake-btn" type="primary" size="mini" @click.prevent.stop="handleClick">上传文件</el-button>
+    <el-button class="fake-btn" type="primary" size="mini" @click.prevent.stop="handleClick">上传</el-button>
     <file-upload
       ref="fileUploader"
       :file-list="fileListArr"

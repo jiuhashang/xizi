@@ -42,7 +42,7 @@ export default {
     action: {
       type: String,
       // default: process.env.VUE_APP_BASE_API + '/huawei/uploadFile'
-      default: 'http://123.60.18.239/xizi-api/huawei/uploadFile'
+      default: 'http://119.45.162.104/xizi-api/huawei/uploadFile'
     },
 
     // 组件是否支持多选上传(默认不支持)

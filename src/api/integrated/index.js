@@ -9,6 +9,15 @@ export function selectList(params) {
   })
 }
 
+// 获取公司列表
+export function getCompanyInfoList(params) {
+  return request({
+    url: '/admin/seAdminUser/getCompanyInfoList',
+    method: 'get',
+    params
+  })
+}
+
 // 添加账号
 export function addOne(params) {
   return request.post('/admin/seAdminUser/addOne', 
