@@ -526,12 +526,12 @@
       :visible.sync="editDialogVisible"
       width="40%"
       :close-on-click-modal="false">
-      <el-form ref="form" :model="editForm"  label-width="120px">
+      <el-form ref="form" :model="editDeepForm"  label-width="120px">
         <el-form-item label="变压器名称">
-          <el-input v-model="editForm.transformName"></el-input>
+          <el-input v-model="editDeepForm.transformName"></el-input>
         </el-form-item>
         <el-form-item label="容量（kVA)">
-          <el-input v-model="editForm.transformVolume"></el-input>
+          <el-input v-model="editDeepForm.transformVolume"></el-input>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -620,6 +620,7 @@ export default {
         transformVolume: '',
         transformId: Date.now()
       },
+      editDeepForm: {},
       seProjectPowerTransformInfoList: [], // 变压器数据
       addDialogVisible: false, // 添加变压器弹框
       editDialogVisible: false, 
@@ -888,7 +889,7 @@ export default {
       let obj = {
         projectId: this.$route.query.projectId,
         transformName: this.addForm.transformName,
-        transformVolume: this.addForm.transformVolume,
+        transformVolume: this.addForm.transformVolume
       }
       this.seProjectPowerTransformInfoList.push(obj)
       console.log(this.seProjectPowerTransformInfoList)
@@ -917,17 +918,17 @@ export default {
       })
     },
     editData(row) { // 编辑变压器弹框
-      this.editForm = row
-      console.log(this.editForm)
+      this.editDeepForm = _.cloneDeep(row)
       this.editDialogVisible = true
     },
     edit() { // 编辑变压器
-      var index = this.seProjectPowerTransformInfoList.indexOf(this.editForm)
-      if (index !== -1) {
-        this.seProjectPowerTransformInfoList.splice(index, 0)
-      }
+      this.seProjectPowerTransformInfoList.map((item, i) => {
+        if(item.transformId == this.editDeepForm.transformId) {
+          this.seProjectPowerTransformInfoList.splice(i, 1, this.editDeepForm)
+        }
+      })
       this.editDialogVisible = false
-      this.editForm = {}
+      this.editDeepForm = {}
     },
     // 合作模式
     selectChange(val) {
