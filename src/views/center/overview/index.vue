@@ -57,7 +57,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="handleView(scope.row)">查看</el-button>
-            <!-- <el-button type="text">文件打包</el-button> -->
+            <el-button type="text" @click="handlePack(scope.row.projectId)">文件打包</el-button>
             <el-button type="text" @click="handlePdf(scope.row.projectId)">生成PDF</el-button>
           </template>
         </el-table-column> 
@@ -72,6 +72,7 @@
 <script>
 import { getProjectExamineLog } from '@/api/listProject'
 import { selectListAll, getProjectPdf } from '@/api/center'
+import { readyDownFile } from '@/api/integrated'
 
 import ApprovalLog from '@/components/Log/ApprovalLog.vue'
 
@@ -119,7 +120,7 @@ export default {
       ],
       tableData: [],
       total: 0,
-
+      projectIdList: [],
       // 审批记录
       logVisible: false,
       activities: []
@@ -143,12 +144,6 @@ export default {
       this.tableInfo.pageIndex = 1
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.selectListAll()
-    },
-    handlePdf(projectId) {
-      getProjectPdf({ projectId }).then(res => {
-        window.open(res.data.url)
-        this.$message.success('生产成功')
-      })
     },
     // 表dan重置
     reset() {
@@ -175,7 +170,6 @@ export default {
         }
       })
     },
-    
     // 审批记录
     approval(projectId) {
       getProjectExamineLog({projectId}).then(res => {
@@ -183,7 +177,29 @@ export default {
       })
       this.logVisible = true
     },
-
+    handlePdf(projectId) {
+      getProjectPdf({ projectId }).then(res => {
+        window.open(res.data.url)
+        this.$message.success('生成成功')
+      })
+    },
+    handlePack(projectId) {
+      this.$confirm('下载的项目资料将会以预下载的形式存储7日，请在下载管理中，下载至电脑内。', '提示', {
+        confirmButtonText: '确定下载',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.projectIdList.push( projectId )
+        readyDownFile( this.projectIdList ).then(res => {
+          this.$message.success(res.msg)
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })       
+      })
+    },
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val

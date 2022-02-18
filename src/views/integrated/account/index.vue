@@ -32,7 +32,7 @@
           <el-button type="primary" @click="create">创建账号</el-button>
         </div>
       </div>
-      <el-alert title="所有账号默认可以创建项目、上传材料，如需设定其他权限请绑定角色。" type="success" :closable="false" />
+      <!-- <el-alert title="所有账号默认可以创建项目、上传材料，如需设定其他权限请绑定角色。" type="success" :closable="false" /> -->
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
         <el-table-column prop="userName" label="登录手机号" />
         <el-table-column prop="nickName" label="持有人姓名" />
@@ -60,7 +60,7 @@
       title="创建账号"
       :visible.sync="createDialogVisible"
       :close-on-click-modal="false"
-      @close="handleClose"
+      @close="handleAddClose"
       width="40%">
       <el-alert title="账号创建后无法删除，手机号码唯一，一人可持有多个账号" type="success" :closable="false" />
       <el-form ref="addRef" :rules="addRules" :model="addForm" label-width="100px" style="padding:0 50px; position: relative;">
@@ -82,11 +82,17 @@
           </el-select>
         </el-form-item>
         <el-form-item prop="companyName" label="所属公司">
-          <el-input v-model="addForm.companyName" placeholder="请输入" @focus="handleFocus" clearable></el-input>
+          <el-input v-model="addForm.companyName" placeholder="请输入" @focus="handleAddFocus" clearable></el-input>
         </el-form-item>
-        <div class="divul" v-show="lis.length">
-          <ul v-show="lis.length" style="list-style: none;">
-            <li v-for="(item, index) in lis" :key="item.companyId" class="divli" :class="{ bgc: index === currentIndex }" @click="handleSelect(item, index)" @mousemove="handleMove(index)">{{ item.companyName }}</li>
+        <div class="divul" v-show="addList.length">
+          <ul v-show="addList.length" style="list-style: none;">
+            <li v-for="(item, index) in addList"
+              :key="item.companyId" class="divli"
+              :class="{ bgc: index === currentIndex }"
+              @click="handleAddSelect(item, index)"
+              @mousemove="handleAddMove(index)">
+                {{ item.companyName }}
+              </li>
           </ul>
         </div>
       </el-form>
@@ -100,30 +106,41 @@
       title="编辑账号"
       :visible.sync="editDialogVisible"
       :close-on-click-modal="false"
-      @close="handleClose"
+      @close="handleEditClose"
       width="40%">
       <el-alert title="账号创建后无法删除，手机号码唯一，一人可持有多个账号" type="success" :closable="false" />
-      <el-form ref="editRef" :rules="editRules" :model="editForm" label-width="100px" style="padding:0 50px;">
+      <el-form ref="editRef" :rules="editRules" :model="editDeepForm" label-width="100px" style="padding:0 50px;">
         <el-form-item prop="userName" label="手机号码">
-          <el-input v-model="editForm.userName" placeholder="请输入" clearable></el-input>
+          <el-input v-model="editDeepForm.userName" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="nickName" label="持有人姓名">
-          <el-input v-model="editForm.nickName" placeholder="请输入" clearable></el-input>
+          <el-input v-model="editDeepForm.nickName" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="idCard" label="身份证号码">
-          <el-input v-model="editForm.idCard" placeholder="请输入" clearable></el-input>
+          <el-input v-model="editDeepForm.idCard" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="password" label="登录密码">
-          <el-input v-model="editForm.password" type="password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
+          <el-input v-model="editDeepForm.password" type="password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="roleName">
-          <el-select v-model="editForm.roleName" placeholder="请选择" class="width100" clearable>
+          <el-select v-model="editDeepForm.roleName" placeholder="请选择" class="width100" clearable>
             <el-option v-for="(item, index) in options" :label="item" :value="item" :key="index"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item prop="companyName" label="所属公司">
-          <el-input v-model="editForm.companyName" placeholder="请输入" clearable></el-input>
+          <el-input v-model="editDeepForm.companyName" placeholder="请输入" @focus="handleEditFocus" clearable></el-input>
         </el-form-item>
+        <div class="divul" v-show="editList.length">
+          <ul v-show="editList.length" style="list-style: none;">
+            <li v-for="(item, index) in editList"
+              :key="item.companyId" class="divli"
+              :class="{ bgc: index === currentIndex }"
+              @click="handleEditSelect(item, index)"
+              @mousemove="handleEditMove(index)">
+                {{ item.companyName }}
+              </li>
+          </ul>
+        </div>
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editDialogVisible = false">取 消</el-button>
@@ -135,7 +152,7 @@
 
 <script>
 import { selectList, addOne, updateAccont, roleList, getCompanyInfoList } from '@/api/integrated'
-
+import _ from 'lodash'
 export default {
   name: 'Account',
   data() {
@@ -226,9 +243,10 @@ export default {
       },
       createDialogVisible: false,
       currentIndex: null,
-      lis: [],
+      addList: [],
       // 编辑账号
       editForm: {},
+      editDeepForm: {},
       editRules: {
         userName: [{ required: true, message: '请输入手机号码', trigger: 'blur' },
           { validator: checkPhone, trigger: 'blur' }],
@@ -245,6 +263,7 @@ export default {
           ],
         },
         editDialogVisible: false,
+        editList: []
       }
   },
   created() {
@@ -258,19 +277,6 @@ export default {
         this.tableData = records
         this.total = total
       })
-    },
-    handleFocus() {
-      getCompanyInfoList().then(res => {
-        this.lis = res.data.records
-      })
-    },
-    handleMove(index) {
-      this.currentIndex = index
-    },
-    handleSelect(item) {
-      this.$set(this.addForm, 'companyName', item.companyName)
-      this.$set(this.addForm, 'companyId', item.companyId)
-      this.lis = []
     },
     // 创建账号
     create() {
@@ -304,15 +310,28 @@ export default {
         }
       })
     },
-    handleClose() {
+    handleAddFocus() {
+      getCompanyInfoList().then(res => {
+        this.addList = res.data.records
+      })
+    },
+    handleAddMove(index) {
+      this.currentIndex = index
+    },
+    handleAddSelect(item) {
+      this.$set(this.addForm, 'companyName', item.companyName)
+      this.$set(this.addForm, 'companyId', item.companyId)
+      this.addList = []
+    },
+    handleAddClose() {
       this.addForm = {}
-      this.editForm = {}
       this.options = []
+      this.addList = []
       this.$refs.addRef.clearValidate()
     },
     // 编辑账号
     edit(row) {
-      this.editForm = row
+      this.editDeepForm = _.cloneDeep(row)
       this.editDialogVisible = true
       roleList(this.roleList).then(res => { // 获取角色
         res.data.records.map(item => {
@@ -320,16 +339,35 @@ export default {
         })
       })
     },
+    handleEditFocus() {
+      getCompanyInfoList().then(res => {
+        this.editList = res.data.records
+      })
+    },
     handleEdit() {
       this.$refs.editRef.validate(valid => {
         if(valid) {
-          updateAccont(this.editForm).then(res => {
+          updateAccont(this.editDeepForm).then(res => {
             this.$message.success('编辑成功')
             this.editDialogVisible = false
             this.selectList()
           })
         }
       })
+    },
+    handleEditSelect(item) {
+      this.$set(this.editDeepForm, 'companyName', item.companyName)
+      this.$set(this.editDeepForm, 'companyId', item.companyId)
+      this.editList = []
+    },
+    handleEditMove(index) {
+      this.currentIndex = index
+    },
+    handleEditClose() {
+      this.editDeepForm = {}
+      this.options = []
+      this.editList = []
+      this.$refs.editRef.clearValidate()
     },
 
     async handleEn(row) { // 启用

@@ -13,13 +13,13 @@
       </el-col>
       <el-col :span="8">
         <el-row :gutter="20">
-          <el-col :span="6" class="span13">业务人员</el-col>
+          <el-col :span="6" class="span13">负责人</el-col>
           <el-col :span="16" class="span130">{{ $route.query.createUserNickName }}</el-col>
         </el-row>
       </el-col>
       <el-col :span="8">
         <el-row :gutter="20">
-          <el-col :span="5" class="span13" style="padding-right:15px;">业务电话</el-col>
+          <el-col :span="5" class="span13" style="padding-right:15px;">负责人电话</el-col>
           <el-col :span="16" class="span130" style="padding-left:0;">{{ $route.query.createUserPhone }}</el-col>
         </el-row>
       </el-col>

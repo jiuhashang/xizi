@@ -4,7 +4,7 @@
       <img :src="image" alt="">
       <h2>你好，{{ nickName }}</h2>
     </div>
-    <el-steps :active="-1" simple>
+    <!-- <el-steps :active="-1" simple>
       <el-step title="创建项目表单"></el-step>
       <el-step title="项目发起信息"></el-step>
       <el-step title="项目初审"></el-step>
@@ -12,7 +12,7 @@
       <el-step title="材料补充"></el-step>
       <el-step title="项目终审"></el-step>
       <el-step title="立项补充"></el-step>
-    </el-steps>
+    </el-steps> -->
     <el-card class="box-card">
       <div slot="header">
         <span style="font-weight:900;">项目概况</span>

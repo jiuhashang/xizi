@@ -36,12 +36,19 @@
             <span v-show="scope.row.status == 3">文件过期</span>
           </template>
         </el-table-column>
-        <el-table-column prop="fileSize" label="文件大小" />
+        <el-table-column label="文件大小">
+          <template slot-scope="scope">
+            <span v-if="scope.row.fileSize == null"> - </span>
+            <span v-else>
+              {{ scope.row.fileSize > 0 ? scope.row.fileSize + 'MB' : scope.row.fileSize }}
+            </span>
+          </template>
+        </el-table-column>
         <el-table-column prop="fileValidityDate" label="存储到期时间" />
         <el-table-column label="操作">
           <template slot-scope="scope">
-            <el-button type="text" @click="handleDown(scope.row.downUrl)">下载</el-button>
-            <el-button type="text" style="color:red;" @click="handleRemove(scope.row.projectId)">删除</el-button>
+            <el-button type="text" @click="handleDown(scope.row.downUrl)" :disabled="!(scope.row.status == 1)">下载</el-button>
+            <el-button type="text" style="color:red;" @click="handleRemove(scope.row.id)">删除</el-button>
           </template>
         </el-table-column> 
       </el-table>
@@ -60,10 +67,11 @@ export default {
       tableInfo: {
         projectName: '',
         pageIndex: 0,
-        pageSize: 5
+        pageSize: 10
       },
       tableData: [],
       total: 0,
+      seProjectDownFileId: []
     }
   },
   created() {
@@ -73,7 +81,6 @@ export default {
     // 列表请求
     selectDownFileList() {
       selectDownFileList(this.tableInfo).then(res => {
-        console.log(res)
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -90,7 +97,7 @@ export default {
       this.tableInfo = {
         projectName: '',
         pageIndex: 0,
-        pageSize: 5
+        pageSize: 10
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.selectDownFileList()
@@ -100,7 +107,7 @@ export default {
       window.open(url)
     },
     
-    async handleRemove(projectId) {
+    async handleRemove(id) {
       const confirmResult = await this.$confirm('此操作会永久删除，是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
@@ -109,9 +116,10 @@ export default {
       if (confirmResult !== 'confirm') {
         return this.$message.info('已取消')
       }
-      deleteDownFileList({ projectId }).then(res => {
-        this.$message.success(res.msg)
+      this.seProjectDownFileId.push(id)
+      deleteDownFileList( this.seProjectDownFileId ).then(res => {
         this.selectDownFileList()
+        this.$message.success(res.msg)
       })
     },
 

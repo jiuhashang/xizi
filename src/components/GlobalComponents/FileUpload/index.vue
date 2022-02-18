@@ -20,9 +20,9 @@
       :disabled="disabled"
       :on-preview="handlePreview"
     >
-      <slot>
+      <!-- <slot>
         <el-button ref="uploadBtn" type="primary">{{ text }}</el-button>
-      </slot>
+      </slot> -->
     </el-upload>
     <!-- <el-dialog :close-on-click-modal="false" :visible.sync="dialogVisible" :append-to-body="true">
       <video :src="videoUrl" class="video" controls="controls"/>
@@ -42,7 +42,7 @@ export default {
     action: {
       type: String,
       // default: process.env.VUE_APP_BASE_API + '/huawei/uploadFile'
-      default: 'http://119.45.162.104/xizi-api/huawei/uploadFile'
+      default: 'http://123.60.52.140:7800/huawei/uploadFile'
     },
 
     // 组件是否支持多选上传(默认不支持)

@@ -91,3 +91,10 @@ export function deleteDownFileList(params) {
   params
   )
 }
+
+// 文件打包预下载
+export function readyDownFile(params) {
+  return request.post('/admin/seProjectDownFile/readyDownFile', 
+  params
+  )
+}

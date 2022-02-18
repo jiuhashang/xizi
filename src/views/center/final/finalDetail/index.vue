@@ -516,7 +516,7 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13 mt5">荷载报告</el-col>
                 <el-col :span="16" class="span130">
-                  <el-button size="small" type="primary"
+                  <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.otherFile)"
                   :disabled="seProjectRelevantFile.secondExamineReport == '' || seProjectRelevantFile.secondExamineReport == null ">下 载</el-button>
                 </el-col>
               </el-row>

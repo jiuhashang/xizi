@@ -30,13 +30,13 @@
         </el-col>
         <el-col :span="8">
           <el-row :gutter="20">
-            <el-col :span="6" class="span13">业务人员</el-col>
+            <el-col :span="6" class="span13">负责人</el-col>
             <el-col :span="16" class="span130">{{ $route.query.createUserNickName }}</el-col>
           </el-row>
         </el-col>
         <el-col :span="8">
           <el-row :gutter="20">
-            <el-col :span="5" class="span13" style="padding-right:15px;">业务电话</el-col>
+            <el-col :span="5" class="span13" style="padding-right:15px;">负责人电话</el-col>
             <el-col :span="16" class="span130" style="padding-left:0;">{{ $route.query.createUserPhone }}</el-col>
           </el-row>
         </el-col>
@@ -553,34 +553,22 @@ export default {
   name: 'LaunchDetail',
   data() {
     var checkTwo = (rule, value, callback) => {
-      // if (!value) {
-      //   return callback(new Error('内容不能为空'))
-      // } else {
       const reg = /(^[0-9]{1,9}$)|(^[0-9]{1,9}[\.]{1}[0-9]{1,2}$)/
-      // console.log(reg.test(value))
       if (reg.test(value)) {
         callback()
       } else {
         return callback(new Error('限数字，小数点后2位'))
       }
-      // }
     }
     var checkZs = (rule, value, callback) => {
-      // if (!value) {
-      //   return callback(new Error('大于0的整数'))
-      // } else {
       const reg = /^[1-9]\d*$/
       if (reg.test(value)) {
         callback()
       } else {
         return callback(new Error('限数字，整数，≥1'))
       }
-      // }
     }
     var checkCe = (rule, value, callback) => {
-      // if (!value) {
-      //   return callback(new Error('内容不能为空'))
-      // } else {
       const reg = /^(?:100|\d{1,2})(?:\.\d{1,2})?$/ 
       if (reg.test(value)) {
         callback()
@@ -589,9 +577,6 @@ export default {
       }
     }
     var checkCd = (rule, value, callback) => {
-      // if (!value) {
-      //   return callback(new Error('内容不能为空'))
-      // } else {
       const reg = /^([1-9]\d*(\.\d{1,2})?|([0](\.([0][1-9]|[1-9]\d{0,1}))))$/
       if (reg.test(value)) {
         callback()
@@ -604,7 +589,6 @@ export default {
         return callback(new Error('手机号不能为空'))
       } else {
         const reg = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
-        // console.log(reg.test(value))
         if (reg.test(value)) {
           callback()
         } else {
@@ -835,7 +819,7 @@ export default {
       })
     },
     // 保存
-    save() {
+    save(aa) {
       this.saveLoading = true
       this.seProjectNearThreeYearSellProfixList.push(this.first, this.second, this.three)
       if(this.seProjectCooperate.cooperateType == 0) {
@@ -865,7 +849,7 @@ export default {
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
         this.saveLoading = false
-          this.$message.success('保存成功')
+        if(aa) { this.$message.success('保存成功') }
         this.getProjectInfo(this.projectId)
       }).catch(err => {
         this.saveLoading = false
@@ -907,13 +891,15 @@ export default {
         transformVolume: this.addForm.transformVolume,
       }
       this.seProjectPowerTransformInfoList.push(obj)
+      console.log(this.seProjectPowerTransformInfoList)
       this.addDialogVisible = false
       this.addForm = { 
         projectId: this.$route.query.projectId,
         transformName: '',
         transformVolume: '',
-        transformId: Date.now()
+        // transformId: Date.now()
       }
+      this.save()
     },
     async deleteData(row) { // 删除变压器
       const confirmResult = await this.$confirm('此操作将永久删除该数据，是否继续?', '提示', {
@@ -928,11 +914,11 @@ export default {
         console.log(res)
         this.$message.success('删除成功')
         this.getProjectInfo(this.projectId)
-        // this.save()
       })
     },
     editData(row) { // 编辑变压器弹框
       this.editForm = row
+      console.log(this.editForm)
       this.editDialogVisible = true
     },
     edit() { // 编辑变压器
