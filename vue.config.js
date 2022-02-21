@@ -8,6 +8,7 @@ module.exports = {
         '/xizi-api': {
           pathRewrite: {'^/xizi-api': ''},
           target: 'http://119.45.162.104/xizi-api',
+          // target: 'http://123.60.52.140/xizi-api',
           ws: true,
           secure: false,
           changOrigin: true

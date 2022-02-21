@@ -94,7 +94,7 @@ export default {
     position: relative;
     width: 100%;
     height: 100%;
-    background-image: url(https://xizi-file-6e32.obs.cn-east-3.myhuaweicloud.com/1645084675976.png);
+    background-image: url(https://xizi-file-6e32.obs.cn-east-3.myhuaweicloud.com/1645168260522.webp);
     background-repeat: no-repeat;
     background-size: cover;
     .item {
