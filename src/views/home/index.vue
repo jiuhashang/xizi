@@ -22,15 +22,15 @@
           <el-menu-item index="/first" v-show="menuId.indexOf('项目初审') !== -1">项目初审</el-menu-item>
           <el-menu-item index="/review" v-show="menuId.indexOf('图纸复核') !== -1">图纸复核</el-menu-item>
           <el-menu-item index="/final" v-show="menuId.indexOf('项目终审') !== -1">项目终审</el-menu-item>
-          <!-- <el-menu-item index="/share" v-show="menuId.indexOf('项目分享') !== -1">项目分享</el-menu-item> -->
+          <el-menu-item index="/share" v-show="menuId.indexOf('项目分享') !== -1">项目分享</el-menu-item>
           <el-menu-item index="/overview" v-show="menuId.indexOf('项目总览') !== -1">项目总览</el-menu-item>
           <!-- <el-menu-item index="/preview">项目预览</el-menu-item> -->
         </el-submenu>
         <el-submenu index="4">
           <template slot="title">综合管理</template>
           <el-menu-item index="/account" v-show="menuId.indexOf('账户管理') !== -1">账户管理</el-menu-item>
-          <!-- <el-menu-item index="/organization">机构管理</el-menu-item> -->
           <el-menu-item index="/role" v-show="menuId.indexOf('角色管理') !== -1">角色管理</el-menu-item>
+          <el-menu-item index="/organization" v-show="menuId.indexOf('机构管理') !== -1">机构管理</el-menu-item>
           <el-menu-item index="/download" v-show="menuId.indexOf('下载管理') !== -1">下载管理</el-menu-item>
         </el-submenu>
       </el-menu>

@@ -69,8 +69,8 @@
 <script>
 import { getRoleList, addRole, updateOne } from '@/api/integrated'
 const dataCollection1 = ['项目发起', '材料补充', '立项补充']
-const dataCollection2 = ['项目初审', '图纸复核', '项目终审', '项目总览']
-const dataCollection3 = ['账户管理', '角色管理', '下载管理']
+const dataCollection2 = ['项目初审', '图纸复核', '项目终审', '项目分享', '项目总览']
+const dataCollection3 = ['账户管理', '角色管理','机构管理', '下载管理']
 export default {
   name: 'RoleDetail',
   data() {

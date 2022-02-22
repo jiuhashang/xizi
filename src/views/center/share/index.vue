@@ -18,12 +18,12 @@
           <el-input v-model="tableInfo.companyName" placeholder="公司名称查询" clearable style="width:250px;" />
         </el-form-item>
         <el-form-item>
-          <el-select v-model="tableInfo.firstExamine" clearable placeholder="全部进度">
+          <el-select v-model="tableInfo.type" clearable placeholder="全部进度">
             <el-option
               v-for="item in options"
-              :key="item.firstExamine"
+              :key="item.type"
               :label="item.label"
-              :value="item.firstExamine">
+              :value="item.type">
             </el-option>
           </el-select>
         </el-form-item>
@@ -32,17 +32,24 @@
             <el-button @click="reset">重置</el-button>
           </el-form-item>
         </el-form>
-        <div>
-          <el-button type="primary" @click="create">创建项目</el-button>
-        </div>
       </div>
       
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
         <el-table-column prop="projectName" label="项目名称" />
         <el-table-column prop="companyName" label="公司名称" />
-        <el-table-column label="当前进度" />
-        <el-table-column label="已分享机构数（查看）" />
-        <el-table-column label="已分享机构数（下载）" />
+        <el-table-column prop="createTime" label="创建时间" />
+        <el-table-column label="当前进度">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status == 0 || scope.row.status == 2">待录入</span>
+            <span v-else-if="scope.row.status == 1">初审审核</span>
+            <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 1 || scope.row.firstExamineType == 4 )">图纸复核</span>
+            <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 2 || scope.row.firstExamineType == 5 )">材料补充</span>
+            <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 3 || scope.row.firstExamineType == 6 )">终审审核</span>
+            <span v-else-if="scope.row.status == 7">立项补充</span>
+            <span v-else-if="scope.row.status == 99">项目终止</span>
+          </template>
+        </el-table-column>
+        <el-table-column prop="shareCountNum" label="已分享机构数" />
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="handleView(scope.row)">管理分享</el-button>
@@ -51,26 +58,11 @@
       </el-table>
       <c-pagination ref="pagination" :total="total" @sendsize="handleSizeChange" @sendpage="handleCurrentChange" />
     </el-card>
-    <!-- 审批记录 -->
-    <el-dialog
-      title="审批记录"
-      :visible.sync="logVisible"
-      width="50%"
-      :close-on-click-modal="false">
-      <el-timeline :reverse="true">
-        <el-timeline-item
-          v-for="(activity, index) in activities"
-          :key="index"
-          :timestamp="activity.timestamp">
-          {{activity.content}}
-        </el-timeline-item>
-      </el-timeline>
-    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getList, addOne, getProjectExamineLog } from '@/api/listProject'
+import { getShareBankProjectList } from '@/api/integrated'
 
 export default {
   name: 'Share',
@@ -79,30 +71,38 @@ export default {
       tableInfo: {
         companyName: '',
         projectName: '',
-        firstExamine: '',
+        type: '',
         pageIndex: 1,
         pageSize: 10
       },
       options: [
         {
-          firstExamine: '0',
-          label: '待提交'
+          type: '0',
+          label: '项目录入'
         }, 
         {
-          firstExamine: '1',
-          label: '审核中'
+          type: '1',
+          label: '项目审核'
         }, 
         {
-          firstExamine: '3',
-          label: '审核通过'
+          type: '2',
+          label: '图纸复核'
         }, 
         {
-          firstExamine: '2',
-          label: '审核未通过'
+          type: '3',
+          label: '材料补充'
         }, 
         {
-          firstExamine: '99',
-          label: '项目已终止'
+          type: '4',
+          label: '终审审核'
+        },
+        {
+          type: '5',
+          label: '立项补充'
+        },
+        {
+          type: '6',
+          label: '项目终止'
         }
       ],
       tableData: [],
@@ -114,13 +114,12 @@ export default {
     }
   },
   created() {
-    this.getList()
+    this.getShareBankProjectList()
   },
   methods: {
     // 列表请求
-    getList() {
-      getList(this.tableInfo).then(res => {
-        console.log(res)
+    getShareBankProjectList() {
+      getShareBankProjectList(this.tableInfo).then(res => {
         const { records, total } = res.data
         this.tableData = records
         this.total = total
@@ -130,17 +129,19 @@ export default {
     handleQuery() {
       this.tableInfo.pageIndex = 1
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getList()
+      this.getShareBankProjectList()
     },
     // 表dan重置
     reset() {
       this.tableInfo = {
         companyName: '',
-        firstExamine: '',
-        firstExamine: '',
+        projectName: '',
+        type: '',
+        pageIndex: 1,
+        pageSize: 10
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getList()
+      this.getShareBankProjectList()
     },
 
     // 查看详情
@@ -150,27 +151,20 @@ export default {
         createTime: row.createTime,
         createUserNickName: row.createUserNickName,
         createUserPhone: row.createUserPhone,
-        projectName: row.projectName
+        projectName: row.projectName,
+        companyName: row.companyName
        } })
-    },
-    
-    // 审批记录
-    approval(projectId) {
-      this.logVisible = true
-      getProjectExamineLog(projectId).then(res => {
-        console.log(res)
-      })
     },
 
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val
-      this.getList()
+      this.getShareBankProjectList()
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`)
       this.tableInfo.pageIndex = val
-      this.getList()
+      this.getShareBankProjectList()
     }
   }
 }

@@ -74,7 +74,7 @@
           <el-input v-model="addForm.idCard" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="password" label="登录密码">
-          <el-input v-model="addForm.password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
+          <el-input v-model="addForm.password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，区分大小写" clearable></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="roleName">
           <el-select v-model="addForm.roleName" placeholder="请选择" class="width100" clearable @change="handleRole">
@@ -120,7 +120,7 @@
           <el-input v-model="editDeepForm.idCard" placeholder="请输入" clearable></el-input>
         </el-form-item>
         <el-form-item prop="password" label="登录密码">
-          <el-input v-model="editDeepForm.password" type="password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
+          <el-input v-model="editDeepForm.password" type="password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，区分大小写" clearable></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="roleName">
           <el-select v-model="editDeepForm.roleName" placeholder="请选择" class="width100" clearable>

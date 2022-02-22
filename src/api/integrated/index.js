@@ -98,3 +98,78 @@ export function readyDownFile(params) {
   params
   )
 }
+
+// 获取机构列表
+export function getBankList(params) {
+  return request({
+    url: '/admin/seBankUser/selectList',
+    method: 'get',
+    params
+  })
+}
+
+// 添加机构
+export function addSeBankUser(params) {
+  return request.post('/admin/seBankUser/addSeBankUser', 
+  params
+  )
+}
+
+// 修改机构
+export function updateBank(params) {
+  return request.post('/admin/seBankUser/updateOne', 
+  params
+  )
+}
+
+// 获取分享列表
+export function getShareBankProjectList(params) {
+  return request({
+    url: '/admin/seProjectBankShare/getShareBankProjectList',
+    method: 'get',
+    params
+  })
+}
+
+// 已分享机构列表
+export function getShareBankList(params) {
+  return request({
+    url: '/admin/seProjectBankShare/getShareBankList',
+    method: 'get',
+    params
+  })
+}
+
+// 获取机构列表(过滤已分享（机构）)
+export function getBank(params) {
+  return request({
+    url: '/admin/seProjectBankShare/getBankList',
+    method: 'get',
+    params
+  })
+}
+
+// 分享机构
+export function shareBankProject(params) {
+  return request.post('/admin/seProjectBankShare/shareBankProject', 
+  params
+  )
+}
+
+// 移除分享
+export function deleteShare(params) {
+  return request({
+    url: '/admin/seProjectBankShare/deleteOne',
+    method: 'get',
+    params
+  })
+}
+
+// 修改权限、延长时间
+export function editOne(params) {
+  return request({
+    url: '/admin/seProjectBankShare/editOne',
+    method: 'get',
+    params
+  })
+}
