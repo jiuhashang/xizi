@@ -276,6 +276,11 @@ export default {
       this.addTableData = []
       this.currentRow = undefined
       this.checked = false
+      this.shareInfo = {
+        projectId: this.$route.query.projectId,
+        seBankUserList: [],
+        downFlag: 0
+      }
     },
     getBank() {
       getBank( this.listInfo ).then(res => {

@@ -61,28 +61,30 @@
       :close-on-click-modal="false"
       @close="handleClose"
       width="40%">
-      <el-form ref="addRef" :model="addForm" label-width="100px">
-        <el-form-item label="机构类型">
-          <el-select v-model="addForm.bankType" placeholder="请选择" class="width100">
-            <el-option label="银行" :value="0"></el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="机构名称">
-          <el-input v-model="addForm.bankName" placeholder="请输入机构名称"></el-input>
-        </el-form-item>
-        <el-form-item label="登录手机号">
-          <el-input v-model="addForm.loginPhone" placeholder="请输入登录手机号"></el-input>
-        </el-form-item>
-        <el-form-item label="联系人">
-          <el-input v-model="addForm.contactName" placeholder="请输入联系人姓名"></el-input>
-        </el-form-item>
-        <el-form-item label="电子邮箱">
-          <el-input v-model="addForm.email" placeholder="请输入电子邮箱"></el-input>
-        </el-form-item>
-        <el-form-item label="登录密码">
-          <el-input v-model="addForm.loginPassword" placeholder="请设置登录密码"></el-input>
-        </el-form-item>
-      </el-form>
+      <div style="padding: 0 30px;">
+        <el-form ref="addRef" :rules="addRules" :model="addForm" label-width="100px">
+          <el-form-item label="机构类型" prop="bankType">
+            <el-select v-model="addForm.bankType" placeholder="请选择" class="width100">
+              <el-option label="银行" :value="0"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="机构名称" prop="bankName">
+            <el-input v-model="addForm.bankName" placeholder="请输入机构名称"></el-input>
+          </el-form-item>
+          <el-form-item label="登录手机号" prop="loginPhone">
+            <el-input v-model="addForm.loginPhone" placeholder="请输入登录手机号"></el-input>
+          </el-form-item>
+          <el-form-item label="联系人" prop="contactName">
+            <el-input v-model="addForm.contactName" placeholder="请输入联系人"></el-input>
+          </el-form-item>
+          <el-form-item label="电子邮箱" prop="email">
+            <el-input v-model="addForm.email" placeholder="请输入电子邮箱"></el-input>
+          </el-form-item>
+          <el-form-item label="登录密码" prop="loginPassword">
+            <el-input v-model="addForm.loginPassword" placeholder="请设置登录密码"></el-input>
+          </el-form-item>
+        </el-form>
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="addDialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="handleAdd">确 定</el-button>
@@ -95,25 +97,25 @@
       :close-on-click-modal="false"
       @close="handleClose"
       width="40%">
-      <el-form ref="addRef" :model="editForm" label-width="100px">
-        <el-form-item label="机构类型">
+      <el-form ref="addRef" :rules="editRules" :model="editForm" label-width="100px">
+        <el-form-item label="机构类型" prop="bankType">
           <el-select v-model="editForm.bankType" placeholder="请选择" class="width100">
             <el-option label="银行" :value="0"></el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="机构名称">
+        <el-form-item label="机构名称" prop="bankName">
           <el-input v-model="editForm.bankName" placeholder="请输入机构名称"></el-input>
         </el-form-item>
-        <el-form-item label="登录手机号">
+        <el-form-item label="登录手机号" prop="loginPhone">
           <el-input v-model="editForm.loginPhone" placeholder="请输入登录手机号"></el-input>
         </el-form-item>
-        <el-form-item label="联系人">
+        <el-form-item label="联系人" prop="contactName">
           <el-input v-model="editForm.contactName" placeholder="请输入联系人姓名"></el-input>
         </el-form-item>
-        <el-form-item label="电子邮箱">
+        <el-form-item label="电子邮箱" prop="email">
           <el-input v-model="editForm.email" placeholder="请输入电子邮箱"></el-input>
         </el-form-item>
-        <el-form-item label="登录密码">
+        <el-form-item label="登录密码" prop="loginPassword">
           <el-input v-model="editForm.loginPassword" placeholder="请设置登录密码"></el-input>
         </el-form-item>
       </el-form>
@@ -131,6 +133,44 @@ import _ from 'lodash'
 export default {
   name: 'Organization',
   data() {
+    var checkPhone = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('手机号不能为空'))
+      } else {
+        const reg = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
+        // console.log(reg.test(value))
+        if (reg.test(value)) {
+          callback()
+        } else {
+          return callback(new Error('请输入正确的手机号'))
+        }
+      }
+    }
+    var checkEmail = (rule, value, callback) => {
+      if (!value) {
+        return callback(new Error('邮箱不能为空'))
+      } else {
+        const reg = /^([a-zA-Z0-9]+[-_\.]?)+@[a-zA-Z0-9]+\.[a-z]+$/
+        // console.log(reg.test(value))
+        if (reg.test(value)) {
+          callback()
+        } else {
+          return callback(new Error('请输入正确的邮箱'))
+        }
+      }
+    }
+    var checkPwd = (rule, value, callback) => {
+      const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,12}$/
+      if (value == '' || value == undefined || value == null) {
+        callback()
+      } else {
+        if (!reg.test(value)) {
+          callback(new Error('限8-12位，由英文与数字组成，区分大小写'))
+        } else {
+          callback()
+        }
+      }
+    }
     return {
       tableInfo: {
         bankName: '',
@@ -156,10 +196,52 @@ export default {
       addForm: {
         bankType: 0
       },
+      addRules: {
+        bankType: [{ required: true, message: '请选择机构类型', trigger: 'change' }],
+        bankName: [
+          { required: true, message: '请输入机构名称', trigger: 'blur' },
+          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+        ],
+        loginPhone: [
+          { required: true, message: '请输入登录手机号', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        contactName: [
+          { required: true, message: '请输入联系人姓名', trigger: 'blur' },
+          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { validator: checkEmail, trigger: 'blur' }
+        ],
+        loginPassword: [
+          { required: true, message: '请输入登录密码', trigger: 'blur' },
+          { validator: checkPwd, trigger: 'blur' }]
+      },
 
       // 编辑机构
       editDialogVisible: false,
       editForm: {},
+      editRules: {
+        bankType: [{ required: true, message: '请选择机构类型', trigger: 'change' }],
+        bankName: [
+          { required: true, message: '请输入机构名称', trigger: 'blur' },
+          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+        ],
+        loginPhone: [
+          { required: true, message: '请输入登录手机号', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        contactName: [
+          { required: true, message: '请输入联系人姓名', trigger: 'blur' },
+          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+        ],
+        email: [
+          { required: true, message: '请输入邮箱', trigger: 'blur' },
+          { validator: checkEmail, trigger: 'blur' }
+        ],
+        loginPassword: [{ validator: checkPwd, trigger: 'blur' }]
+      },
     }
   },
   created() {
@@ -181,11 +263,14 @@ export default {
       this.addDialogVisible = true
     },
     handleAdd() {
-      addSeBankUser(this.addForm).then(res => {
-        console.log(res)
-        this.$message.success(res.msg)
-        this.addDialogVisible = false
-        this.getBankList()
+      this.$refs.addRef.validate(valid => {
+        if(valid) {
+          addSeBankUser(this.addForm).then(res => {
+            this.$message.success(res.msg)
+            this.addDialogVisible = false
+            this.getBankList()
+          })
+        }
       })
     },
     // 编辑机构
@@ -194,11 +279,14 @@ export default {
       this.editForm = _.cloneDeep(row)
     },
     edit() {
-      updateBank(this.editForm).then(res => {
-        console.log(res)
-        this.$message.success(res.msg)
-        this.editDialogVisible = false
-        this.getBankList()
+      this.$refs.addRef.validate(valid => {
+        if(valid) {
+          updateBank(this.editForm).then(res => {
+            this.$message.success(res.msg)
+            this.editDialogVisible = false
+            this.getBankList()
+          })
+        }
       })
     },
 
@@ -238,6 +326,7 @@ export default {
         bankType: 0
       }
       this.editForm = {}
+      this.$refs.addRef.resetFields()
     },
     // 表dan查询
     handleQuery() {

@@ -12,7 +12,7 @@
           <h2>&lt; 角色管理</h2>
         </div>
         <div class="btnnn">
-          <el-button size="small">取 消</el-button>
+          <el-button size="small" @click="$router.back()">取 消</el-button>
           <el-button v-if="id" size="small" type="primary" @click="handleSave">保 存</el-button>
           <el-button v-else size="small" type="primary" @click="handleAddRole">创 建</el-button>
         </div>
@@ -87,17 +87,17 @@ export default {
       checkAll1: false,
       checkedCities1: [],
       cities1: dataCollection1,
-      isIndeterminate1: true,
+      isIndeterminate1: false,
 
       checkAll2: false,
       checkedCities2: [],
       cities2: dataCollection2,
-      isIndeterminate2: true,
+      isIndeterminate2: false,
 
       checkAll3: false,
       checkedCities3: [],
       cities3: dataCollection3,
-      isIndeterminate3: true,
+      isIndeterminate3: false,
     }
   },
   created() {
@@ -109,7 +109,6 @@ export default {
   methods: {
     getRoleList() {
       getRoleList({ id: this.id }).then(res => {
-        console.log(res)
         const { id, roleName, roleType, remark, menuId } = res.data
         this.addRoleInfo.id = id
         this.addRoleInfo.roleName = roleName
@@ -156,8 +155,8 @@ export default {
 
     handleAddRole() { // 创建角色
       this.addRoleInfo.menuId = [ ...this.checkedCities1, ...this.checkedCities2, ...this.checkedCities3].join(',')
+      if(this.addRoleInfo.menuId.length < 1) { return this.$message.warning('权限至少需要勾选一项才可以创建') }
       addRole(this.addRoleInfo).then(res => {
-        // console.log(res)
         this.$message.success(res.msg)
         this.$router.back()
       })
@@ -165,8 +164,8 @@ export default {
 
     handleSave() { // 编辑角色
       this.addRoleInfo.menuId = [ ...this.checkedCities1, ...this.checkedCities2, ...this.checkedCities3].join(',')
+      if(this.addRoleInfo.menuId.length < 1) { return this.$message.warning('权限至少需要勾选一项才可以保存') }
       updateOne(this.addRoleInfo).then(res => {
-        console.log(res)
         this.$message.success(res.msg)
         this.$router.back()
       })

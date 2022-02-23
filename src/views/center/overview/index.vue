@@ -48,8 +48,8 @@
             <span v-if="scope.row.status == 0 || scope.row.status == 2">待录入</span>
             <span v-else-if="scope.row.status == 1">初审审核</span>
             <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 1 || scope.row.firstExamineType == 4 )">图纸复核</span>
-            <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 2 || scope.row.firstExamineType == 5 )">材料补充</span>
-            <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 3 || scope.row.firstExamineType == 6 )">终审审核</span>
+            <span v-else-if="scope.row.status == 5 && ( scope.row.firstExamineType == 1 || scope.row.firstExamineType == 5 )">材料补充</span>
+            <span v-else-if="scope.row.status == 6 && ( scope.row.firstExamineType == 1 || scope.row.firstExamineType == 6 )">终审审核</span>
             <span v-else-if="scope.row.status == 7">立项补充</span>
             <span v-else-if="scope.row.status == 99">项目终止</span>
           </template>

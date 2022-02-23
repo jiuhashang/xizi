@@ -183,28 +183,26 @@ export default {
       }
     }
     var checkId = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('身份证号码不能为空'))
+      const reg = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
+      if (value == '' || value == undefined || value == null) {
+        callback()
       } else {
-        const reg = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/
-        // console.log(reg.test(value))
-        if (reg.test(value)) {
-          callback()
+        if (!reg.test(value)) {
+          callback(new Error('请输入正确的身份证号码'))
         } else {
-          return callback(new Error('请输入正确的身份证号码'))
+          callback()
         }
       }
     }
     var checkPwd = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('登录密码不能为空'))
+      const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,12}$/
+      if (value == '' || value == undefined || value == null) {
+        callback()
       } else {
-        const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,12}$/
-        // console.log(reg.test(value))
-        if (reg.test(value)) {
-          callback()
+        if (!reg.test(value)) {
+          callback(new Error('限8-12位，由英文与数字组成，区分大小写'))
         } else {
-          return callback(new Error('请输入正确的登录密码'))
+          callback()
         }
       }
     }
@@ -229,17 +227,24 @@ export default {
       // 创建账号
       addForm: {},
       addRules: {
-        userName: [{ required: true, message: '请输入手机号码', trigger: 'blur' },
-                   { validator: checkPhone, trigger: 'blur' }],
-        nickName: [{ required: true, message: '请输入姓名', trigger: 'blur' },
-                   { validator: checkName, trigger: 'blur' }],
-          // idCard: [{ message: '请输入身份证号码', trigger: 'blur' },
-          //          { validator: checkId, trigger: 'blur' }],
-        password: [{ required: true, message: '请输入登录密码', trigger: 'blur' },
-                   { validator: checkPwd, trigger: 'blur' }],
+        userName: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        nickName: [
+          { required: true, message: '请输入姓名', trigger: 'blur' },
+          { validator: checkName, trigger: 'blur' }
+        ],
+        idCard: [{ validator: checkId, trigger: 'blur' }],
+        password: [
+          { required: true, message: '请输入登录密码', trigger: 'blur' },
+          { validator: checkPwd, trigger: 'blur' }
+        ],
         roleName: [{ required: true, message: '请选择角色', trigger: 'change' }],
-     companyName: [{ required: true, message: '请输入所属公司', trigger: ['blur', 'change'] },
-                   { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }]
+        companyName: [
+          { required: true, message: '请输入所属公司', trigger: ['blur', 'change'] },
+          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+        ]
       },
       createDialogVisible: false,
       currentIndex: null,
@@ -248,23 +253,25 @@ export default {
       editForm: {},
       editDeepForm: {},
       editRules: {
-        userName: [{ required: true, message: '请输入手机号码', trigger: 'blur' },
-          { validator: checkPhone, trigger: 'blur' }],
-        nickName: [{ required: true, message: '请输入姓名', trigger: 'blur' },
-          { validator: checkName, trigger: 'blur' }],
-          idCard: [{ required: true, message: '请输入身份证号码', trigger: 'blur' },
-          { validator: checkId, trigger: 'blur' }],
-        // password: [{ required: false, message: '请输入登录密码', trigger: 'blur' },
-        //            { validator: checkPwd, trigger: 'blur' }],
+        userName: [
+          { required: true, message: '请输入手机号码', trigger: 'blur' },
+          { validator: checkPhone, trigger: 'blur' }
+        ],
+        nickName: [
+          { required: true, message: '请输入姓名', trigger: 'blur' },
+          { validator: checkName, trigger: 'blur' }
+        ],
+        idCard: [{ validator: checkId, trigger: 'blur' }],
+        password: [{ validator: checkPwd, trigger: 'blur' }],
         roleName: [{ required: true, message: '请选择角色', trigger: 'change' }],
         companyName: [
-            { required: true, message: '请输入所属公司', trigger: 'blur' },
-            { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
-          ],
-        },
-        editDialogVisible: false,
-        editList: []
-      }
+          { required: true, message: '请输入所属公司', trigger: 'blur' },
+          { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
+        ],
+      },
+      editDialogVisible: false,
+      editList: []
+    }
   },
   created() {
     this.selectList()
@@ -327,7 +334,7 @@ export default {
       this.addForm = {}
       this.options = []
       this.addList = []
-      this.$refs.addRef.clearValidate()
+      this.$refs.addRef.resetFields()
     },
     // 编辑账号
     edit(row) {

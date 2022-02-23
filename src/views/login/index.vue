@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <div class="item">
-      <div class="top">智慧能源管理系统</div>
+      <div class="top">西子光能智慧能源管理平台</div>
       <div class="bottom">
         <span style="font-size:20px;color:#313131;margin-left:145px;margin-top:33px;">欢迎登录</span>
         <el-form :model="form" class="form">
@@ -44,7 +44,7 @@ export default {
       },
       imgSrc: '',
       loading:false,
-      menu: '项目发起, 材料补充, 立项补充,项目初审, 图纸复核, 项目终审, 项目总览,账户管理, 角色管理, 下载管理'
+      menu: '项目发起, 材料补充, 立项补充,项目初审, 图纸复核, 项目终审,项目分享, 项目总览,账户管理, 角色管理, 机构管理, 下载管理'
     }
   },
   created() {
