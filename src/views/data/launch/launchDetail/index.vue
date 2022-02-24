@@ -313,7 +313,7 @@
           </el-col>
           <el-col :span="8" v-show="seProjectCooperate.cooperateType == 0">
             <div style="display:flex;">
-              <el-checkbox v-model="seProjectCooperate.ownPutFlag" style="margin-top:10px;" @change="handleOwn" />
+              <el-checkbox v-model="seProjectCooperate.ownPutFlag" style="margin-top:10px;" />
               <el-form-item label="业主自投，预算">
                 <el-input v-model="seProjectCooperate.ownPutMoney" class="width100" clearable type="number" placeholder="请输入" :disabled="!seProjectCooperate.ownPutFlag">
                   <span slot="suffix">万元</span>
@@ -693,11 +693,11 @@ export default {
       seProjectCooperate: {
         projectId: this.$route.query.projectId,
         cooperateType: undefined,
-        ownPutFlag: null,
+        ownPutFlag: false,
         ownPutMoney: undefined,
-        electricityDiscountFlag: null,
+        electricityDiscountFlag: false,
         electricityDiscountScale: undefined,
-        houseLeaseFlag: null,
+        houseLeaseFlag: false,
         houseLeaseMoney: undefined
       }, // 合作模式
       cooperateRules: {
@@ -932,18 +932,18 @@ export default {
     },
     // 合作模式
     selectChange(val) {
-      if(val === 0) {
+      // console.log(val)
+      if(val == 0) {
         this.seProjectCooperate.ownPutFlag = true
-        // this.seProjectCooperate.electricityDiscountFlag = false
-        // this.seProjectCooperate.electricityDiscountScale = ''
-        // this.seProjectCooperate.houseLeaseFlag = false
-        // this.seProjectCooperate.houseLeaseMoney = ''
-      // } else if(val === 1) {
+      //   this.seProjectCooperate.electricityDiscountFlag = false
+      //   this.seProjectCooperate.electricityDiscountScale = ''
+      //   this.seProjectCooperate.houseLeaseFlag = false
+      //   this.seProjectCooperate.houseLeaseMoney = ''
+      // } else if(val == 1) {
       //   this.seProjectCooperate.ownPutFlag = false
       //   this.seProjectCooperate.ownPutMoney = ''
       } 
     },
-    handleOwn() {},
     handleEle(val) {
       if(val == false) {
         this.seProjectCooperate.electricityDiscountFlag = 0

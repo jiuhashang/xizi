@@ -69,7 +69,7 @@
 <script>
 import { getRoleList, addRole, updateOne } from '@/api/integrated'
 const dataCollection1 = ['项目发起', '材料补充', '立项补充']
-const dataCollection2 = ['项目初审', '图纸复核', '项目终审', '项目分享', '项目总览']
+const dataCollection2 = ['项目初审', '图纸复核', '项目终审', '项目分享', '项目总览', '项目统计']
 const dataCollection3 = ['账户管理', '角色管理','机构管理', '下载管理']
 export default {
   name: 'RoleDetail',
@@ -121,7 +121,7 @@ export default {
           if(this.cities3.indexOf(m)>-1) this.checkedCities3.push(m)
         })
         if( this.checkedCities1.length == 3 ) this.checkAll1 = true
-        if( this.checkedCities2.length == 5 ) this.checkAll2 = true
+        if( this.checkedCities2.length == 6 ) this.checkAll2 = true
         if( this.checkedCities3.length == 4 ) this.checkAll3 = true
         if( this.checkedCities1.length > 0 ) this.isIndeterminate1 = true
         if( this.checkedCities2.length > 0 ) this.isIndeterminate2 = true

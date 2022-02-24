@@ -44,6 +44,8 @@ const OverviewDetail = () => import('../views/center/overview/overviewDetail')
 const Preview = () => import('../views/center/preview')
 // import PreviewDetail from '@/views/center/preview/previewDetail'
 const PreviewDetail = () => import('../views/center/preview/previewDetail')
+const Statist = () => import('../views/center/statist')
+const StatistDetail = () => import('../views/center/statist/statistDetail')
 
 // import Account from '@/views/integrated/account'
 const Account = () => import('../views/integrated/account')
@@ -87,7 +89,6 @@ const routes = [
         path: '/launch',
         name: 'Launch',
         component: Launch,
-        // meta: { title: '项目发起', menuId: 'BD13B61D1E41' }
         meta: { title: '项目发起', menuId: '项目发起' }
       },
       {
@@ -101,7 +102,6 @@ const routes = [
         path: '/material',
         name: 'Material',
         component: Material,
-        // meta: { title: '材料补充', menuId: '3DDB623DC1B4' }
         meta: { title: '材料补充', menuId: '材料补充' }
       },
       {
@@ -115,7 +115,6 @@ const routes = [
         path: '/added',
         name: 'Added',
         component: Added,
-        // meta: { title: '立项补充', menuId: '64DA247EF00D' }
         meta: { title: '立项补充', menuId: '立项补充' }
       },
       {
@@ -130,7 +129,6 @@ const routes = [
         path: '/first',
         name: 'First',
         component: First,
-        // meta: { title: '项目初审', menuId: '05F8CE861908' }
         meta: { title: '项目初审', menuId: '项目初审' }
       },
       {
@@ -144,7 +142,6 @@ const routes = [
         path: '/review',
         name: 'Review',
         component: Review,
-        // meta: { title: '图纸复核', menuId: '44E8DADDB02E' }
         meta: { title: '图纸复核', menuId: '图纸复核' }
       },
       {
@@ -158,7 +155,6 @@ const routes = [
         path: '/final',
         name: 'Final',
         component: Final,
-        // meta: { title: '项目终审', menuId: 'CC97CDA2CB34' }
         meta: { title: '项目终审', menuId: '项目终审' }
       },
       {
@@ -172,7 +168,6 @@ const routes = [
         path: '/share',
         name: 'Share',
         component: Share,
-        // meta: { title: '项目分享', menuId: '0CD5A8A7B987' }
         meta: { title: '项目分享', menuId: '项目分享' }
       },
       {
@@ -186,7 +181,6 @@ const routes = [
         path: '/overview',
         name: 'Overview',
         component: Overview,
-        // meta: { title: '项目总览', menuId: 'F34B88ABB41C' }
         meta: { title: '项目总览', menuId: '项目总览' }
       },
       {
@@ -200,7 +194,6 @@ const routes = [
         path: '/preview',
         name: 'Preview',
         component: Preview,
-        // meta: { title: '项目预览', menuId: 'C311C6D0305D' }
         meta: { title: '项目预览', menuId: '项目预览' }
       },
       {
@@ -210,12 +203,24 @@ const routes = [
         meta: { title: '项目预览详情' }
       },
 
+      {
+        path: '/statist',
+        name: 'Statist',
+        component: Statist,
+        meta: { title: '项目统计', menuId: '项目统计' }
+      },
+      {
+        path: '/statistDetail',
+        name: 'StatistDetail',
+        component: StatistDetail,
+        meta: { title: '项目明细' }
+      },
+
       // 综合管理
       {
         path: '/account',
         name: 'Account',
         component: Account,
-        // meta: { title: '账号管理', menuId: '350C4B90BFDA' }
         meta: { title: '账号管理', menuId: '账号管理' }
       },
 
@@ -223,7 +228,6 @@ const routes = [
         path: '/organization',
         name: 'Organization',
         component: Organization,
-        // meta: { title: '机构管理', menuId: '0AF68C01847C' }
         meta: { title: '机构管理', menuId: '机构管理' }
       },
 
@@ -231,7 +235,6 @@ const routes = [
         path: '/role',
         name: 'Role',
         component: Role,
-        // meta: { title: '角色管理', menuId: '5063084DE6E0' }
         meta: { title: '角色管理', menuId: '角色管理' }
       },
       {
@@ -245,7 +248,6 @@ const routes = [
         path: '/download',
         name: 'Download',
         component: Download,
-        // meta: { title: '下载管理', menuId: 'B68D4461AC14' }
         meta: { title: '下载管理', menuId: '下载管理' }
       },
     ]

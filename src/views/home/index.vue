@@ -11,21 +11,22 @@
         @select="handleSelect"
         router>
         <el-menu-item index="/dashboard">首页</el-menu-item>
-        <el-submenu index="2">
+        <el-submenu index="2" v-show="collect">
           <template slot="title">资料收集</template>
           <el-menu-item index="/launch" v-show="menuId.indexOf('项目发起') !== -1">项目发起</el-menu-item>
           <el-menu-item index="/material" v-show="menuId.indexOf('材料补充') !== -1">材料补充</el-menu-item>
           <el-menu-item index="/added" v-show="menuId.indexOf('立项补充') !== -1">立项补充</el-menu-item>
         </el-submenu>
-        <el-submenu index="3">
+        <el-submenu index="3" v-show="center">
           <template slot="title">审批中心</template>
           <el-menu-item index="/first" v-show="menuId.indexOf('项目初审') !== -1">项目初审</el-menu-item>
           <el-menu-item index="/review" v-show="menuId.indexOf('图纸复核') !== -1">图纸复核</el-menu-item>
           <el-menu-item index="/final" v-show="menuId.indexOf('项目终审') !== -1">项目终审</el-menu-item>
           <el-menu-item index="/share" v-show="menuId.indexOf('项目分享') !== -1">项目分享</el-menu-item>
           <el-menu-item index="/overview" v-show="menuId.indexOf('项目总览') !== -1">项目总览</el-menu-item>
+          <el-menu-item index="/statist" v-show="menuId.indexOf('项目统计') !== -1">项目统计</el-menu-item>
         </el-submenu>
-        <el-submenu index="4">
+        <el-submenu index="4" v-show="manage">
           <template slot="title">综合管理</template>
           <el-menu-item index="/account" v-show="menuId.indexOf('账户管理') !== -1">账户管理</el-menu-item>
           <el-menu-item index="/role" v-show="menuId.indexOf('角色管理') !== -1">角色管理</el-menu-item>
@@ -50,8 +51,8 @@
 export default {
   data() {
       return {
-        activeIndex: '1'
-        // meunId: window.sessionStorage.getItem('menuId')
+        activeIndex: '1',
+        meunId: window.sessionStorage.getItem('menuId')
       }
     },
     methods: {
@@ -72,6 +73,15 @@ export default {
       },
       image() {
         return window.sessionStorage.getItem('image')
+      },
+      collect() {
+        return this.meunId.indexOf('项目发起') !== -1 || this.meunId.indexOf('材料补充') !== -1 || this.meunId.indexOf('立项补充') !== -1
+      },
+      center() {
+        return this.meunId.indexOf('项目初审') !== -1 || this.meunId.indexOf('图纸复核') !== -1 || this.meunId.indexOf('项目终审') !== -1 || this.meunId.indexOf('项目分享') !== -1 || this.meunId.indexOf('项目总览') !== -1 || this.meunId.indexOf('项目统计') !== -1
+      },
+      manage() {
+        return this.meunId.indexOf('账户管理') !== -1 || this.meunId.indexOf('角色管理') !== -1 || this.meunId.indexOf('机构管理') !== -1 || this.meunId.indexOf('下载管理') !== -1 
       }
     }
 }

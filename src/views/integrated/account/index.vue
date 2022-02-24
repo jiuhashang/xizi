@@ -123,8 +123,8 @@
           <el-input v-model="editDeepForm.password" type="password" placeholder="请输入登录密码，限8-12位，由英文与数字组成，区分大小写" clearable></el-input>
         </el-form-item>
         <el-form-item label="角色" prop="roleName">
-          <el-select v-model="editDeepForm.roleName" placeholder="请选择" class="width100" clearable>
-            <el-option v-for="(item, index) in options" :label="item" :value="item" :key="index"></el-option>
+          <el-select v-model="editDeepForm.roleName" placeholder="请选择" class="width100" clearable @change="handleEditRole">
+            <el-option v-for="(item, index) in options" :label="item.roleName" :value="item.roleId" :key="index"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item prop="companyName" label="所属公司">
@@ -342,9 +342,21 @@ export default {
       this.editDialogVisible = true
       roleList(this.roleList).then(res => { // 获取角色
         res.data.records.map(item => {
-          this.options.push(item.roleName)
+          let a = {
+            roleName: item.roleName,
+            roleId: item.id
+          }
+          this.options.push(a)
         })
       })
+    },
+    handleEditRole(val) {
+      this.editDeepForm.roleId = val
+      let handleEditRole = {}
+        handleEditRole = this.options.find((item)=>{
+        return item.roleId === val;
+      })
+       this.editDeepForm.roleName = handleEditRole.roleName
     },
     handleEditFocus() {
       getCompanyInfoList().then(res => {
