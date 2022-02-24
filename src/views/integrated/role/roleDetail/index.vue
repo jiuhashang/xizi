@@ -97,7 +97,7 @@ export default {
       checkAll3: false,
       checkedCities3: [],
       cities3: dataCollection3,
-      isIndeterminate3: false,
+      isIndeterminate3: false
     }
   },
   created() {
@@ -120,12 +120,17 @@ export default {
           if(this.cities2.indexOf(m)>-1) this.checkedCities2.push(m)
           if(this.cities3.indexOf(m)>-1) this.checkedCities3.push(m)
         })
+        if( this.checkedCities1.length == 3 ) this.checkAll1 = true
+        if( this.checkedCities2.length == 5 ) this.checkAll2 = true
+        if( this.checkedCities3.length == 4 ) this.checkAll3 = true
+        if( this.checkedCities1.length > 0 ) this.isIndeterminate1 = true
+        if( this.checkedCities2.length > 0 ) this.isIndeterminate2 = true
+        if( this.checkedCities3.length > 0 ) this.isIndeterminate3 = true
       })
     },
     handleCheckAllChange1(val) {
       this.checkedCities1 = val ? dataCollection1 : []
       this.isIndeterminate1 = false
-      console.log(this.checkedCities1)
     },
     handleCheckedCitiesChange1(value) {
       let checkedCount = value.length
@@ -161,7 +166,6 @@ export default {
         this.$router.back()
       })
     },
-
     handleSave() { // 编辑角色
       this.addRoleInfo.menuId = [ ...this.checkedCities1, ...this.checkedCities2, ...this.checkedCities3].join(',')
       if(this.addRoleInfo.menuId.length < 1) { return this.$message.warning('权限至少需要勾选一项才可以保存') }

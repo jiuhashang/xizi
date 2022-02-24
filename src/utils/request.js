@@ -3,11 +3,13 @@ import { MessageBox, Message } from 'element-ui'
 // import store from '@/store'
 // import { getToken } from '@/utils/auth'
 import isObject from 'lodash/isObject'
+// import NProgress from 'nprogress'
+// import 'nprogress/nprogress.css'
 // create an axios instance
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  // baseURL: 'http://10.11.32.52:7800',
-  baseURL: '/xizi-api',
+  baseURL: 'http://10.11.32.52:7800',
+  // baseURL: '/xizi-api',
   headers: {
     'Content-Type': 'application/json; charset=utf-8',
     'Req-Origin': 'web'
@@ -37,6 +39,7 @@ const service = axios.create({
 })
 service.interceptors.request.use(
   config => {
+    NProgress.start()
     // do something before request is sent
     // if (store.getters.token) {
       // let each request carry token
@@ -62,6 +65,7 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
+    NProgress.done()
     const res = response.data // if the custom code is not 20000, it is judged as an error.
     if (res.code !== 0) {
       if (res.code === 401 && !(/admin\/seAdminUser\/getUserInfo$/.test(response?.config?.url))) { // 非获取用户信息接口
