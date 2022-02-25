@@ -36,32 +36,99 @@
       </el-menu>
       </div>
       <div class="right">
-        <img :src="image" alt="">
-        <span>{{ nickName }}</span>
-        <el-button type="primary" @click="out">退出</el-button>
+        <el-dropdown>
+          <span class="el-dropdown-link">
+            <img :src="image" alt="">
+            <h3 style="display: inline-block;">{{ nickName }}</h3>
+            <i class="el-icon-arrow-down el-icon--right"></i>
+          </span>
+          <el-dropdown-menu slot="dropdown">
+            <el-dropdown-item @click.native="handleOpen">修改密码</el-dropdown-item>
+            <el-dropdown-item @click.native="loginOut">退出登录</el-dropdown-item>
+          </el-dropdown-menu>
+        </el-dropdown>
       </div>
     </el-header>
     <el-main>
       <router-view/>
     </el-main>
+    <el-dialog
+      title="修改密码"
+      :visible.sync="dialogVisible"
+      :close-on-click-modal="false"
+      width="30%">
+      <!-- <div style="padding:20px 30px 0 0;"> -->
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="当前密码" prop="oldPwd">
+            <el-input v-model="ruleForm.oldPwd" placeholder="请输入原密码"></el-input>
+          </el-form-item>
+          <el-form-item label="新密码" prop="newPwd">
+            <el-input v-model="ruleForm.newPwd" placeholder="新密码限8-12位，由英文与数字组成，不区分大小写"></el-input>
+          </el-form-item>
+          <el-form-item label="确认密码" prop="agian">
+            <el-input v-model="ruleForm.agian" placeholder="请再次输入新密码"></el-input>
+          </el-form-item>
+        </el-form>
+      <!-- </div> -->
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+      </span>
+    </el-dialog>
   </el-container>
 </template>
 
 <script>
 export default {
   data() {
+    var checkPwd = (rule, value, callback) => {
+      const reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{8,12}$/
+      if (value == '' || value == undefined || value == null) {
+        callback()
+      } else {
+        if (!reg.test(value)) {
+          callback(new Error('限8-12位，由英文与数字组成，区分大小写'))
+        } else {
+          callback()
+        }
+      }
+    }
       return {
         activeIndex: '1',
-        meunId: window.sessionStorage.getItem('menuId')
+        meunId: window.sessionStorage.getItem('menuId'),
+
+        ruleForm: {
+          oldPwd: '',
+          newPwd: '',
+          agian: ''
+        },
+        rules: {
+          oldPwd: [
+            { required: true, message: '请输入原密码', trigger: 'blur' },
+            { min: 1, max: 20, message: '最长输入20位', trigger: 'blur' }
+          ],
+          newPwd: [
+            { required: true, message: '请输入新密码', trigger: 'blur' },
+            { validator: checkPwd, trigger: 'blur' }
+          ],
+          agian: [
+            { required: true, message: '请输入确认密码', trigger: 'blur' },
+            { validator: checkPwd, trigger: 'blur' }
+          ]
+        },
+        dialogVisible: false
       }
     },
     methods: {
       handleSelect(key, keyPath) {
         // console.log(key, keyPath);
       },
-      out() {
+      loginOut() {
         window.sessionStorage.clear()
         this.$router.push('/login')
+      },
+      handleOpen() {
+        this.dialogVisible = true
       }
     },
     computed: {
@@ -113,17 +180,17 @@ export default {
   }
   .right {
     /* line-height: 64px; */
-    margin-top: 8px;
+    margin-right: 20px;
   }
   h2 {
     margin: 11px 60px 11px 5px;
   }
   img {
-    width: 24px;
-    height: 24px;
+    width: 35px;
+    height: 35px;
     border-radius: 50%;
     vertical-align: middle;
-    margin-right: 10px;
+    margin-right: 15px;
   }
   .el-button {
     margin-left: 50px;

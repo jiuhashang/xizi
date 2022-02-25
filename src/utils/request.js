@@ -8,8 +8,8 @@ import isObject from 'lodash/isObject'
 // create an axios instance
 const service = axios.create({
   // baseURL: process.env.VUE_APP_BASE_API, // url = base url + request url
-  baseURL: 'http://10.11.32.52:7800',
-  // baseURL: '/xizi-api',
+  // baseURL: 'http://10.11.32.52:7800',
+  baseURL: '/xizi-api',
   headers: {
     'Content-Type': 'application/json; charset=utf-8',
     'Req-Origin': 'web'

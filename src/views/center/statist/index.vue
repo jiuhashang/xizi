@@ -8,7 +8,9 @@
       </el-breadcrumb>
       <h2>{{ $route.meta.title }}</h2>
     </div>
-    <el-alert title="点击此处查看搜索规则与数据统计规则" type="success" :closable="false" @click.native="handleDetail" />
+    <div class="alert">
+      <span @click="handleDetail">点击此处查看搜索规则与数据统计规则</span>
+    </div>
     <el-card>
       <div style="display:flex;justify-content:space-between;">
         <el-form ref="ruleForm" :model="tableInfo" inline>
@@ -25,13 +27,53 @@
               </el-option>
             </el-select>
           </el-form-item>
+          <el-form-item>
+            <el-date-picker
+              v-model="value2"
+              type="daterange"
+              align="right"
+              unlink-panels
+              range-separator="至"
+              start-placeholder="开始日期"
+              end-placeholder="结束日期"
+              :picker-options="pickerOptions" />
+          </el-form-item>
           <el-form-item style="margin-left: 20px;">
             <el-button type="primary" @click="handleQuery">查询</el-button>
             <el-button @click="reset">重置</el-button>
           </el-form-item>
         </el-form>
       </div>
-      
+      <div class="center">
+        <div style="background:#E87E04;margin-left:0;">
+          <h3>发起项目</h3>
+          <h3>111</h3>
+        </div>
+        <div style="background:#3598DC;">
+          <h3>提交审核</h3>
+          <h3>111</h3>
+        </div>
+        <div style="background:#5C9BD1;">
+          <h3>初审通过</h3>
+          <h3>111</h3>
+        </div>
+        <div style="background:#4B77BE;">
+          <h3>终审通过</h3>
+          <h3>111</h3>
+        </div>
+        <div style="background:#36D7B7;">
+          <h3>目前已初审通过</h3>
+          <h3>111</h3>
+        </div>
+        <div style="background:#26C281;">
+          <h3>目前已终审通过</h3>
+          <h3>111</h3>
+        </div>
+        <div style="background:#22313F;">
+          <h3>目前已终止</h3>
+          <h3>111</h3>
+        </div>
+      </div>
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
         <el-table-column label="负责人" />
         <el-table-column label="所属公司" />
@@ -55,6 +97,32 @@
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
       width="40%">
+      <pre>
+        项目统计显示每位负责人的项目录入与被审核的情况，列表中各数据信息规则如下：
+
+        1、发起项目：表示这段时间内该用户创建的项目数量
+
+        2、提交审核：示这段时间内该用户提交审核的项目数量，驳回后再次提交不重复记录
+
+        3、初审通过：表示这段时间内该用户的项目被初审通过的项目数量，驳回后再次提交不重复记录
+
+        4、终审通过：表示这段时间内该用户的项目被终审通过的项目数量，驳回后再次提交不重复记录
+
+        5、目前已初审通过：表示所选时间内创建的项目到目前已初审通过的数量，记录最新状态
+
+        6、目前已终审通过：表示所选时间内创建的项目到目前已初审通过的数量，记录最新状态
+
+        7、目前已终止：表示所选时间内创建的项目到目前已被终止的数量，记录最新状态
+
+
+        如：王某一共负责20个项目，搜索日期为设定为：2021年12月1日-2021年12月31日，那么：
+
+        1、搜索日期内，王某发起了10个项目
+
+        2、王某全部负责的20个项目在搜索日期内提交审核、初审通过、终审通过的数量
+
+        3、搜索时间内发起的10个项目，到目前已初审通过、已终审通过、已终止的数量
+      </pre>
       <span slot="footer" class="dialog-footer">
         <!-- <el-button @click="dialogVisible = false">取 消</el-button> -->
         <el-button type="primary" @click="dialogVisible = false">关 闭</el-button>
@@ -64,7 +132,7 @@
 </template>
 
 <script>
-import { getShareBankProjectList } from '@/api/integrated'
+import { getProjectCount } from '@/api/center'
 
 export default {
   name: 'Statist',
@@ -77,7 +145,35 @@ export default {
         pageIndex: 1,
         pageSize: 10
       },
-      options: [],
+      pickerOptions: {
+        shortcuts: [{
+          text: '最近一周',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 7);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近一个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 30);
+            picker.$emit('pick', [start, end]);
+          }
+        }, {
+          text: '最近三个月',
+          onClick(picker) {
+            const end = new Date();
+            const start = new Date();
+            start.setTime(start.getTime() - 3600 * 1000 * 24 * 90);
+            picker.$emit('pick', [start, end]);
+          }
+        }]
+      },
+      value2: '',
+
       tableData: [],
       total: 0,
 
@@ -85,13 +181,19 @@ export default {
     }
   },
   created() {
+    this.getProjectCount()
   },
   methods: {
+    getProjectCount() {
+      getProjectCount().then(res => {
+        console.log(res)
+      })
+    },
     // 表dan查询
     handleQuery() {
       this.tableInfo.pageIndex = 1
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getShareBankProjectList()
+      this.getProjectCount()
     },
     // 表dan重置
     reset() {
@@ -103,7 +205,7 @@ export default {
         pageSize: 10
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getShareBankProjectList()
+      this.getProjectCount()
     },
 
     // 查看详情
@@ -123,12 +225,12 @@ export default {
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val
-      this.getShareBankProjectList()
+      this.getProjectCount()
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`)
       this.tableInfo.pageIndex = val
-      this.getShareBankProjectList()
+      this.getProjectCount()
     }
   }
 }
@@ -149,8 +251,24 @@ export default {
   .el-form {
     width: 80%;
   }
-  .el-alert {
+  .alert {
+    padding: 5px 10px;
     margin: 20px;
-    text-decoration:underline;
+    background: rgba(0, 193, 222, 0.1);
+    border: 1px solid rgb(0, 193, 222);
+    span {
+      color: rgb(0, 193, 222);
+      text-decoration:underline;
+      cursor: pointer;
+    }
+  }
+  .center {
+    display: flex;
+    div {
+      margin-left: 15px;
+      flex: 1;
+      text-align: center;
+      color: #fff;
+    }
   }
 </style>

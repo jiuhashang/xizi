@@ -332,13 +332,4 @@ export default {
     padding-left: 15px;
   }
 }
-.span13 {
-    font-size: 13px;
-    color: #aaa;
-    text-align: right;
-  }
-.span130 {
-  font-size: 13px;
-  color: #000;
-}
 </style>
