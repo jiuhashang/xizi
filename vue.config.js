@@ -13,7 +13,7 @@ module.exports = {
           secure: false,
           changOrigin: true
         }
-      }
+      },
       // overlay: {·
       //   warnings: false,
       //   errors: true

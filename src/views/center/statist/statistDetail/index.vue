@@ -20,19 +20,19 @@
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">负责人</el-col>
-            <el-col :span="16" class="span130"></el-col>
+            <el-col :span="16" class="span130">{{ $route.query.nickName }}</el-col>
           </el-row>
         </el-col>
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">所属公司</el-col>
-            <el-col :span="16" class="span130"></el-col>
+            <el-col :span="16" class="span130">{{ $route.query.companyName }}</el-col>
           </el-row>
         </el-col>
         <el-col :span="8">
           <el-row :gutter="20">
             <el-col :span="8" class="span13">负责人电话</el-col>
-            <el-col :span="16" class="span130"></el-col>
+            <el-col :span="16" class="span130">{{ $route.query.userName }}</el-col>
           </el-row>
         </el-col>
       </el-row>
@@ -45,17 +45,20 @@
             <el-input v-model="tableInfo.projectName" placeholder="项目名称查询" clearable style="width:250px;" />
           </el-form-item>
           <el-form-item>
-            <el-input v-model="tableInfo.projectName" placeholder="公司名称查询" clearable style="width:250px;" />
+            <el-input v-model="tableInfo.companyName" placeholder="公司名称查询" clearable style="width:250px;" />
           </el-form-item>
           <el-form-item>
             <el-date-picker
-              v-model="value2"
+              v-model="timedate"
               type="daterange"
               align="right"
+              value-format="yyyy-MM-dd HH:mm:ss"
+              :default-time="['00:00:00', '23:59:59']"
               unlink-panels
               range-separator="至"
               start-placeholder="开始日期"
               end-placeholder="结束日期"
+              @change="handleTimeChange"
               :picker-options="pickerOptions" />
           </el-form-item>
           <el-form-item style="margin-left: 20px;">
@@ -65,27 +68,38 @@
         </el-form>
       </div>
       <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
-        <el-table-column label="项目名称" />
-        <el-table-column label="公司名称" />
-        <el-table-column label="创建时间" />
-        <el-table-column label="当前进度" />
-        <c-pagination ref="pagination" :total="total" @sendsize="handleSizeChange" @sendpage="handleCurrentChange" />
+        <el-table-column prop="projectName" label="项目名称" />
+        <el-table-column prop="companyName" label="公司名称" />
+        <el-table-column prop="createTime" label="创建时间" />
+        <el-table-column label="当前进度">
+          <template slot-scope="scope">
+            <span v-if="scope.row.status == 0 || scope.row.status == 2">待录入</span>
+            <span v-else-if="scope.row.status == 1">初审审核</span>
+            <span v-else-if="scope.row.status == 3 && ( scope.row.firstExamineType == 1 || scope.row.firstExamineType == 4 )">图纸复核</span>
+            <span v-else-if="scope.row.status == 5 && ( scope.row.firstExamineType == 1 || scope.row.firstExamineType == 5 )">材料补充</span>
+            <span v-else-if="scope.row.status == 6 && ( scope.row.firstExamineType == 1 || scope.row.firstExamineType == 6 )">终审审核</span>
+            <span v-else-if="scope.row.status == 7">立项补充</span>
+            <span v-else-if="scope.row.status == 99">项目终止</span>
+          </template>
+        </el-table-column>
       </el-table>
-
+      <c-pagination ref="pagination" :total="total" @sendsize="handleSizeChange" @sendpage="handleCurrentChange" />
     </el-card>
   </div>
 </template>
 
 <script>
+import { getSelectListAll } from '@/api/center'
 export default {
   name: 'StatistDetail',
 
   data() {
     return {
       tableInfo: {
-        companyName: '',
         projectName: '',
-        type: '',
+        companyName: '',
+        startDate: '',
+        endDate: '',
         pageIndex: 1,
         pageSize: 10
       },
@@ -116,55 +130,54 @@ export default {
           }
         }]
       },
-      value2: '',
+      timedate: '',
 
       tableData: [],
       total: 0,
-    };
+    }
+  },
+  created() {
+    this.getSelectListAll()
   },
   methods: {
+    getSelectListAll() {
+      getSelectListAll(this.tableInfo).then(res => {
+        this.tableData = res.data.records
+        this.total = res.data.total
+      })
+    },
     // 表dan查询
     handleQuery() {
       this.tableInfo.pageIndex = 1
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getProjectCount()
+      this.getSelectListAll()
+    },
+    handleTimeChange(val) {
+      this.tableInfo.startDate = val[0]
+      this.tableInfo.endDate = val[1]
     },
     // 表dan重置
     reset() {
       this.tableInfo = {
-        companyName: '',
         projectName: '',
-        type: '',
+        companyName: '',
+        startDate: '',
+        endDate: '',
         pageIndex: 1,
         pageSize: 10
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
-      this.getProjectCount()
-    },
-
-    // 查看详情
-    handleView(row) {
-      this.$router.push({ name: 'Statist', query: { 
-        projectId: row.projectId,
-        createTime: row.createTime,
-        createUserNickName: row.createUserNickName,
-        createUserPhone: row.createUserPhone,
-        projectName: row.projectName,
-        companyName: row.companyName
-       } })
-    },
-    handleDetail() {
-      this.dialogVisible = true
+      this.getSelectListAll()
     },
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val
-      this.getProjectCount()
+      this.getSelectListAll()
     },
     handleCurrentChange(val) {
       // console.log(`当前页: ${val}`)
       this.tableInfo.pageIndex = val
-      this.getProjectCount()
+      this.getSelectListAll()
     }
   }
 }

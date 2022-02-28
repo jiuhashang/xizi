@@ -62,11 +62,13 @@ export default {
             window.sessionStorage.setItem('token', res.data.token)
             window.sessionStorage.setItem('nickName', res.data.nickName)
             window.sessionStorage.setItem('image', res.data.image)
-            if(this.form.userName == 'admin') {
+            if(res.data.userName === 'admin') {
               window.sessionStorage.setItem('menuId', this.menu)
+              window.sessionStorage.setItem('rootFlag', 1)
               this.$router.push('/home')
             } else {
               window.sessionStorage.setItem('menuId', res.data.seAdminRoleInfo.menuId)
+              window.sessionStorage.setItem('rootFlag', res.data.seAdminRoleInfo.rootFlag)
               this.$router.push('/home')
             }
           }

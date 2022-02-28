@@ -65,8 +65,8 @@
         <h3>数据权限</h3>
         <el-alert title="目前数据权限仅控制【项目统计】模块的数据显示范围" type="success" :closable="false" />
         <div style="margin-left:110px;">
-          <el-radio v-model="radio" label="1" style="margin: 25px 0;">全部数据开放</el-radio><br>
-          <el-radio v-model="radio" label="2" style="margin-bottom: 50px;">仅账号所属公司数据开放</el-radio>
+          <el-radio v-model="addRoleInfo.rootFlag" label="1" style="margin: 25px 0;">全部数据开放</el-radio><br>
+          <el-radio v-model="addRoleInfo.rootFlag" label="0" style="margin-bottom: 50px;">仅账号所属公司数据开放</el-radio>
         </div>
       </el-card>
   </div>
@@ -86,7 +86,8 @@ export default {
         roleName: '',
         roleType: '',
         remark: '',
-        menuId: ''
+        menuId: '',
+        rootFlag: '1'
       },
       menu: [],
       
@@ -103,9 +104,7 @@ export default {
       checkAll3: false,
       checkedCities3: [],
       cities3: dataCollection3,
-      isIndeterminate3: false,
-
-      radio: '1'
+      isIndeterminate3: false
     }
   },
   created() {
@@ -117,11 +116,12 @@ export default {
   methods: {
     getRoleList() {
       getRoleList({ id: this.id }).then(res => {
-        const { id, roleName, roleType, remark, menuId } = res.data
+        const { id, roleName, roleType, remark, menuId, rootFlag } = res.data
         this.addRoleInfo.id = id
         this.addRoleInfo.roleName = roleName
         this.addRoleInfo.roleType = roleType
         this.addRoleInfo.remark = remark
+        this.addRoleInfo.rootFlag = rootFlag + ''
         this.menu = menuId.split(',')
         this.menu.forEach(m => {
           if(this.cities1.indexOf(m)>-1) this.checkedCities1.push(m)

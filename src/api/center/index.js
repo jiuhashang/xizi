@@ -62,9 +62,27 @@ export function getProjectPdf (params) {
 }
 
 // 项目统计
-export function getProjectCount (params) {
+export function getUserProjectCount (params) {
   return request({
-    url: '/admin/seProjectInfo/getProjectCount',
+    url: '/admin/seAdminUser/userProjectCount',
+    method: 'get',
+    params
+  })
+}
+
+// 获取公司列表
+export function getCompanyList (params) {
+  return request({
+    url: '/admin/seAdminUser/getCompanyList',
+    method: 'get',
+    params
+  })
+}
+
+// 项目明细
+export function getSelectListAll (params) {
+  return request({
+    url: '/admin/seProjectInfo/selectListAll',
     method: 'get',
     params
   })
