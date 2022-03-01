@@ -125,8 +125,11 @@ export default {
     reset() {
       this.tableInfo = {
         companyName: '',
+        projectName: '',
         firstExamine: '',
-        firstExamine: '',
+        type: 1,
+        pageIndex: 1,
+        pageSize: 10
       }
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.getList()

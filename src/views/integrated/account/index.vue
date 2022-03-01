@@ -130,7 +130,7 @@
         <el-form-item prop="companyName" label="所属公司">
           <el-input v-model="editDeepForm.companyName" placeholder="请输入" @focus="handleEditFocus" clearable></el-input>
         </el-form-item>
-        <div class="divul" v-show="editList.length">
+        <div class="editdiv" v-show="editList.length">
           <ul v-show="editList.length" style="list-style: none;">
             <li v-for="(item, index) in editList"
               :key="item.companyId" class="divli"
@@ -487,5 +487,17 @@ export default {
   }
   .bgc:hover {
     color: blue;
+  }
+  .editdiv {
+    max-width: 600px;
+    min-width: 200px;
+    list-style: none;
+    background-color: #fff;
+    position: absolute;
+    top: 520px;
+    left: 170px;
+    border:1px solid #DCDFE6;
+    border-radius: 5px;
+    overflow: auto;
   }
 </style>
