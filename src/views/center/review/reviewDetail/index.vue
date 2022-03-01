@@ -18,102 +18,8 @@
       </div>
     </div>
     <el-card>
-      <div class="xian">
-        <div>项目信息</div>
-      </div>
-      <el-row :gutter="20" style="margin:30px;">
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">创建时间</el-col>
-            <el-col :span="16" class="span130">{{ $route.query.createTime }}</el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">负责人</el-col>
-            <el-col :span="16" class="span130">{{ $route.query.createUserNickName }}</el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">负责人电话</el-col>
-            <el-col :span="16" class="span130">{{ $route.query.createUserPhone }}</el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" style="margin:30px;">
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">项目名称</el-col>
-            <el-col :span="16" class="span130">{{ $route.query.projectName }}</el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-
-      <div class="xian">
-        <div>业主信息</div>
-      </div>
-      <el-row :gutter="20" style="margin:30px;">
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">公司名称</el-col>
-            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.companyName }}</el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">统一社会信用代码</el-col>
-            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.sameCreditCode }}</el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">注册资本</el-col>
-            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.registerMoney }}</el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" style="margin:30px;">
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">公司性质</el-col>
-            <el-col :span="16" class="span130">
-              <span v-if="seProjectCompanyInfo.companyType == 0">央企</span>
-              <span v-else-if="seProjectCompanyInfo.companyType == 1">外资</span>
-              <span v-else-if="seProjectCompanyInfo.companyType == 2">国企</span>
-              <span v-else-if="seProjectCompanyInfo.companyType == 3">上市公司</span>
-              <span v-else-if="seProjectCompanyInfo.companyType == 4">股份制</span>
-              <span v-else>其他</span>
-            </el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">建站地址</el-col>
-            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.province }} {{ seProjectCompanyInfo.city }}</el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">详细地址</el-col>
-            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.setAddress }}</el-col>
-          </el-row>
-        </el-col>
-      </el-row>
-      <el-row :gutter="20" style="margin:30px;">
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">公司联系人</el-col>
-            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.legalPerson }}</el-col>
-          </el-row>
-        </el-col>
-        <el-col :span="8">
-          <el-row :gutter="20">
-            <el-col :span="8" class="span13">联系人手机号</el-col>
-            <el-col :span="16" class="span130">{{ seProjectCompanyInfo.companyPhone }}</el-col>
-          </el-row>
-        </el-col>
-      </el-row>
+      <ProjectInfo />
+      <OwnerInfo :seProjectCompanyInfo="seProjectCompanyInfo" />
 
       <div class="xian">
         <div>屋面信息</div>
@@ -523,6 +429,8 @@ import { getProjectInfo, getProjectExamineLog } from '@/api/listProject'
 import { projectSecondExamine } from '@/api/center'
 
 import ApprovalLog from '@/components/Log/ApprovalLog.vue'
+import ProjectInfo from '@/components/Project/ProjectInfo.vue'
+import OwnerInfo from '@/components/Project/OwnerInfo.vue'
 
 export default {
   name: 'ReviewDetail',
@@ -572,7 +480,7 @@ export default {
       activities: []
     }
   },
-  components: { ApprovalLog },
+  components: { ApprovalLog, ProjectInfo, OwnerInfo },
   created() {
     this.secondExamine = this.$route.query.secondExamine
     this.projectId = this.$route.query.projectId
@@ -667,63 +575,63 @@ export default {
 </script>
 
 <style lang="scss" scoped> 
-  .shang {
-    height: 97px;
-    background-color: #fff;
-    .el-breadcrumb {
-      padding: 15px 0 0 25px;
-    }
-    .back {
-      position: relative;
-      .btnnn {
-        position: absolute;
-        bottom: 0;
-        right: 15px;
-      }
-    }
-    h2 {
-      padding-left: 25px;
-      cursor: pointer;
+.shang {
+  height: 97px;
+  background-color: #fff;
+  .el-breadcrumb {
+    padding: 15px 0 0 25px;
+  }
+  .back {
+    position: relative;
+    .btnnn {
+      position: absolute;
+      bottom: 0;
+      right: 15px;
     }
   }
+  h2 {
+    padding-left: 25px;
+    cursor: pointer;
+  }
+}
 
-  .xian {
-    color: #1890FF;
-    border-bottom: 1px solid #1890FF;
-    padding-bottom: 5px;
-    div {
-      border-left: 4px solid #1890FF;
-      padding-left: 15px;
-    }
+.xian {
+  color: #1890FF;
+  border-bottom: 1px solid #1890FF;
+  padding-bottom: 5px;
+  div {
+    border-left: 4px solid #1890FF;
+    padding-left: 15px;
   }
-  .mt5 {
-    margin-top: 5px;
-  }
-  .span13 {
-    font-size: 13px;
-    color: #aaa;
-    text-align: right;
-  }
-  .span130 {
-    font-size: 13px;
-    color: #000;
-  }
-  .el-alert {
-    margin: 15px 0;
-  }
-  /deep/  .el-checkbox__label {
-    padding-left: 0;
-  }
-  .custom-upload-files {
-    text-align: left;
-  }
+}
+.mt5 {
+  margin-top: 5px;
+}
+.span13 {
+  font-size: 13px;
+  color: #aaa;
+  text-align: right;
+}
+.span130 {
+  font-size: 13px;
+  color: #000;
+}
+.el-alert {
+  margin: 15px 0;
+}
+/deep/  .el-checkbox__label {
+  padding-left: 0;
+}
+.custom-upload-files {
+  text-align: left;
+}
 .ht {
-    border-collapse:collapse;
+  border-collapse:collapse;
+  border: 1px solid #DCDFE6;
+  td {
+    width: 25%;
+    height: 50px;
     border: 1px solid #DCDFE6;
-    td {
-      width: 25%;
-      height: 50px;
-      border: 1px solid #DCDFE6;
-    }
   }
+}
 </style>

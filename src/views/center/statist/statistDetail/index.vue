@@ -153,8 +153,15 @@ export default {
       this.getSelectListAll()
     },
     handleTimeChange(val) {
-      this.tableInfo.startDate = val[0]
-      this.tableInfo.endDate = val[1]
+      console.log(val)
+      if(val == null) {
+        this.tableInfo.startDate = null
+        this.tableInfo.endDate = null
+      } else {
+        this.tableInfo.startDate = val[0]
+        this.tableInfo.endDate = val[1]
+      }
+      
     },
     // 表dan重置
     reset() {
