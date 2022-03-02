@@ -398,8 +398,7 @@
             <el-col :span="16" class="span130" v-if="secondExamine == 1">
               <file-upload-string
                 v-model="secondExamineReport"
-                :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
+                :limit="1">
               </file-upload-string>
             </el-col>
             <el-col :span="16" class="span130" v-else>

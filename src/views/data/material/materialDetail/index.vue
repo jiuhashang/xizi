@@ -78,17 +78,15 @@
             <el-form-item label="近3年财务报告" class="must-form-item">
               <file-upload-string
                 v-model="seProjectSupplementFile.nearThreeYearFinanceReport"
-                :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
+                :limit="1">
               </file-upload-string>
             </el-form-item>
           </el-col>
           <el-col :span="8" style="padding-left:30px;">
             <el-form-item label="材料补充额外材料">
               <file-upload-string
-              v-model="seProjectSupplementFile.otherFile"
-                :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
+                v-model="seProjectSupplementFile.otherFile"
+                :limit="1">
               </file-upload-string>
             </el-form-item>
           </el-col>

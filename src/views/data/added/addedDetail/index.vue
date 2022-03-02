@@ -29,8 +29,7 @@
             <el-form-item label="能源管理合同" class="must-form-item">
               <file-upload-string
                 v-model="seProjectEndSupplementFile.energyContractFile"
-                :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
+                :limit="1">
               </file-upload-string>
             </el-form-item>
           </el-col>
@@ -38,8 +37,7 @@
             <el-form-item label="项目建议书" class="must-form-item">
               <file-upload-string
                 v-model="seProjectEndSupplementFile.adviseBookFile"
-                :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
+                :limit="1">
               </file-upload-string>
             </el-form-item>
           </el-col>
@@ -47,8 +45,7 @@
             <el-form-item label="备案文件" class="must-form-item">
               <file-upload-string
                 v-model="seProjectEndSupplementFile.recordFile"
-                :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
+                :limit="1">
               </file-upload-string>
             </el-form-item>
           </el-col>
@@ -58,8 +55,7 @@
             <el-form-item label="接入文件" class="must-form-item">
               <file-upload-string
                 v-model="seProjectEndSupplementFile.insertFile"
-                :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
+                :limit="1">
               </file-upload-string>
             </el-form-item>
           </el-col>
@@ -67,8 +63,7 @@
             <el-form-item label="营业执照" class="must-form-item">
               <file-upload-string
                 v-model="seProjectEndSupplementFile.businessFile"
-                :limit="1"
-                accept=".jpg,.jpeg,.png,.dwg,.bak,.dwt,.bak,.rar,.zip,.ppt,.pptx,.pdf,.xls,.xlsx,.csv,.xlsm">
+                :limit="1">
               </file-upload-string>
             </el-form-item>
           </el-col>

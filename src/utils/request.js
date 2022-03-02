@@ -77,7 +77,7 @@ service.interceptors.response.use(
         }).then(() => {
           // store.dispatch('user/resetToken').then(() => {
             // location.reload()
-            // Window.sessionStorage.clear()
+            Window.sessionStorage.clear()
             this.$router.push('/login')
           // })
         }).catch(console.warn)
