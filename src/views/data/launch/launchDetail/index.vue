@@ -1042,5 +1042,4 @@ export default {
       top: 10px;
     }
   }
-
 </style>

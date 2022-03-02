@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 
 // import Login from '@/views/login'
 const Login = () => import('../views/login')
+const NotFound = () => import('../views/404.vue')
 // import Home from '@/views/home'
 const Home = () => import('../views/home')
 // import Dashboard from '@/views/dashboard'
@@ -251,6 +252,12 @@ const routes = [
         meta: { title: '下载管理', menuId: '下载管理' }
       },
     ]
+  },
+  {
+    path: '*',
+    name: '404',
+    component: NotFound,
+    meta: { title: '404' }
   },
   // {
   //   path: '/about',
