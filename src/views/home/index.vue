@@ -56,29 +56,31 @@
       title="修改密码"
       :visible.sync="dialogVisible"
       :close-on-click-modal="false"
+      @close="handleClose"
       width="30%">
-      <!-- <div style="padding:20px 30px 0 0;"> -->
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="100px" class="demo-ruleForm">
-          <el-form-item label="当前密码" prop="oldPwd">
-            <el-input v-model="ruleForm.oldPwd" placeholder="请输入原密码"></el-input>
+      <div style="padding:0 35px;">
+        <el-form :model="ruleForm" :rules="rules" ref="refForm" label-width="100px" class="demo-ruleForm">
+          <el-form-item label="当前密码" prop="oldPassword">
+            <el-input v-model="ruleForm.oldPassword" placeholder="请输入原密码" clearable></el-input>
           </el-form-item>
-          <el-form-item label="新密码" prop="newPwd">
-            <el-input v-model="ruleForm.newPwd" placeholder="新密码限8-12位，由英文与数字组成，不区分大小写"></el-input>
+          <el-form-item label="新密码" prop="newPassword">
+            <el-input v-model="ruleForm.newPassword" placeholder="新密码限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
           </el-form-item>
-          <el-form-item label="确认密码" prop="agian">
-            <el-input v-model="ruleForm.agian" placeholder="请再次输入新密码"></el-input>
+          <el-form-item label="确认密码" prop="rePassword">
+            <el-input v-model="ruleForm.rePassword" placeholder="请再次输入新密码" clearable></el-input>
           </el-form-item>
         </el-form>
-      <!-- </div> -->
+      </div>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+        <el-button type="primary" @click="handleEdit">确 定</el-button>
       </span>
     </el-dialog>
   </el-container>
 </template>
 
 <script>
+import { editPassword } from '@/api/integrated'
 export default {
   data() {
     var checkPwd = (rule, value, callback) => {
@@ -93,64 +95,90 @@ export default {
         }
       }
     }
-      return {
-        activeIndex: '1',
-        meunId: window.sessionStorage.getItem('menuId'),
-
-        ruleForm: {
-          oldPwd: '',
-          newPwd: '',
-          agian: ''
-        },
-        rules: {
-          oldPwd: [
-            { required: true, message: '请输入原密码', trigger: 'blur' },
-            { min: 1, max: 20, message: '最长输入20位', trigger: 'blur' }
-          ],
-          newPwd: [
-            { required: true, message: '请输入新密码', trigger: 'blur' },
-            { validator: checkPwd, trigger: 'blur' }
-          ],
-          agian: [
-            { required: true, message: '请输入确认密码', trigger: 'blur' },
-            { validator: checkPwd, trigger: 'blur' }
-          ]
-        },
-        dialogVisible: false
-      }
-    },
-    methods: {
-      handleSelect(key, keyPath) {
-        // console.log(key, keyPath);
-      },
-      loginOut() {
-        window.sessionStorage.clear()
-        this.$router.push('/login')
-      },
-      handleOpen() {
-        this.dialogVisible = true
-      }
-    },
-    computed: {
-      menuId() {
-        return window.sessionStorage.getItem('menuId')
-      },
-      nickName() {
-        return window.sessionStorage.getItem('nickName')
-      },
-      image() {
-        return window.sessionStorage.getItem('image')
-      },
-      collect() {
-        return this.meunId.indexOf('项目发起') !== -1 || this.meunId.indexOf('材料补充') !== -1 || this.meunId.indexOf('立项补充') !== -1
-      },
-      center() {
-        return this.meunId.indexOf('项目初审') !== -1 || this.meunId.indexOf('图纸复核') !== -1 || this.meunId.indexOf('项目终审') !== -1 || this.meunId.indexOf('项目分享') !== -1 || this.meunId.indexOf('项目总览') !== -1 || this.meunId.indexOf('项目统计') !== -1
-      },
-      manage() {
-        return this.meunId.indexOf('账户管理') !== -1 || this.meunId.indexOf('角色管理') !== -1 || this.meunId.indexOf('机构管理') !== -1 || this.meunId.indexOf('下载管理') !== -1 
+    var validatePass2 = (rule, value, callback) => {
+      if (value === '') {
+        callback(new Error('请再次输入新密码'))
+      } else if (value !== this.ruleForm.newPassword) {
+        callback(new Error('两次输入密码不一致!'))
+      } else {
+        callback()
       }
     }
+    return {
+      activeIndex: '1',
+      meunId: window.sessionStorage.getItem('menuId'),
+
+      ruleForm: {
+        oldPassword: '',
+        newPassword: '',
+        rePassword: ''
+      },
+      rules: {
+        oldPassword: [
+          { required: true, message: '请输入原密码', trigger: 'blur' },
+          { min: 1, max: 20, message: '最长输入20位', trigger: 'blur' }
+        ],
+        newPassword: [
+          { required: true, message: '请输入新密码', trigger: 'blur' },
+          { validator: checkPwd, trigger: 'blur' }
+        ],
+        rePassword: [
+          { required: true, validator: validatePass2, trigger: 'blur' }
+        ]
+      },
+      dialogVisible: false
+    }
+  },
+  methods: {
+    handleSelect(key, keyPath) {
+      // console.log(key, keyPath);
+    },
+    loginOut() {
+      window.sessionStorage.clear()
+      this.$router.push('/login')
+    },
+    handleOpen() {
+      this.dialogVisible = true
+    },
+    handleEdit() {
+      this.$refs.refForm.validate(valid => {
+        if(valid) {
+          editPassword(this.ruleForm).then(res => {
+            this.$message.success(res.msg)
+            this.dialogVisible = false
+          })
+        }
+      })
+    },
+    handleClose() {
+      this.ruleForm = {
+        oldPassword: '',
+        newPassword: '',
+        rePassword: ''
+      }
+      this.$refs.refForm.resetFields()
+    }
+  },
+  computed: {
+    menuId() {
+      return window.sessionStorage.getItem('menuId')
+    },
+    nickName() {
+      return window.sessionStorage.getItem('nickName')
+    },
+    image() {
+      return window.sessionStorage.getItem('image')
+    },
+    collect() {
+      return this.meunId.indexOf('项目发起') !== -1 || this.meunId.indexOf('材料补充') !== -1 || this.meunId.indexOf('立项补充') !== -1
+    },
+    center() {
+      return this.meunId.indexOf('项目初审') !== -1 || this.meunId.indexOf('图纸复核') !== -1 || this.meunId.indexOf('项目终审') !== -1 || this.meunId.indexOf('项目分享') !== -1 || this.meunId.indexOf('项目总览') !== -1 || this.meunId.indexOf('项目统计') !== -1
+    },
+    manage() {
+      return this.meunId.indexOf('账户管理') !== -1 || this.meunId.indexOf('角色管理') !== -1 || this.meunId.indexOf('机构管理') !== -1 || this.meunId.indexOf('下载管理') !== -1 
+    }
+  }
 }
 </script>
 
@@ -191,8 +219,5 @@ export default {
     border-radius: 50%;
     vertical-align: middle;
     margin-right: 15px;
-  }
-  .el-button {
-    margin-left: 50px;
   }
 </style>>

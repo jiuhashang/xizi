@@ -173,3 +173,12 @@ export function editOne(params) {
     params
   })
 }
+
+// 修改密码
+export function editPassword(params) {
+  return request({
+    url: '/admin/seAdminUser/editPassword',
+    method: 'get',
+    params
+  })
+}
