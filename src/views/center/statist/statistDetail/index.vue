@@ -173,6 +173,7 @@ export default {
         pageIndex: 1,
         pageSize: 10
       }
+      this.timedate = ''
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.getSelectListAll()
     },

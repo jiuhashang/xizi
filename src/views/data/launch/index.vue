@@ -98,7 +98,12 @@
         </el-form>
         <div class="divul" v-show="options.length">
           <ul v-show="options.length" style="list-style: none;">
-            <li v-for="(item, index) in options" :key="item.id" class="divli" :class="{ bgc: index === currentIndex }" @click="handleSelect(item, index)" @mousemove="handleMove(index)">{{ item.name }}</li>
+            <li v-for="(item, index) in options" :key="item.id" class="divli" 
+              :class="{bgc: index === currentIndex}" 
+              @click="handleSelect(item, index)"
+              @mousemove="handleMove(index)">
+                {{ item.name }}
+            </li>
           </ul>
         </div>
       </div>
@@ -273,38 +278,17 @@ export default {
       this.ruleForm.sameCreditCode = item.creditCode
       this.options = []
     },
-    colseDialog() {
-      this.ruleForm = {
-        projectName: '',
-        companyName: '',
-        legalPerson: '',
-        registerMoney: '',
-        sameCreditCode: ''
-      }
-      this.options = []
-      this.optionss = []
-    },
-    handleClear() {
-      this.ruleForm.companyName = ''
-      this.options = []
-    },
-    handleMove(index) {
-      this.currentIndex = index
-    },
     createProject() { // 创建项目
-      this.loading = true
-      const result = this.optionss.find(item => {
-        return item.name === this.ruleForm.companyName
-      })
-      if(result == undefined) {
-        this.$message.error('必须选择一项才能进行下一步操作')
-        this.loading = false
-        return
-      } else {
-        this.$refs.ruleForm.validate(valid => {
-          if(valid) {
+      this.$refs.ruleForm.validate(valid => {
+        if(valid) {
+          const result = this.optionss.find(item => {
+            return item.name === this.ruleForm.companyName
+          })
+          if(result == undefined || this.options.length > 0) {
+            this.$message.error('必须选择一项才能进行下一步操作')
+            return
+          } else {
             addOne(this.ruleForm).then(res => {
-              this.loading = false
               this.$message.success('创建项目表单成功')
               this.$router.push({ name: 'LaunchDetail', query: { 
                 projectId: res.data.projectId,
@@ -315,13 +299,30 @@ export default {
                 companyName: res.data.companyName
                 }
               })
-            }).catch(err => {
-              this.loading = false
-            })
+            }).catch(err => err)
           }
-        })
+        }
+      })
+    },
+    colseDialog() {
+      this.ruleForm = {
+        projectName: '',
+        companyName: '',
+        legalPerson: '',
+        registerMoney: '',
+        sameCreditCode: ''
       }
-    }
+      this.options = []
+      this.optionss = []
+      this.$refs.ruleForm.resetFields()
+    },
+    handleClear() {
+      this.ruleForm.companyName = ''
+      this.options = []
+    },
+    handleMove(index) {
+      this.currentIndex = index
+    },
   }
 }
 </script>

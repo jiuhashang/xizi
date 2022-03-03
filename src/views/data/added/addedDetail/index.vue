@@ -129,6 +129,7 @@ export default {
     },
     handleInput() {
       getByCompanyName({ companyName: this.seProjectEndSupplementFile.projectCompanyName }).then(res => {
+        console.log(res)
         this.options = res.data.orders
       })
     },

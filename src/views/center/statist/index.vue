@@ -213,7 +213,6 @@ export default {
       this.tableInfo.companyId = val
     },
     handleTimeChange(val) {
-      console.log(val)
       if(val == null) {
         this.tableInfo.startDate = null
         this.tableInfo.endDate = null
@@ -239,6 +238,7 @@ export default {
         pageIndex: 1,
         pageSize: 10
       }
+      this.timedate = ''
       this.company = ''
       this.$refs.pagination.resetOption(this.tableInfo.pageIndex, this.tableInfo.pageSize)
       this.getUserProjectCount()
