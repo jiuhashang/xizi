@@ -16,7 +16,7 @@
         <p class="p-info">
           二、联络您的管理员，确认是否有进入页面的权限
         </p>
-        <a href="" class="bullshit__return-home">回到首页</a>
+        <el-button type="primary" round @click="$router.back()">返回上一页</el-button>
       </div>
     </div>
   </div>

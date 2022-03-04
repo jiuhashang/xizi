@@ -64,7 +64,7 @@
             <el-input v-model="ruleForm.oldPassword" placeholder="请输入原密码" clearable></el-input>
           </el-form-item>
           <el-form-item label="新密码" prop="newPassword">
-            <el-input v-model="ruleForm.newPassword" placeholder="新密码限8-12位，由英文与数字组成，不区分大小写" clearable></el-input>
+            <el-input v-model="ruleForm.newPassword" placeholder="新密码限8-12位，由英文与数字组成，区分大小写" clearable></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="rePassword">
             <el-input v-model="ruleForm.rePassword" placeholder="请再次输入新密码" clearable></el-input>
