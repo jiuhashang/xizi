@@ -67,7 +67,7 @@
             <el-col :span="8" class="span13">屋面材质</el-col>
             <el-col :span="16" class="span130">
               <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(0) !== -1">瓦铄屋面&nbsp;</span>
-              <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">混泥土屋面&nbsp;</span>
+              <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(1) !== -1">混凝土屋面&nbsp;</span>
               <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(2) !== -1">彩钢瓦屋面&nbsp;</span>
               <span v-show="seProjectCompanyBuildInfo.housePartType && seProjectCompanyBuildInfo.housePartType.indexOf(3) !== -1">其他</span>
             </el-col>
@@ -229,6 +229,10 @@
             </el-col>
           </el-row>
         </el-col>
+      </el-row>
+      <el-row :gutter="20" style="margin:30px 0;">
+        <el-col :span="3" class="span13">合作说明</el-col>
+        <el-col :span="21" class="span130">{{ seProjectCooperate.otherMessage }}</el-col>
       </el-row>
 
       <div class="xian">
@@ -629,8 +633,12 @@ export default {
   border: 1px solid #DCDFE6;
   td {
     width: 25%;
-    height: 50px;
+    height: 35px;
     border: 1px solid #DCDFE6;
   }
+}
+/deep/ .el-button--primary.is-disabled {
+  background-color: #eee;
+  border-color: #eee;
 }
 </style>

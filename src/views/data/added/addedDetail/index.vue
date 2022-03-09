@@ -21,6 +21,105 @@
       <OwnerInfo :seProjectCompanyInfo="seProjectCompanyInfo" />
 
       <div class="xian">
+        <div>相关材料</div>
+      </div>
+      <el-alert title="如文件较多，可将文件进行压缩打包上传，并等待文件完成上传。" type="success" :closable="false" />
+      <el-form ref="relevantFileForm" :rules="relevantFileRules" :model="seProjectRelevantFile" style="margin-left:57px;margin-top:30px;" label-width="160px">
+        <!-- <el-row :gutter="20">
+          <el-col :span="8">
+            <el-form-item label="不动产权证或三证" prop="realPropertyRightFile" class="must-form-item">
+              <file-upload-string
+                v-model="seProjectRelevantFile.realPropertyRightFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="近12个月电费复核单" prop="nearYearElectricityBill" class="must-form-item">
+              <file-upload-string
+                v-model="seProjectRelevantFile.nearYearElectricityBill"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="结构图" prop="structureFile" class="must-form-item">
+              <file-upload-string
+                v-model="seProjectRelevantFile.structureFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+        </el-row> -->
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-form-item label="配电室内部照片">
+              <file-upload-string
+                v-model="seProjectRelevantFile.electricityRoomInsideFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="建筑图">
+              <file-upload-string
+                v-model="seProjectRelevantFile.buildFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="总平图">
+              <file-upload-string
+                v-model="seProjectRelevantFile.generalLayoutFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-form-item label="厂房内部照片">
+              <file-upload-string
+                v-model="seProjectRelevantFile.workShopInsideFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="厂名正面照片">
+              <file-upload-string
+                v-model="seProjectRelevantFile.workShopFrontFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="屋顶细节照片">
+              <file-upload-string
+                v-model="seProjectRelevantFile.houseTopDetailFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-form-item label="厂房内屋顶照片">
+              <file-upload-string
+                v-model="seProjectRelevantFile.workShopInsideTopFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+          <el-col :span="8">
+            <el-form-item label="项目发起额外材料">
+              <file-upload-string
+                v-model="seProjectRelevantFile.projectOtherFile"
+                :limit="1" />
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row :gutter="20">
+          <el-col>
+            <el-form-item label="项目发起额外说明">
+              <el-input type="textarea" autosize v-model="seProjectRelevantFile.projectOtherMessage" class="width100"></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
+
+      <div class="xian">
         <div>立项补充</div>
       </div>
       <el-form ref="form" :model="seProjectEndSupplementFile" style="margin-left:60px;margin-top:30px;" label-width="140px">
@@ -81,7 +180,7 @@
         <el-row :gutter="20">
           <el-col>
             <el-form-item label="补充说明">
-              <el-input v-model="seProjectEndSupplementFile.otherMessage" class="width100"></el-input>
+              <el-input type="textarea" autosize v-model="seProjectEndSupplementFile.otherMessage" class="width100"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -108,8 +207,11 @@ export default {
       logVisible: false, // 审批记录
       activities: [],
       seProjectCompanyInfo: {}, // 业主信息
+      seProjectRelevantFile: {
+        projectId: undefined
+      }, // 相关材料
       seProjectEndSupplementFile: { // 立项补充
-        projectId: this.$route.query.projectId
+        projectId: undefined
       }, 
       options: [],
     }
@@ -117,13 +219,16 @@ export default {
   components: { ApprovalLog, ProjectInfo, OwnerInfo },
   created() {
     this.projectId = this.$route.query.projectId
+    this.seProjectRelevantFile.projectId = this.projectId
+    this.seProjectEndSupplementFile.projectId = this.projectId
     this.getProjectInfo( this.projectId )
   },
   methods: {
     getProjectInfo( projectId ) {
       getProjectInfo({ projectId }).then(res => {
-        const { seProjectCompanyInfo, seProjectEndSupplementFile } = res.data
+        const { seProjectCompanyInfo, seProjectRelevantFile, seProjectEndSupplementFile } = res.data
         this.seProjectCompanyInfo = seProjectCompanyInfo
+        this.seProjectRelevantFile = { ...seProjectRelevantFile }
         this.seProjectEndSupplementFile = { ...seProjectEndSupplementFile }
       })
     },
@@ -146,8 +251,10 @@ export default {
     },
     // 保存
     handleSave() {
-      this.seProjectEndSupplementFile.projectId = this.$route.query.projectId
-      setProjectInput( this.seProjectEndSupplementFile ).then(res => {
+      setProjectInput({
+        seProjectRelevantFile: this.seProjectRelevantFile, 
+        seProjectEndSupplementFile: this.seProjectEndSupplementFile 
+      }).then(res => {
         this.$message.success('保存成功')
         this.getProjectInfo(this.projectId)
       })
@@ -217,4 +324,8 @@ export default {
   .divli {
     margin-bottom: 10px;
   }
+/deep/ .el-button--primary.is-disabled {
+  background-color: #eee;
+  border-color: #eee;
+}
 </style>

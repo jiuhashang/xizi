@@ -26,43 +26,43 @@
       </div>
       <table style="width: 100%;text-align:center;" class="ht" cellpadding="0" cellspacing="0">
         <tr style="background:#f2f2f2;">
-          <td></td>
+          <td style="height:30px;"></td>
           <td>2019年</td>
           <td>2020年</td>
           <td>2021年</td>
         </tr>
         <tr>
-          <td>年销售额（万元）</td>
+          <td style="height:40px;">年销售额（万元）</td>
           <td>
-            <el-input v-model="first.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="first.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="second.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="three.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="three.sellMoney" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
         </tr>
         <tr>
-          <td>年利润额（万元）</td>
+          <td style="height:40px;">年利润额（万元）</td>
           <td>
-            <el-input v-model="first.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="first.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="second.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="three.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入">
+            <el-input v-model="three.profix" type="number" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
@@ -74,7 +74,7 @@
       </div>
       <el-alert title="如文件较多，可将文件进行压缩打包上传，并等待文件完成上传。" type="success" :closable="false" />
       <el-form ref="relevantFileForm" :rules="relevantFileRules" :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" :model="seProjectRelevantFile" style="margin-left:57px;margin-top:30px;" label-width="160px">
-        <el-row :gutter="20">
+        <!-- <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="不动产权证或三证" prop="realPropertyRightFile" class="must-form-item">
               <file-upload-string
@@ -96,7 +96,7 @@
                 :limit="1" />
             </el-form-item>
           </el-col>
-        </el-row>
+        </el-row> -->
         <el-row :gutter="20">
           <el-col :span="8">
             <el-form-item label="配电室内部照片">
@@ -162,7 +162,7 @@
         <el-row :gutter="20">
           <el-col>
             <el-form-item label="项目发起额外说明">
-              <el-input v-model="seProjectRelevantFile.projectOtherMessage" class="width100"></el-input>
+              <el-input type="textarea" autosize v-model="seProjectRelevantFile.projectOtherMessage" class="width100"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -191,7 +191,7 @@
           </el-col>
         </el-row>
         <el-form-item label="补充说明">
-          <el-input v-model="seProjectSupplementFile.otherMessage" class="width100"></el-input>
+          <el-input type="textarea" autosize v-model="seProjectSupplementFile.otherMessage" class="width100"></el-input>
         </el-form-item>
       </el-form>
       
@@ -395,7 +395,6 @@ export default {
   }
   table {
     width: 100%;
-    height: 200px;
     margin: 30px 0;
     border-collapse:collapse; 
     border: 1px solid #aaa;
@@ -419,4 +418,9 @@ export default {
       border: 1px solid #DCDFE6;
     }
   }
+  
+/deep/ .el-button--primary.is-disabled {
+  background-color: #eee;
+  border-color: #eee;
+}
 </style>

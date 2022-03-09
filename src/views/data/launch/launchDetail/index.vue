@@ -167,7 +167,7 @@
                 placeholder="请选择(可多选)"
                 class="width100">
                 <el-option label="瓦砾屋面" value="0"></el-option>
-                <el-option label="混泥土屋面" value="1"></el-option>
+                <el-option label="混凝土屋面" value="1"></el-option>
                 <el-option label="彩钢瓦屋面" value="2"></el-option>
                 <el-option label="其它" value="3"></el-option>
               </el-select>
@@ -200,7 +200,7 @@
           </el-col>
           <el-col :span="16">
             <el-form-item label="其他屋面材质说明" prop="otherMessage">
-              <el-input v-model="seProjectCompanyBuildInfo.otherMessage" clearable></el-input>
+              <el-input type="textarea" autosize v-model="seProjectCompanyBuildInfo.otherMessage" size="medium"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -255,8 +255,8 @@
           <el-col :span="8" style="padding-left:0;">
             <el-form-item label="周末生产情况" prop="weekendFlag" class="must-form-item">
               <el-select v-model="seProjectPowerInfo.weekendFlag" placeholder="请选择"  class="width100">
-                <el-option label="单班" value="单班"></el-option>
-                <el-option label="双班" value="双班"></el-option>
+                <el-option label="单休" value="单休"></el-option>
+                <el-option label="双休" value="双休"></el-option>
                 <el-option label="连续生产" value="连续生产"></el-option>
               </el-select>
             </el-form-item>
@@ -273,7 +273,7 @@
           </el-col>
           <el-col :span="16" style="padding-left:0;">
             <el-form-item label="其他供电说明" prop="otherMessage">
-              <el-input v-model="seProjectPowerInfo.otherMessage"></el-input>
+              <el-input type="textarea" autosize v-model="seProjectPowerInfo.otherMessage"></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -342,50 +342,57 @@
             </div>
           </el-col>
         </el-row>
+        <el-row :gutter="20" style="margin:0 30px;">
+          <el-col>
+            <el-form-item label="合作说明">
+              <el-input v-model="seProjectCooperate.otherMessage" class="width100" clearable type="textarea" autosize></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
       </el-form>
 
       <div class="xian">
         <div>近3年销售与利润</div>
       </div>
-      <table style="width: 100%;text-align:center;" class="ht" cellpadding="0" cellspacing="0">
+      <table style="width: 100%;text-align:center;" cellpadding="0" cellspacing="0">
         <tr style="background:#f2f2f2;">
-          <td></td>
+          <td style="height:30px;"></td>
           <td>2019年</td>
           <td>2020年</td>
           <td>2021年</td>
         </tr>
         <tr>
-          <td>年销售额（万元）</td>
+          <td style="height:40px;">年销售额（万元）</td>
           <td>
-            <el-input v-model="first.sellMoney" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
+            <el-input v-model="first.sellMoney" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.sellMoney" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
+            <el-input v-model="second.sellMoney" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="three.sellMoney" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
+            <el-input v-model="three.sellMoney" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
         </tr>
         <tr>
-          <td>年利润额（万元）</td>
+          <td style="height:40px;">年利润额（万元）</td>
           <td>
-            <el-input v-model="first.profix" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
+            <el-input v-model="first.profix" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="second.profix" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
+            <el-input v-model="second.profix" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
           <td>
-            <el-input v-model="three.profix" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入">
+            <el-input v-model="three.profix" type="number" :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" placeholder="请输入" size="small">
               <span slot="suffix">万元</span>
             </el-input>
           </td>
@@ -485,7 +492,7 @@
         <el-row :gutter="20" style="margin:0 30px;">
           <el-col>
             <el-form-item label="项目发起额外说明">
-              <el-input v-model="seProjectRelevantFile.projectOtherMessage" class="width100"></el-input>
+              <el-input type="textarea" autosize v-model="seProjectRelevantFile.projectOtherMessage" class="width100" clearable></el-input>
             </el-form-item>
           </el-col>
         </el-row>
@@ -1024,14 +1031,13 @@ export default {
   }
   table {
     width: 100%;
-    height: 200px;
     margin: 30px 0;
     border-collapse:collapse; 
-    border: 1px solid #aaa;
+    border: 1px solid #DCDFE6;
     tr {
-      border: 1px solid #aaa;
+      border: 1px solid #DCDFE6;
       td {
-        border: 1px solid #aaa;
+        border: 1px solid #DCDFE6;
         width: 25%;
       }
     }
@@ -1039,7 +1045,11 @@ export default {
       width: 90%;
     }
     /deep/ .el-input__suffix {
-      top: 10px;
+      top: 7px;
     }
   }
+/deep/ .el-button--primary.is-disabled {
+  background-color: #eee;
+  border-color: #eee;
+}
 </style>

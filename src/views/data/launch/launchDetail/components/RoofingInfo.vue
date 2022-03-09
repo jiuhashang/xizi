@@ -50,7 +50,7 @@
               placeholder="请选择(可多选)"
               class="width100">
               <el-option label="瓦砾屋面" value="0"></el-option>
-              <el-option label="混泥土屋面" value="1"></el-option>
+              <el-option label="混凝土屋面" value="1"></el-option>
               <el-option label="彩钢瓦屋面" value="2"></el-option>
               <el-option label="其它" value="3"></el-option>
             </el-select>

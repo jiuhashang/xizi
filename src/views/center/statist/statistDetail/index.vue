@@ -100,6 +100,7 @@ export default {
         companyName: '',
         startDate: '',
         endDate: '',
+        userId: '',
         pageIndex: 1,
         pageSize: 10
       },
@@ -137,6 +138,7 @@ export default {
     }
   },
   created() {
+    this.tableInfo.userId = this.$route.query.userId
     this.getSelectListAll()
   },
   methods: {

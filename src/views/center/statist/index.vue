@@ -246,10 +246,12 @@ export default {
 
     // 查看详情
     handleView(row) {
+      console.log(row)
       this.$router.push({ name: 'StatistDetail', query: { 
           userName: row.userName,
           companyName: row.companyName,
-          nickName: row.nickName
+          nickName: row.nickName,
+          userId: row.id
         }
       })
     },

@@ -1,6 +1,7 @@
 // const port = process.env.port || 80 // dev port
 module.exports = {
     lintOnSave: false, // eslint-loader 是否在保存的时候检查
+    productionSourceMap: false,
     devServer: {
       // port: 80,
       open: true,
@@ -26,8 +27,7 @@ module.exports = {
         'vue-router':'VueRouter',
         'element-ui':'ELEMENT',
         nprogress: 'NProgress',
-        axios: 'axios',
-        lodash: '_'
+        axios: 'axios'
       })
     }
   }
