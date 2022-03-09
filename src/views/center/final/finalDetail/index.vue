@@ -368,6 +368,10 @@
               </td>
             </tr>
           </table>
+          <el-row :gutter="20" style="margin:30px 0;">
+            <el-col :span="3" class="span13">近3年销售与利润说明</el-col>
+            <el-col :span="21" class="span130">{{ seProjectFinanceOtherMessage.financeOtherMessage }}</el-col>
+          </el-row>
 
           <div class="xian">
             <div>相关材料</div>
@@ -847,6 +851,7 @@ export default {
           houseArea: ''
         }, 
         seProjectNearThreeYearSellProfixList: [], 
+        seProjectFinanceOtherMessage: {},
         seProjectPowerInfo: {}, 
         seProjectPowerTransformInfoList: [], 
         seProjectRelevantFile: {}, 
@@ -898,7 +903,7 @@ export default {
       },
       getProjectInfo() {
         getProjectInfo({ projectId: this.projectId }).then(res => {
-          const { seProjectCompanyBuildInfo, seProjectCompanyInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile } = res.data
+          const { seProjectCompanyBuildInfo, seProjectCompanyInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectFinanceOtherMessage, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile } = res.data
           this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
           this.seProjectCompanyInfo = seProjectCompanyInfo
           this.seProjectCooperate = seProjectCooperate
@@ -912,6 +917,7 @@ export default {
             this.seProjectCooperate.ownPutFlag = true
           }
           if( seProjectNearThreeYearSellProfixList.length > 0 ) { this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList }
+          this.seProjectFinanceOtherMessage = { ...seProjectFinanceOtherMessage }
           this.seProjectPowerInfo = seProjectPowerInfo
           this.seProjectPowerTransformInfoList = seProjectPowerTransformInfoList
           this.seProjectRelevantFile = { ...seProjectRelevantFile }

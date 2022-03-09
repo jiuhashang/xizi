@@ -398,6 +398,15 @@
           </td>
         </tr>
       </table>
+      <el-form :disabled="firstExamine == 1 || firstExamine == 3 || firstExamine == 99" :model="seProjectFinanceOtherMessage" label-width="150px">
+        <el-row :gutter="20" style="margin:0 30px;">
+          <el-col>
+            <el-form-item label="近3年销售与利润说明">
+              <el-input v-model="seProjectFinanceOtherMessage.financeOtherMessage" class="width100" clearable type="textarea" autosize></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
 
       <div class="xian">
         <div>相关材料</div>
@@ -722,6 +731,11 @@ export default {
         profix: undefined
       },
       seProjectNearThreeYearSellProfixList: [], // 近三年
+      seProjectFinanceOtherMessage: {
+        id: '',
+        projectId: this.$route.query.projectId,
+        financeOtherMessage: ''
+      },
       seProjectRelevantFile: {
         projectId: this.$route.query.projectId,
       }, // 相关材料
@@ -757,7 +771,7 @@ export default {
   methods: {
     getProjectInfo( projectId ) {
       getProjectInfo({ projectId }).then(res => {
-        const {seProjectCompanyInfo,seProjectCompanyBuildInfo,seProjectPowerInfo,seProjectCooperate,seProjectRelevantFile,seProjectPowerTransformInfoList, seProjectNearThreeYearSellProfixList} = res.data
+        const {seProjectCompanyInfo,seProjectCompanyBuildInfo,seProjectPowerInfo,seProjectCooperate,seProjectRelevantFile,seProjectPowerTransformInfoList, seProjectNearThreeYearSellProfixList, seProjectFinanceOtherMessage} = res.data
         this.seProjectCompanyInfo = {...seProjectCompanyInfo}
         this.seProjectCompanyBuildInfo = {...seProjectCompanyBuildInfo}
         this.seProjectPowerInfo = {...seProjectPowerInfo}
@@ -772,6 +786,7 @@ export default {
         if(this.seProjectCompanyBuildInfo.colorSteelType) { this.colorSteelType = this.seProjectCompanyBuildInfo.colorSteelType.split(',') }
         if(this.seProjectCompanyBuildInfo.housePartType && this.seProjectCompanyBuildInfo.housePartType.indexOf('2') !== -1) { this.houseDis = false }
         this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList
+        this.seProjectFinanceOtherMessage = { ...seProjectFinanceOtherMessage }
       })
     },
     front(msg) {
@@ -804,6 +819,7 @@ export default {
         seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
         seProjectCooperate: this.seProjectCooperate,
         seProjectNearThreeYearSellProfixList: this.seProjectNearThreeYearSellProfixList,
+        seProjectFinanceOtherMessage: this.seProjectFinanceOtherMessage,
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
         this.saveLoading = false
@@ -843,6 +859,7 @@ export default {
         seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
         seProjectCooperate: this.seProjectCooperate,
         seProjectNearThreeYearSellProfixList: this.seProjectNearThreeYearSellProfixList,
+        seProjectFinanceOtherMessage: this.seProjectFinanceOtherMessage,
         seProjectRelevantFile: this.seProjectRelevantFile
       }).then(res => {
         this.saveLoading = false

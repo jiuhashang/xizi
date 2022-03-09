@@ -356,6 +356,10 @@
               </td>
             </tr>
           </table>
+          <el-row :gutter="20" style="margin:30px 0;">
+            <el-col :span="3" class="span13">近3年销售与利润说明</el-col>
+            <el-col :span="21" class="span130">{{ seProjectFinanceOtherMessage.financeOtherMessage }}</el-col>
+          </el-row>
 
           <div class="xian">
             <div>相关材料</div>
@@ -885,6 +889,7 @@ export default {
         seProjectCompanyInfo: {}, 
         seProjectCooperate: {}, 
         seProjectNearThreeYearSellProfixList: [], 
+        seProjectFinanceOtherMessage: {},
         seProjectPowerInfo: {}, 
         seProjectPowerTransformInfoList: [], 
         seProjectRelevantFile: {}, 
@@ -936,7 +941,7 @@ export default {
       },
       getProjectInfo() {
         getProjectInfo({ projectId: this.projectId }).then(res => {
-          const { seProjectCompanyBuildInfo, seProjectCompanyInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile, seProjectEndSupplementFile } = res.data
+          const { seProjectCompanyBuildInfo, seProjectCompanyInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectFinanceOtherMessage, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile, seProjectEndSupplementFile } = res.data
           if(seProjectCompanyBuildInfo) { this.seProjectCompanyBuildInfo = { ...seProjectCompanyBuildInfo } }
           if(seProjectCompanyInfo) { this.seProjectCompanyInfo = { ...seProjectCompanyInfo } }
           if(seProjectCooperate) { this.seProjectCooperate = { ...seProjectCooperate } }
@@ -949,6 +954,7 @@ export default {
           if(seProjectRelevantFile) { this.seProjectRelevantFile = { ...seProjectRelevantFile } }
           if(seProjectSupplementFile) { this.seProjectSupplementFile = { ...seProjectSupplementFile } }
           if(seProjectEndSupplementFile) { this.seProjectEndSupplementFile = { ...seProjectEndSupplementFile } }
+          this.seProjectFinanceOtherMessage = { ...seProjectFinanceOtherMessage }
         }).catch(err => err)
       },
       getProfitMessage() {

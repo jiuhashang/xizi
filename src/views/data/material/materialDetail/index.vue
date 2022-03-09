@@ -68,6 +68,15 @@
           </td>
         </tr>
       </table>
+      <el-form :disabled="thirdExamine == 1 || thirdExamine == 3 || thirdExamine == 99" :model="seProjectFinanceOtherMessage" label-width="150px">
+        <el-row :gutter="20" style="margin:0 30px;">
+          <el-col>
+            <el-form-item label="近3年销售与利润说明">
+              <el-input v-model="seProjectFinanceOtherMessage.financeOtherMessage" class="width100" clearable type="textarea" autosize></el-input>
+            </el-form-item>
+          </el-col>
+        </el-row>
+      </el-form>
 
       <div class="xian">
         <div>相关材料</div>
@@ -242,6 +251,10 @@ export default {
       seProjectCompanyBuildInfo: {}, // 屋面信息
       seProjectCooperate: {}, // 合作模式
       seProjectNearThreeYearSellProfixList: [], // 近三年
+      seProjectFinanceOtherMessage: {
+        projectId: this.$route.query.projectId,
+        financeOtherMessage: ''
+      },
       seProjectPowerInfo: {}, // 供电现状
       seProjectPowerTransformInfoList: [], // 变压器列表
       seProjectRelevantFile: {}, // 相关材料
@@ -268,9 +281,10 @@ export default {
   methods: {
     getProjectInfo() {
       getProjectInfo({ projectId: this.projectId }).then(res => {
-        const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile } = res.data
+        const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectCooperate, seProjectNearThreeYearSellProfixList, seProjectFinanceOtherMessage, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectRelevantFile, seProjectSupplementFile } = res.data
         this.seProjectCompanyInfo = { ...seProjectCompanyInfo }
         this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList
+        this.seProjectFinanceOtherMessage = { ...seProjectFinanceOtherMessage }
         if( seProjectSupplementFile ) { this.seProjectSupplementFile = { ...seProjectSupplementFile }}
         this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
         this.seProjectCooperate = seProjectCooperate
@@ -288,6 +302,7 @@ export default {
         seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
         seProjectCooperate: this.seProjectCooperate,
         seProjectNearThreeYearSellProfixList: this.seProjectNearThreeYearSellProfixList,
+        seProjectFinanceOtherMessage: this.seProjectFinanceOtherMessage,
         seProjectPowerInfo: this.seProjectPowerInfo,
         seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
         seProjectRelevantFile: this.seProjectRelevantFile
@@ -308,6 +323,7 @@ export default {
         seProjectCompanyBuildInfo: this.seProjectCompanyBuildInfo,
         seProjectCooperate: this.seProjectCooperate,
         seProjectNearThreeYearSellProfixList: this.seProjectNearThreeYearSellProfixList,
+        seProjectFinanceOtherMessage: this.seProjectFinanceOtherMessage,
         seProjectPowerInfo: this.seProjectPowerInfo,
         seProjectPowerTransformInfoList: this.seProjectPowerTransformInfoList,
         seProjectRelevantFile: this.seProjectRelevantFile

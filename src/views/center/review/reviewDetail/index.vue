@@ -270,6 +270,10 @@
           </td>
         </tr>
       </table>
+      <el-row :gutter="20" style="margin:30px 0;">
+        <el-col :span="3" class="span13">近3年销售与利润说明</el-col>
+        <el-col :span="21" class="span130">{{ seProjectFinanceOtherMessage.financeOtherMessage }}</el-col>
+      </el-row>
 
       <div class="xian">
         <div>相关材料</div>
@@ -459,6 +463,7 @@ export default {
       projectTotalProfitModel: {}, // 收益统计
       seProjectProfitCountList: [], //  收益表格数据
       seProjectNearThreeYearSellProfixList: [],
+      seProjectFinanceOtherMessage: {},
       // 审核
       dialogVisible: false,
       title: '',
@@ -501,8 +506,9 @@ export default {
   methods: {
     getProjectInfo() {
       getProjectInfo({ projectId: this.projectId }).then(res => {
-        const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectCooperate, seProjectRelevantFile, seProjectNearThreeYearSellProfixList } = res.data
+        const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectCooperate, seProjectRelevantFile, seProjectNearThreeYearSellProfixList, seProjectFinanceOtherMessage } = res.data
         this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList
+        this.seProjectFinanceOtherMessage = { ...seProjectFinanceOtherMessage }
         this.seProjectCompanyInfo = seProjectCompanyInfo
         this.seProjectCompanyBuildInfo = seProjectCompanyBuildInfo
         if(seProjectCompanyBuildInfo.housePartType) {

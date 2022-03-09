@@ -71,8 +71,8 @@
           <el-form-item label="机构名称" prop="bankName">
             <el-input v-model="addForm.bankName" placeholder="请输入机构名称"></el-input>
           </el-form-item>
-          <el-form-item label="登录手机号" prop="loginPhone">
-            <el-input v-model="addForm.loginPhone" placeholder="请输入登录手机号"></el-input>
+          <el-form-item label="登录账号" prop="loginPhone">
+            <el-input v-model="addForm.loginPhone" placeholder="请输入登录账号"></el-input>
           </el-form-item>
           <el-form-item label="联系人" prop="contactName">
             <el-input v-model="addForm.contactName" placeholder="请输入联系人"></el-input>
@@ -106,8 +106,8 @@
         <el-form-item label="机构名称" prop="bankName">
           <el-input v-model="editForm.bankName" placeholder="请输入机构名称"></el-input>
         </el-form-item>
-        <el-form-item label="登录手机号" prop="loginPhone">
-          <el-input v-model="editForm.loginPhone" placeholder="请输入登录手机号"></el-input>
+        <el-form-item label="登录账号" prop="loginPhone">
+          <el-input v-model="editForm.loginPhone" placeholder="请输入登录账号"></el-input>
         </el-form-item>
         <el-form-item label="联系人" prop="contactName">
           <el-input v-model="editForm.contactName" placeholder="请输入联系人姓名"></el-input>
@@ -133,19 +133,6 @@ import _ from 'lodash'
 export default {
   name: 'Organization',
   data() {
-    var checkPhone = (rule, value, callback) => {
-      if (!value) {
-        return callback(new Error('手机号不能为空'))
-      } else {
-        const reg = /^1(3\d|4[5-9]|5[0-35-9]|6[567]|7[0-8]|8\d|9[0-35-9])\d{8}$/
-        // console.log(reg.test(value))
-        if (reg.test(value)) {
-          callback()
-        } else {
-          return callback(new Error('请输入正确的手机号'))
-        }
-      }
-    }
     var checkEmail = (rule, value, callback) => {
       if (!value) {
         return callback(new Error('邮箱不能为空'))
@@ -203,8 +190,8 @@ export default {
           { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
         ],
         loginPhone: [
-          { required: true, message: '请输入登录手机号', trigger: 'blur' },
-          { validator: checkPhone, trigger: 'blur' }
+          { required: true, message: '请输入登录账号', trigger: 'blur' },
+          { min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur' }
         ],
         contactName: [
           { required: true, message: '请输入联系人姓名', trigger: 'blur' },
@@ -229,8 +216,8 @@ export default {
           { min: 2, max: 50, message: '长度在 2 到 50 个字符', trigger: 'blur' }
         ],
         loginPhone: [
-          { required: true, message: '请输入登录手机号', trigger: 'blur' },
-          { validator: checkPhone, trigger: 'blur' }
+          { required: true, message: '请输入登录账号', trigger: 'blur' },
+          { min: 4, max: 20, message: '长度在 4 到 20 个字符', trigger: 'blur' }
         ],
         contactName: [
           { required: true, message: '请输入联系人姓名', trigger: 'blur' },
