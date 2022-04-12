@@ -21,7 +21,7 @@ module.exports = {
       // }
       // before: require('./mock/mock-server.js')
     },
-    chainWebpack: (config) => {
+    chainWebpack: config => {
       config.externals({
         vue:'Vue',
         'vue-router':'VueRouter',

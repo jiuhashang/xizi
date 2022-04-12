@@ -6,16 +6,16 @@
         <el-breadcrumb-item>资料收集</el-breadcrumb-item>
         <el-breadcrumb-item>{{ $route.meta.title }}</el-breadcrumb-item>
       </el-breadcrumb>
-      <h2>{{ $route.meta.title }}</h2>
+      <h3>{{ $route.meta.title }}</h3>
     </div>
     <el-card>
       <div style="display:flex;justify-content:space-between;">
-        <el-form ref="ruleForm" :model="tableInfo" inline>
+        <el-form ref="ruleForm" :model="tableInfo" inline size="small">
           <el-form-item>
-            <el-input v-model="tableInfo.projectName" placeholder="项目名称查询" clearable style="width:250px;" />
+            <el-input v-model="tableInfo.projectName" placeholder="项目名称查询" clearable />
           </el-form-item>
           <el-form-item>
-            <el-input v-model="tableInfo.companyName" placeholder="业主名称查询" clearable style="width:250px;" />
+            <el-input v-model="tableInfo.companyName" placeholder="业主名称查询" clearable />
           </el-form-item>
           <el-form-item>
             <el-select v-model="tableInfo.setProjectStatus" clearable placeholder="全部状态">
@@ -33,16 +33,16 @@
               </el-option>
             </el-select>
            </el-form-item>
-          <el-form-item style="margin-left: 20px;">
+          <el-form-item>
             <el-button type="primary" @click="handleQuery">查询</el-button>
             <el-button @click="reset">重置</el-button>
           </el-form-item>
         </el-form>
         <div>
-          <el-button type="primary" @click="create">创建项目表单</el-button>
+          <el-button type="primary" @click="create" size="small">创建项目表单</el-button>
         </div>
       </div>
-      <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%">
+      <el-table :data="tableData" stripe :header-cell-style="{background:'#eef1f6',color:'#606266'}" style="width: 100%" size="small">
         <el-table-column prop="projectName" label="项目名称" />
         <el-table-column prop="companyName" label="业主名称" />
         <el-table-column prop="createTime" label="创建时间" />
@@ -76,19 +76,10 @@
       <c-pagination ref="pagination" :total="total" @sendsize="handleSizeChange" @sendpage="handleCurrentChange" />
     </el-card>
     <!-- 创建项目表单 -->
-    <el-dialog
-      title="创建项目表单"
-      :visible.sync="dialogVisible"
-      width="40%"
-      :close-on-click-modal="false"
-      @close="colseDialog">
+    <el-dialog title="创建项目表单" :visible.sync="dialogVisible" width="40%" :close-on-click-modal="false" @close="colseDialog">
       <div style="position: relative;">
-        <el-alert
-          title="请在搜索结果中选择匹配的公司名称，且创建表单后将无法修改，请认真核对 !"
-          type="success"
-          :closable="false">
-        </el-alert>
-        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" style="width:80%;margin:auto;">
+        <el-alert title="请在搜索结果中选择匹配的公司名称，且创建表单后将无法修改，请认真核对 !" type="success" :closable="false" />
+        <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="80px" style="width:90%;margin:auto;" size="small">
           <el-form-item label="项目名称" prop="projectName">
             <el-input v-model="ruleForm.projectName" placeholder="请输入" clearable />
           </el-form-item>
@@ -108,8 +99,8 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="createProject" :loading="loading">创 建</el-button>
+        <el-button @click="dialogVisible = false" size="small">取 消</el-button>
+        <el-button type="primary" @click="createProject" :loading="loading" size="small">创 建</el-button>
       </span>
     </el-dialog>
     <!-- 审批记录 -->
@@ -329,12 +320,12 @@ export default {
 
 <style lang="scss" scoped>
   .shang {
-    height: 97px;
+    height: 80px;
     background-color: #fff;
     .el-breadcrumb {
       padding: 15px 0 0 25px;
     }
-    h2 {
+    h3 {
       text-align: left;
       padding-left: 25px;
     }

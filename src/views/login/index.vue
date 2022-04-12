@@ -14,7 +14,7 @@
           <el-form-item style="height:44px;">
             <el-row :gutter="50">
               <el-col :span="15">
-                <el-input prefix-icon="el-icon-warning-outline" v-model="form.code" placeholder="请输入验证码" clearable />
+                <el-input prefix-icon="el-icon-warning-outline" v-model="form.code" placeholder="请输入验证码" @keyup.enter.native="send" clearable />
               </el-col>
               <el-col :span="9">
                 <img :src="imgSrc" alt="" @click="getImgSrc">

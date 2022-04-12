@@ -209,10 +209,11 @@
               <el-row :gutter="20">
                 <el-col :span="8" class="span13">供电类型</el-col>
                 <el-col :span="16" class="span130">
-                  <span v-if="seProjectPowerInfo.prowerType == 0">工业</span>
+                  <span>{{ seProjectPowerInfo.prowerType }}</span>
+                  <!-- <span v-if="seProjectPowerInfo.prowerType == 0">工业</span>
                   <span v-else-if="seProjectPowerInfo.prowerType == 1">商业</span>
                   <span v-else-if="seProjectPowerInfo.prowerType == 2">农用</span>
-                  <span v-else>居民用电</span>
+                  <span v-else-if="seProjectPowerInfo.prowerType == 3">居民用电</span> -->
                 </el-col>
               </el-row>
             </el-col>
@@ -470,7 +471,7 @@
                 <el-col :span="8" class="span13 mt5">厂房内屋顶照片</el-col>
                 <el-col :span="16" class="span130">
                   <el-button size="small" type="primary" @click="handleDown(seProjectRelevantFile.workShopInsideTopFile)"
-                  :disabled="seProjectRelevantFile.workShopInsideTopFile == '' || seProjectRelevantFile.projectOtherFile == null ">下 载</el-button>
+                  :disabled="seProjectRelevantFile.workShopInsideTopFile == '' || seProjectRelevantFile.workShopInsideTopFile == null ">下 载</el-button>
                 </el-col>
               </el-row>
             </el-col>
@@ -948,6 +949,7 @@ export default {
     },
     getProjectInfo() {
       getProjectInfo({ projectId: this.projectId }).then(res => {
+        console.log(res)
         const { seProjectCompanyInfo, seProjectCompanyBuildInfo, seProjectPowerInfo, seProjectPowerTransformInfoList, seProjectCooperate, seProjectRelevantFile, seProjectNearThreeYearSellProfixList, seProjectFinanceOtherMessage } = res.data
         this.seProjectNearThreeYearSellProfixList = seProjectNearThreeYearSellProfixList
         this.seProjectFinanceOtherMessage = { ...seProjectFinanceOtherMessage }

@@ -42,6 +42,7 @@ export default {
     action: {
       type: String,
       // default: process.env.VUE_APP_BASE_API + '/huawei/uploadFile'
+      // default: 'http://123.60.52.140:7800/huawei/uploadFile'
       default: 'http://123.60.52.140:7800/huawei/uploadFile'
     },
 

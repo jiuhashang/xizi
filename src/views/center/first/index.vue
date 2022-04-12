@@ -65,6 +65,7 @@
         <el-table-column label="操作">
           <template slot-scope="scope">
             <el-button type="text" @click="handleView(scope.row)">查看</el-button>
+            <el-button type="text" @click="handlePack(scope.row.projectId)">文件打包</el-button>
             <el-button type="text" @click="approval(scope.row.projectId)">审批记录</el-button>
           </template>
         </el-table-column> 
@@ -78,7 +79,7 @@
 
 <script>
 import { getExamineList, getProjectExamineLog } from '@/api/listProject'
-
+import { readyDownFile } from '@/api/integrated'
 import ApprovalLog from '@/components/Log/ApprovalLog.vue'
 
 export default {
@@ -113,7 +114,7 @@ export default {
       ],
       tableData: [],
       total: 0,
-
+      projectIdList: [],
       // 审批记录
       logVisible: false,
       activities: []
@@ -172,7 +173,24 @@ export default {
       })
       this.logVisible = true
     },
-
+    handlePack(projectId) {
+      this.$confirm('下载的项目资料将会以预下载的形式存储7日，请在下载管理中，下载至电脑内。', '提示', {
+        confirmButtonText: '确定下载',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.projectIdList.push( projectId )
+        readyDownFile( this.projectIdList ).then(res => {
+          console.log(res)
+          this.$message.success(res.msg)
+        })
+      }).catch((err) => {
+        this.$message({
+          type: 'info',
+          message: '已取消'
+        })       
+      })
+    },
     handleSizeChange(val) {
       // console.log(`每页 ${val} 条`)
       this.tableInfo.pageSize = val
